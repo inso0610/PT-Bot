@@ -3,12 +3,12 @@ const { SlashCommandBuilder } = require('discord.js')
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('ping')
-    .setDescription('Pong! Gives you the bot ping'),
+    .setDescription('Pong! Gives you the bot\'s ping'),
 
     run: async ({ interaction, client }) => {
         await interaction.deferReply({
             content: 'Wait...',
-            ephemeral:true
+            ephemeral: true
         });
 
         const reply = await interaction.fetchReply();
