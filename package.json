@@ -1,0 +1,18 @@
+{
+  "name": "mcbane-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.8.0",
+    "djs-commander": "^0.0.45",
+    "dotenv": "^16.0.3"
+  },
+  "nodeVersion": "16.17.0"
+}
