@@ -3,11 +3,11 @@ const { SlashCommandBuilder } = require('discord.js')
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('ping')
-    .setDescription('Pong! Gir deg botten sin ping.'),
+    .setDescription('Pong! Gives you the bot ping'),
 
     run: async ({ interaction, client }) => {
         await interaction.deferReply({
-            content: 'Vent...',
+            content: 'Wait...',
             ephemeral:true
         });
 
