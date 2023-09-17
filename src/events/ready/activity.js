@@ -12,7 +12,11 @@ let status = [
     {
         name: 'Members',
         type: ActivityType.Watching,
-    }   
+    },
+    {
+        name: 'Railroading with JM',
+        type: ActivityType.Watching,
+    }
 ];
 
 module.exports = (client) => {
