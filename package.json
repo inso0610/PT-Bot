@@ -12,7 +12,8 @@
   "dependencies": {
     "discord.js": "^14.8.0",
     "djs-commander": "^0.0.45",
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "mongoose": "^7.5.2"
   },
   "nodeVersion": "16.17.0"
 }

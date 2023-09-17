@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { Client, IntentsBitField, ActivityType } = require('discord.js');
+const mongoose = require('mongoose');
 const {  CommandHandler } = require('djs-commander');
 const path = require('path');
 
@@ -12,6 +13,16 @@ const client = new Client({
     ],
     
 });
+
+(async () => {
+    try {
+        await mongoose.connect(process.env.MONGODB_URI);
+        console.log('Connected to Mongo DB.');
+
+    } catch (error) {
+        console.log(`Mongo DB Error: ${error}`);
+    }      
+})();
 
 new CommandHandler({
     client,
