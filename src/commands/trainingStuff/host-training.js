@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, resolveColor, resolvePartialEmoji, MessageComponentInteraction } = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js')
 
 module.exports = {
     deleted: false,
@@ -40,8 +40,8 @@ module.exports = {
         const lockTime = interaction.options.getString('lock-time');
         const trainingType = interaction.options.getString('training-type');
         const avatarURL = "https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpeg"
-        // const trainingPing = '<@&1140220447535923200>'
-        const trainingPing = '<@935889950547771512>'
+        const trainingPing = '<@&1140220447535923200>'  // Training Ping
+        // const trainingPing = '<@935889950547771512>'  // Emilsen ping
         let linkMessage
 
         const gameLink = new ButtonBuilder()
@@ -119,7 +119,9 @@ module.exports = {
         
         **Spawn as a passenger at Grefsen and line up on the white line.**
         
-        Locking at ${lockTime} CEST`);
+        Locking at ${lockTime} CEST
+        
+        **Good luck to all attendees :)**`);
 
         const trainingDashboard = new EmbedBuilder()
         .setAuthor({
@@ -224,7 +226,7 @@ module.exports = {
                     content: 'Lock message sent.',
                     ephemeral: true
                 });
-            } 
+            }
             
         } catch (e) {
             await interaction.editReply({ content: 'Skill Issue Emil', components: [] });
