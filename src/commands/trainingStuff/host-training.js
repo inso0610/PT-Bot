@@ -40,7 +40,8 @@ module.exports = {
         const lockTime = interaction.options.getString('lock-time');
         const trainingType = interaction.options.getString('training-type');
         const avatarURL = "https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpeg"
-        const trainingPing = '<@&1140220447535923200>'
+        // const trainingPing = '<@&1140220447535923200>'
+        const trainingPing = '<@935889950547771512>'
         let linkMessage
 
         const gameLink = new ButtonBuilder()
@@ -103,7 +104,9 @@ module.exports = {
         
         Before you join I recommend checking out <#1140253645686976542>.
         
-        You should also check out our game before joining to familiarise yourself with it.`);
+        You should also check out our game before joining to familiarise yourself with it.
+        
+        **React if you are attending!**`);
 
         const trainingAnnouncement2 = new EmbedBuilder()
         .setAuthor({
@@ -154,11 +157,13 @@ module.exports = {
         
         Press the Server Locked button when you have locked the server.`);
 
-        trainingChannel.send({
+        const trainingAnnouncementMessage = await trainingChannel.send({
             content: trainingPing,
             embeds: [trainingAnnouncement],
             components: [gameRow]
         });
+
+        trainingAnnouncementMessage.react('1135893701403623594')
 
         interaction.reply({
             content: 'Message sent.',
