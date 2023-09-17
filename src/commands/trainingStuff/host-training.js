@@ -4,7 +4,7 @@ module.exports = {
     deleted: false,
     data: new SlashCommandBuilder()
     .setName('host-training')
-    .setDescription('Lets you host a training.')
+    .setDescription('Sends a training announcement to training announcements')
     .addStringOption((option) => 
         option
             .setName('server-link')
