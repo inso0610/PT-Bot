@@ -4,7 +4,15 @@ let status = [
     {
         name: 'Polar Tracks',
         type: ActivityType.Playing,
-    }
+    },
+    {
+        name: 'Rail Cow Girl',
+        type: ActivityType.Watching,
+    },
+    {
+        name: 'Members',
+        type: ActivityType.Watching,
+    }   
 ];
 
 module.exports = (client) => {
