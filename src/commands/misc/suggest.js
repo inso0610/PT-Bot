@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -22,7 +22,23 @@ module.exports = {
             const suggestionTitle = interaction.options.getString('suggestion-title');
             const suggestionChannel = client.channels.cache.get('1152944134747865119');
             const avatarURL = "https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpeg"
+            const acceptedChannel = client.channels.cache.get('1153263811009200168');
             
+            let acceptButton = new ButtonBuilder()
+                .setCustomId('acceptSuggestion')
+                .setLabel('Accept')
+                .setStyle(ButtonStyle.Success)
+                .setDisabled(false);
+
+            let declineButton = new ButtonBuilder()
+                .setCustomId('declineSuggestion')
+                .setLabel('Decline')
+                .setStyle(ButtonStyle.Danger)
+                .setDisabled(false);
+
+            let suggestionRow = new ActionRowBuilder()
+                .addComponents(acceptButton, declineButton);
+
             const suggestionEmbed = new EmbedBuilder()
                 .setAuthor({
                     name: interaction.user.tag, 
@@ -32,7 +48,10 @@ module.exports = {
                 .setTitle(suggestionTitle)
                 .setDescription(suggestion)
 
-            const suggestionMessage = await suggestionChannel.send({embeds: [suggestionEmbed]});
+            const suggestionMessage = await suggestionChannel.send({
+                embeds: [suggestionEmbed],
+                components: [suggestionRow]
+            });
 
             suggestionMessage.react('👍').then(() => suggestionMessage.react('👎'))
 
