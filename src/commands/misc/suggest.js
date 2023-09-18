@@ -24,20 +24,35 @@ module.exports = {
             const avatarURL = "https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpeg"
             const acceptedChannel = client.channels.cache.get('1153263811009200168');
             
-            let acceptButton = new ButtonBuilder()
+            const acceptButton = new ButtonBuilder()
                 .setCustomId('acceptSuggestion')
                 .setLabel('Accept')
                 .setStyle(ButtonStyle.Success)
                 .setDisabled(false);
 
-            let declineButton = new ButtonBuilder()
+            const declineButton = new ButtonBuilder()
                 .setCustomId('declineSuggestion')
                 .setLabel('Decline')
                 .setStyle(ButtonStyle.Danger)
                 .setDisabled(false);
 
-            let suggestionRow = new ActionRowBuilder()
+            const suggestionRow = new ActionRowBuilder()
                 .addComponents(acceptButton, declineButton);
+
+            const DisabledAcceptButton = new ButtonBuilder()
+                .setCustomId('disabledAcceptSuggestion')
+                .setLabel('Accept')
+                .setStyle(ButtonStyle.Success)
+                .setDisabled(true);
+
+            const DisabledDeclineButton = new ButtonBuilder()
+                .setCustomId('disabledDeclineSuggestion')
+                .setLabel('Decline')
+                .setStyle(ButtonStyle.Danger)
+                .setDisabled(true);
+
+            const DisabledSuggestionRow = new ActionRowBuilder()
+                .addComponents(DisabledAcceptButton, DisabledDeclineButton);
 
             const suggestionEmbed = new EmbedBuilder()
                 .setAuthor({
@@ -66,15 +81,6 @@ module.exports = {
                 ephemeral: true
             });
 
-        } catch (error) {
-            console.log(`Error with suggestion command! ${error}`)
-            interaction.reply({
-                content: 'Command failure. Try again.',
-                ephemeral: true
-            })
-        }
-
-        try {
             let confirmation = await suggestionMessage.awaitMessageComponent({  });
             
             if (confirmation.customId === 'acceptSuggestion') {
@@ -85,31 +91,17 @@ module.exports = {
                     });
                     return true;
                 }
-                    acceptedChannel.send({
-                        content: `Suggestion accepted by <@${interaction.user.id}>`,
-                        embeds: [suggestionEmbed]
-                    });
+                acceptedChannel.send({
+                    content: `Suggestion accepted by <@${interaction.user.id}>`,
+                    embeds: [suggestionEmbed]
+                });
 
                 confirmation.reply('The suggestion was accepted!')
 
-                acceptButton = new ButtonBuilder()
-                    .setCustomId('acceptSuggestion')
-                    .setLabel('Accept')
-                    .setStyle(ButtonStyle.Success)
-                    .setDisabled(true);
-
-                declineButton = new ButtonBuilder()
-                    .setCustomId('declineSuggestion')
-                    .setLabel('Decline')
-                    .setStyle(ButtonStyle.Danger)
-                    .setDisabled(true);
-
-                suggestionRow = new ActionRowBuilder()
-                    .addComponents(acceptButton, declineButton);
-
                 suggestionMessage.edit({
                     content: `✅ This suggestion was accepted!`,
-                    components: [suggestionRow]                    
+                    // embeds: [suggestionEmbed],
+                    components: [DisabledSuggestionRow]                    
                 })
 
             } else if (confirmation.customId === 'declineSuggestion') {
@@ -123,31 +115,34 @@ module.exports = {
 
                 confirmation.reply('The suggestion was declined.')
 
-                acceptButton = new ButtonBuilder()
-                    .setCustomId('acceptSuggestion')
-                    .setLabel('Accept')
-                    .setStyle(ButtonStyle.Success)
-                    .setDisabled(true);
-
-                declineButton = new ButtonBuilder()
-                    .setCustomId('declineSuggestion')
-                    .setLabel('Decline')
-                    .setStyle(ButtonStyle.Danger)
-                    .setDisabled(true);
-
-                suggestionRow = new ActionRowBuilder()
-                    .addComponents(acceptButton, declineButton);
-
                 suggestionMessage.edit({
                     content: `❌ This suggestion was declined.`,
-                    components: [suggestionRow]                    
+                    // embeds: [suggestionEmbed],
+                    components: [DisabledSuggestionRow]                    
                 })
 
             }
-        } catch (error) {
-            console.log(error)
-        }
-        
 
+        } catch (error) {
+            console.log(`Error with suggestion command! ${error}`);
+
+            try {
+                
+                interaction.reply({
+                    content: 'Command failure. Try again.',
+                    ephemeral: true
+                });
+            } catch (error2) {
+                try {
+                    console.log(`Error with suggestion command and could not reply to interaction! ${error2}`);
+                    confirmation.reply({
+                        content: 'Command failure. Try again.',
+                        ephemeral: true
+                    });
+                } catch (error3) {
+                    console.log(`Big failure! ${error3}`)
+                }
+            }
+        }
     }
 }
