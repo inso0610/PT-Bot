@@ -5,7 +5,7 @@ module.exports = {
     .setName('help')
     .setDescription('Sends a list of all commmands and their function.'),
 
-    run: async ({ interaction, client }) => {
+    run: async ({ interaction, client, handler }) => {
         const helpEmbed = new EmbedBuilder()
             .setTitle('Commands:')
             .addFields(
@@ -18,5 +18,13 @@ module.exports = {
                 embeds: [ helpEmbed ],
                 ephemeral: true
             })
-    }
-}
+    },
+
+    options: {
+        devOnly: false,
+        guildOnly: false,
+        userPermissions: [],
+        botPermissions: ['Administrator'],
+        deleted: false,
+    },
+};

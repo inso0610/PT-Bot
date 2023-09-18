@@ -1,4 +1,4 @@
-module.exports = (interaction, commandObj) => {
+module.exports = ({ interaction, commandObj }) => {
     if (commandObj.opTeamOnly) {
         if (!interaction.member.roles.cache.has('1133749323344125992')) {
             interaction.reply({

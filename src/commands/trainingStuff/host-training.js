@@ -1,7 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js')
 
 module.exports = {
-    deleted: false,
     data: new SlashCommandBuilder()
     .setName('host-training')
     .setDescription('Sends a training announcement to training announcements')
@@ -235,4 +234,12 @@ module.exports = {
         
     },
     opTeamOnly: true,
+
+    options: {
+        devOnly: false,
+        guildOnly: false,
+        userPermissions: [],
+        botPermissions: ['Administrator'],
+        deleted: false,
+    },
 }
