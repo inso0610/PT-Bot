@@ -73,5 +73,81 @@ module.exports = {
                 ephemeral: true
             })
         }
+
+        try {
+            let confirmation = await suggestionMessage.awaitMessageComponent({  });
+            
+            if (confirmation.customId === 'acceptSuggestion') {
+                if (!interaction.member.roles.cache.has('1133749323344125992')) {
+                    interaction.reply({
+                        content: 'You do not have access to this button.',
+                        ephemeral: true
+                    });
+                    return true;
+                }
+                    acceptedChannel.send({
+                        content: `Suggestion accepted by <@${interaction.user.id}>`,
+                        embeds: [suggestionEmbed]
+                    });
+
+                confirmation.reply('The suggestion was accepted!')
+
+                acceptButton = new ButtonBuilder()
+                    .setCustomId('acceptSuggestion')
+                    .setLabel('Accept')
+                    .setStyle(ButtonStyle.Success)
+                    .setDisabled(true);
+
+                declineButton = new ButtonBuilder()
+                    .setCustomId('declineSuggestion')
+                    .setLabel('Decline')
+                    .setStyle(ButtonStyle.Danger)
+                    .setDisabled(true);
+
+                suggestionRow = new ActionRowBuilder()
+                    .addComponents(acceptButton, declineButton);
+
+                suggestionMessage.edit({
+                    content: `✅ This suggestion was accepted!`,
+                    components: [suggestionRow]                    
+                })
+
+            } else if (confirmation.customId === 'declineSuggestion') {
+                if (!interaction.member.roles.cache.has('1133749323344125992')) {
+                    interaction.reply({
+                        content: 'You do not have access to this button.',
+                        ephemeral: true
+                    });
+                    return true;
+                }
+
+                confirmation.reply('The suggestion was declined.')
+
+                acceptButton = new ButtonBuilder()
+                    .setCustomId('acceptSuggestion')
+                    .setLabel('Accept')
+                    .setStyle(ButtonStyle.Success)
+                    .setDisabled(true);
+
+                declineButton = new ButtonBuilder()
+                    .setCustomId('declineSuggestion')
+                    .setLabel('Decline')
+                    .setStyle(ButtonStyle.Danger)
+                    .setDisabled(true);
+
+                suggestionRow = new ActionRowBuilder()
+                    .addComponents(acceptButton, declineButton);
+
+                suggestionMessage.edit({
+                    content: `❌ This suggestion was declined.`,
+                    components: [suggestionRow]                    
+                })
+
+            }
+        } catch (error) {
+            
+        }
+        
+
     }
 }
