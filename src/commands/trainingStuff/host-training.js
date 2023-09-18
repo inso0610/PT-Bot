@@ -40,7 +40,7 @@ module.exports = {
         const trainingType = interaction.options.getString('training-type');
         const avatarURL = "https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpeg"
         const trainingPing = '<@&1140220447535923200>'  // Training Ping
-        // const trainingPing = '<@935889950547771512>'  // Emilsen ping
+        //const trainingPing = '<@935889950547771512>'  // Emilsen ping
         let linkMessage
 
         const gameLink = new ButtonBuilder()

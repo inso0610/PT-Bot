@@ -85,7 +85,7 @@ module.exports = {
             
             if (confirmation.customId === 'acceptSuggestion') {
                 if (!interaction.member.roles.cache.has('1133749323344125992')) {
-                    interaction.reply({
+                    confirmation.reply({
                         content: 'You do not have access to this button.',
                         ephemeral: true
                     });
@@ -96,17 +96,17 @@ module.exports = {
                     embeds: [suggestionEmbed]
                 });
 
-                confirmation.reply('The suggestion was accepted!')
+                confirmation.reply('The suggestion was accepted and will now get sent to Directors for approval!')
 
                 suggestionMessage.edit({
-                    content: `✅ This suggestion was accepted!`,
+                    content: `✅ This suggestion was accepted! It will now get sent to Directors for approval!`,
                     // embeds: [suggestionEmbed],
                     components: [DisabledSuggestionRow]                    
                 })
 
             } else if (confirmation.customId === 'declineSuggestion') {
                 if (!interaction.member.roles.cache.has('1133749323344125992')) {
-                    interaction.reply({
+                    confirmation.reply({
                         content: 'You do not have access to this button.',
                         ephemeral: true
                     });
