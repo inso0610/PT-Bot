@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Client, IntentsBitField, ActivityType } = require('discord.js');
+const { Client, IntentsBitField } = require('discord.js');
 const mongoose = require('mongoose');
 //const {  CommandHandler } = require('djs-commander');
 const { CommandKit } = require('commandkit');
@@ -12,7 +12,6 @@ const client = new Client({
         IntentsBitField.Flags.GuildMessages,
         IntentsBitField.Flags.MessageContent,
     ],
-    
 });
 
 (async () => {
