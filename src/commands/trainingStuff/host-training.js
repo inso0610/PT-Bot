@@ -164,7 +164,7 @@ module.exports = {
             components: [gameRow]
         });
 
-        trainingAnnouncementMessage.react('1135893701403623594')
+        trainingAnnouncementMessage.react('<:PolarTracks:1135893701403623594>')
 
         interaction.reply({
             content: 'Message sent.',
