@@ -1,0 +1,28 @@
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
+
+module.exports = {
+    data: new SlashCommandBuilder()
+    .setName('start-vote')
+    .setDescription('Starts a vote.')
+    .addStringOption((option) => 
+        option
+            .setName('message-id')
+            .setDescription('What message should the bot start a vote on?')
+            .setRequired(true)),
+
+    run: async ({ interaction, client, handler }) => {
+        voteMessage = interaction.options.getString('message-id');
+
+        interaction.channel.message.fetch(voteMessage).then(m => {
+            m.react('✅').then(m.react('❌'));
+        });
+    },
+
+    options: {
+        devOnly: false,
+        guildOnly: false,
+        userPermissions: [],
+        botPermissions: ['Administrator'],
+        deleted: true,
+    },
+};
