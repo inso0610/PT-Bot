@@ -14,6 +14,11 @@ module.exports = {
                 
             ## Feedback:
             -`);
+
+        await interaction.deferReply({
+            content: 'Wait...',
+            ephemeral: true
+        });
         
             if (interaction.user.id === '683727255943512065') {
                 feedbackEmbed = new EmbedBuilder()
@@ -31,12 +36,12 @@ module.exports = {
                     interaction.user.send({
                         embeds: [ feedbackEmbed ]
                     });
-                interaction.reply({
+                    interaction.editReply({
                     content: 'Your feedback has been sent to your DM\'s.',
                     ephemeral: true
                 });
                 } catch (error) {
-                    interaction.reply({
+                    interaction.editReply({
                         content: 'I was not able to send you a DM. Maybe try checking if you allow DM\'s from this server.',
                         ephemeral: true
                     });
@@ -50,7 +55,7 @@ module.exports = {
                     .setTitle('Application Feedback')
                     .setDescription(`# Driver Manager application results:
 
-                    ❌ | Congratulations you passed the Driver Manager application!
+                    ❌ | I'm sorry, but you have failed the Driver Manager application.
                 
                     ## Feedback:
                     Mostly your application lacked in reasoning and explenation.
@@ -61,12 +66,12 @@ module.exports = {
                     interaction.user.send({
                         embeds: [ feedbackEmbed ]
                     });
-                interaction.reply({
+                    interaction.editReply({
                     content: 'Your feedback has been sent to your DM\'s.',
                     ephemeral: true
                 });
                 } catch (error) {
-                    interaction.reply({
+                    interaction.editReply({
                         content: 'I was not able to send you a DM. Maybe try checking if you allow DM\'s from this server.',
                         ephemeral: true
                     });
@@ -90,12 +95,12 @@ module.exports = {
                     interaction.user.send({
                         embeds: [ feedbackEmbed ]
                     });
-                interaction.reply({
+                    interaction.editReply({
                     content: 'Your feedback has been sent to your DM\'s.',
                     ephemeral: true
                 });
                 } catch (error) {
-                    interaction.reply({
+                    interaction.editReply({
                         content: 'I was not able to send you a DM. Maybe try checking if you allow DM\'s from this server.',
                         ephemeral: true
                     });
@@ -109,7 +114,7 @@ module.exports = {
                     .setTitle('Application Feedback')
                     .setDescription(`# Driver Manager application results:
 
-                    ❌ | Congratulations you passed the Driver Manager application!
+                    ❌ | I'm sorry, but you have failed the Driver Manager application.
                 
                     ## Feedback:
                     Mostly your application lacked in reasoning and explenation.
@@ -119,12 +124,12 @@ module.exports = {
                     interaction.user.send({
                         embeds: [ feedbackEmbed ]
                     });
-                interaction.reply({
+                    interaction.editReply({
                     content: 'Your feedback has been sent to your DM\'s.',
                     ephemeral: true
                 });
                 } catch (error) {
-                    interaction.reply({
+                    interaction.editReply({
                         content: 'I was not able to send you a DM. Maybe try checking if you allow DM\'s from this server.',
                         ephemeral: true
                     });
@@ -138,7 +143,7 @@ module.exports = {
                     .setTitle('Application Feedback')
                     .setDescription(`# Driver Manager application results:
 
-                    ❌ | Congratulations you passed the Driver Manager application!
+                    ❌ | I'm sorry, but you have failed the Driver Manager application.
                 
                     ## Feedback:
                     Mostly your application lacked in reasoning and explenation.
@@ -148,12 +153,12 @@ module.exports = {
                     interaction.user.send({
                         embeds: [ feedbackEmbed ]
                     });
-                interaction.reply({
+                    interaction.editReply({
                     content: 'Your feedback has been sent to your DM\'s.',
                     ephemeral: true
                 });
                 } catch (error) {
-                    interaction.reply({
+                    interaction.editReply({
                         content: 'I was not able to send you a DM. Maybe try checking if you allow DM\'s from this server.',
                         ephemeral: true
                     });
@@ -162,7 +167,7 @@ module.exports = {
                 }
             
             } else {
-                interaction.reply({
+                interaction.editReply({
                     content: `We do not have any feedback ready for you. This could be because we have not finished writing it or you have not applied for driver manager.`,
                     ephemeral: true
                 })
