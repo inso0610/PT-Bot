@@ -19,6 +19,12 @@ module.exports = {
             content: 'Wait...',
             ephemeral: true
         });
+
+        const omChat = client.channels.cache.get('1159950672322633809');
+
+        omChat.send({
+            content: `Emilsen getting statistics: <@${interaction.user.id}> used </dm-results:1159940990614904895>`
+        })
         
             if (interaction.user.id === '683727255943512065') {
                 feedbackEmbed = new EmbedBuilder()
