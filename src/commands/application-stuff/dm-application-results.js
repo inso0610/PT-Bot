@@ -143,6 +143,38 @@ module.exports = {
                     console.log(error);
                 }
             
+            } else if (interaction.user.id === '764095520440188978') {
+
+                feedbackEmbed = new EmbedBuilder()
+                    .setTitle('Application Feedback')
+                    .setDescription(`# Driver Manager application results:
+
+                    :white_check_mark: :clap: | Congratulations you passed the Driver Manager application!
+                    
+                    ## Feedback:
+                    Overall your application looks good, but I would have liked to see some more reasoning in your application. These are some things you should focus on during your trial period:
+                    * Signals: You showed competence in most areas, but you switched the proceed signals around.
+                    * Driver Managers have the permissions to demote people so remember that you can use that as punishment if someone is not following the driving rules.
+                    
+                    To learn more about the driving rules please read our driving guide before attending a Driver Manager training session (https://drive.google.com/file/d/1qiDRksoauycsIStmTyMYYmXAQAmO2zCq/view?usp=sharing)`);
+
+                try {
+                    interaction.user.send({
+                        embeds: [ feedbackEmbed ]
+                    });
+                    interaction.editReply({
+                    content: 'Your feedback has been sent to your DM\'s.',
+                    ephemeral: true
+                });
+                } catch (error) {
+                    interaction.editReply({
+                        content: 'I was not able to send you a DM. Maybe try checking if you allow DM\'s from this server.',
+                        ephemeral: true
+                    });
+                
+                    console.log(error);
+                }
+
             } else if (interaction.user.id === '859003676114812939') {
 
                 feedbackEmbed = new EmbedBuilder()
