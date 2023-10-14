@@ -65,6 +65,6 @@ module.exports = {
         guildOnly: false,
         userPermissions: [],
         botPermissions: ['Administrator'],
-        deleted: false,
+        deleted: true,
     },
 };
