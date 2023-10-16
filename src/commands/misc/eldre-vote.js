@@ -2,65 +2,69 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('suggest')
-    .setDescription('Sends a suggestion')
+    .setName('eldre-vote')
+    .setDescription('Sends a vote')
     .addStringOption((option) => 
         option
-            .setName('suggestion')
-            .setDescription('What is the suggestions?')
+            .setName('vote')
+            .setDescription('What is the vote?')
             .setRequired(true))
     .addStringOption((option) => 
         option
-            .setName('suggestion-title')
-            .setDescription('What is the suggestion title?')
+            .setName('vote-title')
+            .setDescription('What is the vote title?')
             .setRequired(true)),
 
 
     run: async ({ interaction, client }) => {
         try {
-            const suggestion = interaction.options.getString('suggestion');
-            const suggestionTitle = interaction.options.getString('suggestion-title');
-            const suggestionChannel = client.channels.cache.get('1152944134747865119');
+            const vote = interaction.options.getString('vote');
+            const voteTitle = interaction.options.getString('vote-title');
+            const voteChannel = client.channels.cache.get('1149845361914040412');
             const avatarURL = "https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpeg"
             
-            const suggestionEmbed = new EmbedBuilder()
+            const voteEmbed = new EmbedBuilder()
                 .setAuthor({
                     name: interaction.user.tag, 
                     iconURL: avatarURL, 
                     //url: 'https://discord.js.org'
                 })
-                .setTitle(suggestionTitle)
-                .setDescription(suggestion)
+                .setTitle(voteTitle)
+                .setDescription(vote)
 
-            const suggestionMessage = await suggestionChannel.send({embeds: [suggestionEmbed]});
+            const voteMessage = await voteChannel.send({
+                content: '<@&1150903460565369012>',
+                embeds: [voteEmbed]
+            });
 
-            suggestionMessage.react('👍').then(() => suggestionMessage.react('👎'))
+            voteMessage.react('✅').then(() => voteMessage.react('❌'))
 
-            const thread = await suggestionMessage.startThread({
-                name: suggestionTitle,
+            const thread = await voteMessage.startThread({
+                name: voteTitle,
                 autoArchiveDuration: 60,
-                reason: 'Suggestion Thread.',
+                reason: 'Vote Thread.',
             });            
 
             interaction.reply({
-                content: ('There! Check <#1152944134747865119>'),
+                content: ('There! Check <#1149845361914040412>'),
                 ephemeral: true
             });
 
         } catch (error) {
-            console.log(`Error with suggestion command! ${error}`)
+            console.log(`Error with vote command! ${error}`)
             interaction.reply({
                 content: 'Command failure. Try again.',
                 ephemeral: true
             })
         }
     },
+    eldreOnly: true,
 
     options: {
         devOnly: false,
         guildOnly: false,
         userPermissions: [],
         botPermissions: ['Administrator'],
-        deleted: false,
+        deleted: true,
     },
 };

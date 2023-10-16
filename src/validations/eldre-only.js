@@ -1,6 +1,6 @@
 module.exports = ({ interaction, commandObj }) => {
-    if (commandObj.opTeamOnly) {
-        if (!interaction.member.roles.cache.has('1133749323344125992')) {
+    if (commandObj.eldreOnly) {
+        if (!interaction.member.roles.cache.has('1150903460565369012')) {
             interaction.reply({
                 content: 'You do not have access to this command.',
                 ephemeral: true

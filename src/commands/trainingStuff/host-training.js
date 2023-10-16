@@ -1,7 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js')
 
 module.exports = {
-    deleted: false,
     data: new SlashCommandBuilder()
     .setName('host-training')
     .setDescription('Sends a training announcement to training announcements')
@@ -41,7 +40,7 @@ module.exports = {
         const trainingType = interaction.options.getString('training-type');
         const avatarURL = "https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpeg"
         const trainingPing = '<@&1140220447535923200>'  // Training Ping
-        // const trainingPing = '<@935889950547771512>'  // Emilsen ping
+        //const trainingPing = '<@935889950547771512>'  // Emilsen ping
         let linkMessage
 
         const gameLink = new ButtonBuilder()
@@ -165,7 +164,7 @@ module.exports = {
             components: [gameRow]
         });
 
-        trainingAnnouncementMessage.react('1135893701403623594')
+        trainingAnnouncementMessage.react('<:PolarTracks:1135893701403623594>')
 
         interaction.reply({
             content: 'Message sent.',
@@ -235,4 +234,12 @@ module.exports = {
         
     },
     opTeamOnly: true,
-}
+
+    options: {
+        devOnly: false,
+        guildOnly: false,
+        userPermissions: [],
+        botPermissions: ['Administrator'],
+        deleted: true,
+    },
+};
