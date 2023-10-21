@@ -29,9 +29,9 @@ new CommandKit({
     commandsPath: path.join(__dirname, 'commands'),
     eventsPath: path.join(__dirname, 'events'),
     validationsPath: path.join(__dirname, 'validations'),
-    devGuildIds: ['1051780690447962122'],
-    devUserIds: ['935889952'],
-    devRoleIds: ['DEV_ROLE_ID_1', 'DEV_ROLE_ID_2'],
+    devGuildIds: [''],
+    devUserIds: ['935889950547771512'],
+    devRoleIds: [''],
     skipBuiltInValidations: true,
 });
 
