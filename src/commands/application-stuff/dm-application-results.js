@@ -214,7 +214,8 @@ module.exports = {
 
     options: {
         devOnly: false,
-        userPermissions: [''],
+        guildOnly: false,
+        userPermissions: [],
         botPermissions: ['Administrator'],
         deleted: false,
     },

@@ -21,7 +21,7 @@ module.exports = {
             const vote = interaction.options.getString('vote');
             const voteTitle = interaction.options.getString('vote-title');
             const voteChannel = client.channels.cache.get('1149845361914040412');
-            const avatarURL = "https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpeg";
+            const avatarURL = "https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpeg"
             
             const voteEmbed = new EmbedBuilder()
                 .setAuthor({
@@ -62,6 +62,7 @@ module.exports = {
 
     options: {
         devOnly: false,
+        guildOnly: false,
         userPermissions: [],
         botPermissions: ['Administrator'],
         deleted: true,
