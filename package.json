@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "commandkit": "^0.1.1",
+    "commandkit": "^0.1.6",
     "discord.js": "^14.8.0",
     "dotenv": "^16.0.3",
     "mongoose": "^7.5.2"

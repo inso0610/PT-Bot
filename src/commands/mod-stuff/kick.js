@@ -15,7 +15,7 @@ module.exports = {
             .setDescription('What is the reason for kicking the user?')
             .setRequired(true)),
 
-    run: async ({ interaction, client }) => {
+    run: ({ interaction, client }) => {
         const kickUser = interaction.options.getUser('user');
         const kickUserId = kickUser.id;
         const reason = interaction.options.getString('reason');
@@ -25,8 +25,8 @@ module.exports = {
 
     options: {
         devOnly: false,
-        userPermissions: ['Administrator', 'ManageMessages'],
+        userPermissions: ['Administrator'],
         botPermissions: ['Administrator'],
-        deleted: false,
+        deleted: true,
     },
 }
