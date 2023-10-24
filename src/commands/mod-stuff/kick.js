@@ -15,7 +15,7 @@ module.exports = {
             .setDescription('What is the reason for kicking the user?')
             .setRequired(true)),
 
-    run: ({ interaction, client }) => {
+    run: ({ interaction, client, handler }) => {
         const kickUser = interaction.options.getUser('user');
         const kickUserId = kickUser.id;
         const reason = interaction.options.getString('reason');

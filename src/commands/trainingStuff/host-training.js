@@ -31,7 +31,7 @@ module.exports = {
                 { name: 'Signaller', value: 'Signaller' }
             )),
 
-    run: async ({ interaction, client }) => {
+    run: async ({ interaction, client, handler }) => {
         const dashboardChannel = client.channels.cache.get('1152682843428900874');
         const trainingChannel = client.channels.cache.get('1140281500496035940');
         const serverLink = interaction.options.getString('server-link');

@@ -33,6 +33,7 @@ new CommandKit({
     devUserIds: ['935889950547771512'],
     devRoleIds: ['DEV_ROLE_ID_1', 'DEV_ROLE_ID_2'],
     skipBuiltInValidations: true,
+    bulkRegister: true,
 });
 
 client.login(process.env.TOKEN);

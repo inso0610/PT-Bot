@@ -16,7 +16,7 @@ module.exports = {
             .setRequired(true)),
 
 
-    run: async ({ interaction, client }) => {
+    run: async ({ interaction, client, handler }) => {
         try {
             const suggestion = interaction.options.getString('suggestion');
             const suggestionTitle = interaction.options.getString('suggestion-title');
