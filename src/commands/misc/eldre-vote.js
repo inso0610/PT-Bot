@@ -16,7 +16,7 @@ module.exports = {
             .setRequired(true)),
 
 
-    run: async ({ interaction, client }) => {
+    run: async ({ interaction, client, handler }) => {
         try {
             const vote = interaction.options.getString('vote');
             const voteTitle = interaction.options.getString('vote-title');
