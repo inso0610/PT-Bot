@@ -3,14 +3,14 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('dm-results')
-    .setDescription('Sends a DM with Driver Manager application results.'),
+    .setDescription('Sends a DM with Signaller Manager application results.'),
 
     run: async ({ interaction, client, handler }) => {
         let feedbackEmbed = new EmbedBuilder()
             .setTitle('Application Feedback')
-            .setDescription(`# Driver Manager application results:
+            .setDescription(`# Signaller Manager application results:
 
-            ✅ 👏 | Congratulations you passed the Driver Manager application!
+            ✅ 👏 | Congratulations you passed the Signaller Manager application!
                 
             ## Feedback:
             -`);
