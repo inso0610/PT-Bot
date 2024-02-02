@@ -18,7 +18,8 @@ var require_help = __commonJS({
           const helpEmbed = new EmbedBuilder().setTitle("Commands:").addFields(
             { name: "/help:", value: "Sends a list of all commmands and their function." },
             { name: "/ping:", value: "Gives you the bot's ping." },
-            { name: "/suggest:", value: "Sends a suggestion." }
+            { name: "/suggest:", value: "Sends a suggestion." },
+            { name: "/rps:", value: "Play rock paper scissors against <@339379137947107328>" }
           );
           interaction.reply({
             embeds: [helpEmbed],

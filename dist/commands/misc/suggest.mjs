@@ -15,7 +15,7 @@ var require_suggest = __commonJS({
       run: async ({ interaction, client, handler }) => {
         try {
           const suggestion = interaction.options.getString("suggestion");
-          const suggestionTitle = interaction.options.getString("suggestion-title");
+          let suggestionTitle = interaction.options.getString("suggestion-title");
           const suggestionChannel = client.channels.cache.get("1152944134747865119");
           const avatarURL = "https://cdn.discordapp.com/avatars/" + interaction.user.id + "/" + interaction.user.avatar + ".jpeg";
           const suggestionEmbed = new EmbedBuilder().setAuthor({
@@ -25,6 +25,9 @@ var require_suggest = __commonJS({
           }).setTitle(suggestionTitle).setDescription(suggestion);
           const suggestionMessage = await suggestionChannel.send({ embeds: [suggestionEmbed] });
           suggestionMessage.react("\u{1F44D}").then(() => suggestionMessage.react("\u{1F44E}"));
+          if (suggestionTitle.length >= 60) {
+            suggestionTitle = "Suggestion name too long to be used in thread";
+          }
           const thread = await suggestionMessage.startThread({
             name: suggestionTitle,
             autoArchiveDuration: 60,
