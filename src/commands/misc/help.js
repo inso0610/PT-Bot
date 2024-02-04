@@ -19,7 +19,8 @@ module.exports = {
                     { name: '/help:', value: 'Sends a list of all commmands and their function.' },
                     { name: '/ping:', value: 'Gives you the bot\'s ping.' },
                     { name: '/suggest:', value: 'Sends a suggestion.' },
-                    { name: '/rps:', value: 'Play rock paper scissors against <@339379137947107328>' }
+                    { name: '/rps:', value: 'Play rock paper scissors against <@339379137947107328>' },
+                    { name: '/update', value: 'Synchronises your Roblox Account with your Discord account.' }
                 )
             
             interaction.reply({
