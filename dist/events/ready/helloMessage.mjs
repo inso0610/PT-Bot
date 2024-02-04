@@ -9,9 +9,19 @@ var require_helloMessage = __commonJS({
   "src/events/ready/helloMessage.js"(exports, module) {
     init_esm_shims();
     module.exports = (client) => {
-      const englishChat = client.channels.cache.get("1101035696334057483");
-      const date = /* @__PURE__ */ new Date();
-      englishChat.send(`**Hello!\u{1F44B}** *PT Assistance went online ${date}*`);
+      const randomChat = client.channels.cache.get("1189740423741190226");
+      const d = /* @__PURE__ */ new Date();
+      const year = d.getFullYear();
+      const month = d.getMonth();
+      const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const monthName = months[month];
+      const date = d.getDate();
+      const day = d.getDay();
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const dayName = days[day];
+      const hour = d.getHours();
+      const minute = d.getMinutes();
+      randomChat.send(`**Hello!\u{1F44B}** *PT Assistance went online ${dayName} ${date} ${monthName} ${year} ${hour}:${minute}*`);
     };
   }
 });
