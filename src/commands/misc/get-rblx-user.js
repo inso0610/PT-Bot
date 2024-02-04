@@ -67,7 +67,7 @@ module.exports = {
                     });
                 } catch (error) {
                     interaction.editReply({
-                        content: 'Command failed.',
+                        content: 'Command failed, you may not be verified with Bloxlink. Use /verify to verify.',
                         ephemeral: true
                     });
                     console.log(error);
