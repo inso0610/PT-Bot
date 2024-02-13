@@ -16,22 +16,9 @@ var __commonJS = (cb, mod) => function __require2() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
 
-// node_modules/tsup/assets/esm_shims.js
-import { fileURLToPath } from "url";
-import path from "path";
-var getFilename, getDirname, __dirname;
-var init_esm_shims = __esm({
-  "node_modules/tsup/assets/esm_shims.js"() {
-    getFilename = /* @__PURE__ */ __name(() => fileURLToPath(import.meta.url), "getFilename");
-    getDirname = /* @__PURE__ */ __name(() => path.dirname(getFilename()), "getDirname");
-    __dirname = /* @__PURE__ */ getDirname();
-  }
-});
-
 export {
   __name,
   __require,
-  __commonJS,
-  __dirname,
-  init_esm_shims
+  __esm,
+  __commonJS
 };
