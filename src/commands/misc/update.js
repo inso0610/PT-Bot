@@ -64,7 +64,7 @@ module.exports = {
 
                     interaction.editReply({
                         embeds: [updateEmbed],
-                        ephemeral: true
+                        ephemeral: false
                     });
                 
                 } catch (error) {
