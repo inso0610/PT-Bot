@@ -63,8 +63,10 @@ module.exports = {
                     );
 
                     interaction.editReply({
-                        embeds: [updateEmbed]
+                        embeds: [updateEmbed],
+                        ephemeral: true
                     });
+                
                 } catch (error) {
                     interaction.editReply({
                         content: 'Command failed, you may not be verified with Bloxlink. Use /verify to verify.',
