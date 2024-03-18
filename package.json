@@ -1,5 +1,5 @@
 {
-  "name": "mcbane-bot",
+  "name": "pt-assistance",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
@@ -10,10 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "commandkit": "^0.1.1",
+    "commandkit": "^0.1.6",
     "discord.js": "^14.8.0",
     "dotenv": "^16.0.3",
     "mongoose": "^7.5.2"
   },
-  "nodeVersion": "16.17.0"
+  "nodeVersion": "20.6.1"
 }

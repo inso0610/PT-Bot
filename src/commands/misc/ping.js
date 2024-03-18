@@ -5,7 +5,7 @@ module.exports = {
     .setName('ping')
     .setDescription('Pong! Gives you the bot\'s ping'),
 
-    run: async ({ interaction, client }) => {
+    run: async ({ interaction, client, handler }) => {
         await interaction.deferReply({
             content: 'Wait...',
             ephemeral: true
