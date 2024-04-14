@@ -25,7 +25,7 @@ module.exports = {
 
     options: {
         devOnly: false,
-        userPermissions: ['Administrator'],
+        userPermissions: [],
         botPermissions: ['Administrator'],
         deleted: true,
     },

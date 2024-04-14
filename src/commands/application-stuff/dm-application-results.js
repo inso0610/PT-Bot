@@ -8,17 +8,29 @@ module.exports = {
     run: async ({ interaction, client, handler }) => {
 
         const feedback = {
-            533678124823478278:`# Driver Manager application results:
-            ✅ 👏 | Congratulations you passed the Driver Manager application!
-                            
-            ## Feedback:
-            Gratulerer! Din søknad var utfyllende og det vi lette etter! Dessverre har du kun mulighet til å kun være en type manager. Derfor må du velge mellom PM eller DM, for å ikke skape kaos og ikke for mye jobb slik at det blir tull i systemet. Når du har valgt hvilke manager du ønsker å bli kan du sende melding til våres OM O_Tidemann eller OD Caiber06!`,
-
-            1041709666167685140:`# Driver Manager application results:
+            '702567973029937202':`# Driver Manager application results:
             ❌ | I'm sorry, but you have failed the Driver Manager application.
                             
             ## Feedback:
-            You wrote a bit briefly, but in terms of knowledge about driving, you covered everything except for what a driver should do when approaching a signal that looks like this. Both signals apply here (Shunt signal and main signal). In this case, I would indicate that there is a signal error and contact the train conductor. Regarding the scenarios, you addressed them appropriately. However, in the scenario where a driver went AFK on the track, you didn't specify that you would contact the signaller and confront the driver. It's important to clarify that when mentioning contacting the driver, it should be after initially contacting the signaller.`
+            Your answers were short and we would have liked to see longer answers. In the question about the signal with one green light your answer was wrong and it should have been that they have to proceed at a slower speed.`,
+
+            '1041709666167685140':`# Driver Manager application results:
+            ❌ | I'm sorry, but you have failed the Driver Manager application.
+                            
+            ## Feedback:
+            Your answers were short and we would have liked to see longer answers.`,
+
+            '710893501969203213':`# Driver Manager application results:
+            ❌ | I'm sorry, but you have failed the Driver Manager application.
+                            
+            ## Feedback:
+            Your answers were good and your experience as the previous OD really helped, but other applicants were more fit for the position.`,
+            
+            '859061925140365322':`# Driver Manager application results:
+            ✅ 👏 | Congratulations you passed the Driver Manager application!
+                            
+            ## Feedback:
+            Your answers were good and your experience really helped.`
         };
 
         const omChat = client.channels.cache.get('1159950672322633809');
@@ -30,7 +42,7 @@ module.exports = {
         try {
             const feedbackEmbed = new EmbedBuilder()
                 .setTitle('Application Feedback')
-                .setDescription(feedback[interaction.user.id*1]);
+                .setDescription(feedback[interaction.user.id]);
 
                 const message = await interaction.user.send({
                     embeds: [feedbackEmbed]

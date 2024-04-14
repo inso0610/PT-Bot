@@ -63,7 +63,7 @@ module.exports = {
     options: {
         devOnly: false,
         guildOnly: false,
-        userPermissions: ['Administrator'],
+        userPermissions: [],
         botPermissions: ['Administrator'],
         deleted: false,
     },

@@ -55,14 +55,14 @@ module.exports = {
                     console.log(error);
 
                     const updateEmbed = new EmbedBuilder()
-                    .setTitle(`Updated ${interaction.user.tag}!`)
-                    .setDescription(`Succesfully updated you to ${robloxID}!`)
-                    .addFields(
-                        { name: 'Added Roles:', value: addedRoles },
-                        { name: 'Removed Roles:', value: removedRoles },
-                        { name: 'Nickname:', value: nickname },
-                        { name: 'Error:', value: error }
-                    );
+                        .setTitle(`Updated ${interaction.user.tag}!`)
+                        .setDescription(`Succesfully updated you to ${robloxID}!`)
+                        .addFields(
+                            { name: 'Added Roles:', value: addedRoles },
+                            { name: 'Removed Roles:', value: removedRoles },
+                            { name: 'Nickname:', value: nickname },
+                            { name: 'Error:', value: error }
+                        );
 
                     interaction.editReply({
                         embeds: [updateEmbed],
@@ -84,7 +84,7 @@ module.exports = {
     options: {
         devOnly: false,
         guildOnly: false,
-        userPermissions: ['Administrator'],
+        userPermissions: [],
         botPermissions: ['Administrator'],
         deleted: false,
     },
