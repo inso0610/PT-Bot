@@ -7,30 +7,47 @@ module.exports = {
 
     run: async ({ interaction, client, handler }) => {
 
+        /*
+        Templates:
+        Pass: 
+        `# (Type) Manager application results:
+        ✅ 👏 | Congratulations you passed the (Type) Manager application!
+                            
+        ## Feedback:
+        -`
+
+        Fail:
+        `# (Type) Manager application results:
+        ❌ | I'm sorry, but you have failed the (Type) Manager application.
+                            
+        ## Feedback:
+        -`
+        */
+
         const feedback = {
-            '702567973029937202':`# Driver Manager application results:
-            ❌ | I'm sorry, but you have failed the Driver Manager application.
+            '797752888347852850':`# Signaller Manager application results:
+            ✅ 👏 | Congratulations you passed the Signaller Manager application!
                             
             ## Feedback:
-            Your answers were short and we would have liked to see longer answers. In the question about the signal with one green light your answer was wrong and it should have been that they have to proceed at a slower speed.`,
+            You answers were all short and did not explain to us why we should pick you. Even though Caiber wanted you to apply answering "Because cabier wants me" is not good enough. Your signalling knowledge is good and you passed that part however your answers in the general questions part were not good enough.`,
 
-            '1041709666167685140':`# Driver Manager application results:
-            ❌ | I'm sorry, but you have failed the Driver Manager application.
+            '796031038203494420':`# Signaller Manager application results:
+            ❌ | I'm sorry, but you have failed the Signaller Manager application.
                             
             ## Feedback:
-            Your answers were short and we would have liked to see longer answers.`,
+            Your answers were short in the general questions part. You knew most of the signalling theory, but yellow means that the signal is set to diverging not that the switches are getting set like you wrote.`,
 
-            '710893501969203213':`# Driver Manager application results:
-            ❌ | I'm sorry, but you have failed the Driver Manager application.
+            '1102514225181630476':`# Signaller Manager application results:
+            ❌ | I'm sorry, but you have failed the Signaller Manager application.
                             
             ## Feedback:
-            Your answers were good and your experience as the previous OD really helped, but other applicants were more fit for the position.`,
+            Your answers in the general questions part were good and you knew the signalling theory. However there were better candidates. If you apply when the next application open's you will probably pass.`,
             
-            '859061925140365322':`# Driver Manager application results:
-            ✅ 👏 | Congratulations you passed the Driver Manager application!
+            '1004003667940225105':`# Signaller Manager application results:
+            ✅ 👏 | Congratulations you passed the Signaller Manager application!
                             
             ## Feedback:
-            Your answers were good and your experience really helped.`
+            Your answers in the general questions part were good and your signalling theory answers were really good.`
         };
 
         const omChat = client.channels.cache.get('1159950672322633809');
