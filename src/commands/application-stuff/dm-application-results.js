@@ -78,60 +78,6 @@ module.exports = {
             });
             return
         };
-
-        /*let feedbackEmbed = new EmbedBuilder()
-            .setTitle('Application Feedback')
-            .setDescription(`# Driver Manager application results:
-
-            ✅ 👏 | Congratulations you passed the Driver Manager application!
-                
-            ## Feedback:
-            -`);
-
-        await interaction.deferReply({
-            content: 'Wait...',
-            ephemeral: true
-        });
-
-        const omChat = client.channels.cache.get('1159950672322633809');
-
-        omChat.send({
-            content: `Emilsen getting statistics: <@${interaction.user.id}> used </dm-results:1159940990614904895>`
-        })
-        
-        if (interaction.user.id === '') {
-            feedbackEmbed = new EmbedBuilder()
-                .setTitle('Application Feedback')
-                .setDescription(`# Signaller Manager application results:
-
-                ❌ | I'm sorry, but you have failed the Signaller Manager application.
-                
-                ## Feedback:
-                -`);
-
-            try {
-                interaction.user.send({
-                    embeds: [ feedbackEmbed ]
-                });
-                interaction.editReply({
-                content: 'Your feedback has been sent to your DM\'s.',
-                ephemeral: true
-            });
-            } catch (error) {
-                interaction.editReply({
-                    content: 'I was not able to send you a DM. Maybe try checking if you allow DM\'s from this server.',
-                    ephemeral: true
-                });
-                
-                console.log(error);
-            }
-
-        } else {
-            interaction.editReply({
-                content: `We do not have any feedback ready for you. This could be because we have not finished writing it or you have not applied for signaller manager.`,
-                ephemeral: true
-            })
-        }*/
     },
 
     options: {
