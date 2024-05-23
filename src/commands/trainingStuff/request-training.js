@@ -125,7 +125,7 @@ module.exports = {
             interaction.reply({
                 content: 'Request failed. You are not in the group or you are fully train.',
                 ephemeral: true
-            })
+            });
         };
     },
     trainingReqBlacklist: true,
