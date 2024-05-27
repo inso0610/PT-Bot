@@ -1,12 +1,16 @@
 module.exports = async (message) => {
     if (message.author.bot) {
         return;
-    }
+    };
 
-    const text = message.content
+    if (!message.author.id === '935889950547771512') {
+        return;
+    };
+
+    const text = message.content;
     const result = text.toLowerCase();
     
     if (!result.slice(-1) === '.') {
-        message.reply('Remember period at the end of a sentence')
-    }
+        message.reply('Remember period at the end of a sentence');
+    };
 };
