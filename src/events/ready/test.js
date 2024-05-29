@@ -43,9 +43,19 @@ module.exports = async (client) => {
 
     let d = new Date();
 
-    let hour = d.getUTCHours();
+    let hour = d.getUTCHours().toString();
 
-    let minute = d.getUTCMinutes();
+    if (hour.length == 1) {
+        const old = hour;
+        hour = `0${old}`
+    };
+
+    let minute = d.getUTCMinutes().toString();
+
+    if (minute.length == 1) {
+        const old = minute;
+        minute = `0${old}`
+    };
 
     //Driver Trainings
     let driverTrainings = await trainings.find({ 
@@ -182,9 +192,19 @@ module.exports = async (client) => {
 
         d = new Date();
 
-        hour = d.getUTCHours();
+        hour = d.getUTCHours().toString();
 
-        minute = d.getUTCMinutes();
+        if (hour.length == 1) {
+            const old = hour;
+            hour = `0${old}`
+        };
+
+        minute = d.getUTCMinutes().toString();
+
+        if (minute.length == 1) {
+        const old = minute;
+        minute = `0${old}`
+        };
         //Driver Trainings
 
         driverTrainings = await trainings.find({ 
