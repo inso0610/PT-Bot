@@ -41,7 +41,7 @@ module.exports = async (client) => {
 
     const trainingChannel = client.channels.cache.get('1218883814491820134');
 
-    let d = new Date()
+    let d = new Date('Z')
 
     let hour = d.getHours()
 
@@ -180,7 +180,7 @@ module.exports = async (client) => {
     while (true) {
         await sleep(300000); 
 
-        d = new Date()
+        d = new Date('Z')
 
         hour = d.getHours()
 
