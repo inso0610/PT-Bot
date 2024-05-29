@@ -41,11 +41,11 @@ module.exports = async (client) => {
 
     const trainingChannel = client.channels.cache.get('1218883814491820134');
 
-    let d = new Date(Date.UTC);
+    let d = new Date();
 
-    let hour = d.getHours();
+    let hour = d.getUTCHours();
 
-    let minute = d.getMinutes();
+    let minute = d.getUTCMinutes();
 
     //Driver Trainings
     let driverTrainings = await trainings.find({ 
@@ -180,11 +180,11 @@ module.exports = async (client) => {
     while (true) {
         await sleep(300000); 
 
-        d = new Date(Date.UTC);
+        d = new Date();
 
-        hour = d.getHours();
+        hour = d.getUTCHours();
 
-        minute = d.getMinutes();
+        minute = d.getUTCMinutes();
         //Driver Trainings
 
         driverTrainings = await trainings.find({ 
