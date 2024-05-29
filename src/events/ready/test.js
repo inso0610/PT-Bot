@@ -41,18 +41,18 @@ module.exports = async (client) => {
 
     const trainingChannel = client.channels.cache.get('1218883814491820134');
 
-    let d = new Date('Z')
+    let d = new Date.UTC();
 
-    let hour = d.getHours()
+    let hour = d.getHours();
 
-    let minute = d.getMinutes()
+    let minute = d.getMinutes();
 
     //Driver Trainings
     let driverTrainings = await trainings.find({ 
         trainingType: 'Driver'
     });
 
-    let driverTimes = []
+    let driverTimes = [];
     
     for (const [key, value] of Object.entries(driverTrainings)) {
         driverTimes.push(value.timestamp);
@@ -79,7 +79,7 @@ module.exports = async (client) => {
         trainingType: 'Conductor'
     });
 
-    let conductorTimes = []
+    let conductorTimes = [];
     
     for (const [key, value] of Object.entries(conductorTrainings)) {
         conductorTimes.push(value.timestamp);
@@ -106,7 +106,7 @@ module.exports = async (client) => {
         trainingType: 'Dispatcher'
     });
     
-    let dispatcherTimes = []
+    let dispatcherTimes = [];
 
     for (const [key, value] of Object.entries(dispatcherTrainings)) {
         dispatcherTimes.push(value.timestamp);
@@ -141,7 +141,7 @@ module.exports = async (client) => {
 
     let nextSignallerTrainingData = nearestDate(signallerTimes);
     let nextSignallerTrainingIndex = nextSignallerTrainingData[0];
-    let scheduledSignallerTrainings = nextSignallerTrainingData[1]
+    let scheduledSignallerTrainings = nextSignallerTrainingData[1];
     
     let nextSignallerTraining = {};
     let nextSignallerTrainingText = 'No Signaller training\'s scheduled.';
@@ -172,7 +172,7 @@ module.exports = async (client) => {
     });
 
 
-    messageEmbed = null
+    messageEmbed = null;
 
 
     // Message Updater
@@ -180,18 +180,18 @@ module.exports = async (client) => {
     while (true) {
         await sleep(300000); 
 
-        d = new Date('Z')
+        d = new Date.UTC();
 
-        hour = d.getHours()
+        hour = d.getHours();
 
-        minute = d.getMinutes()
+        minute = d.getMinutes();
         //Driver Trainings
 
         driverTrainings = await trainings.find({ 
             trainingType: 'Driver'
         });
 
-        driverTimes = []
+        driverTimes = [];
         
         for (const [key, value] of Object.entries(driverTrainings)) {
             driverTimes.push(value.timestamp);
@@ -218,7 +218,7 @@ module.exports = async (client) => {
             trainingType: 'Conductor'
         });
 
-        conductorTimes = []
+        conductorTimes = [];
         
         for (const [key, value] of Object.entries(conductorTrainings)) {
             conductorTimes.push(value.timestamp);
@@ -245,7 +245,7 @@ module.exports = async (client) => {
             trainingType: 'Dispatcher'
         });
         
-        dispatcherTimes = []
+        dispatcherTimes = [];
 
         for (const [key, value] of Object.entries(dispatcherTrainings)) {
             dispatcherTimes.push(value.timestamp);
@@ -272,7 +272,7 @@ module.exports = async (client) => {
             trainingType: 'Signaller'
         });
 
-        signallerTimes = []
+        signallerTimes = [];
         
         for (const [key, value] of Object.entries(signallerTrainings)) {
             times.push(value.timestamp);
@@ -280,7 +280,7 @@ module.exports = async (client) => {
 
         nextSignallerTrainingData = nearestDate(signallerTimes);
         nextSignallerTrainingIndex = nextSignallerTrainingData[0];
-        scheduledSignallerTrainings = nextSignallerTrainingData[1]
+        scheduledSignallerTrainings = nextSignallerTrainingData[1];
         
         nextSignallerTraining = {};
         nextSignallerTrainingText = 'No Signaller training\'s scheduled.';
@@ -309,5 +309,5 @@ module.exports = async (client) => {
         message.edit({
             embeds: [ messageEmbed ]
         });
-    }
+    };
 };
