@@ -33,6 +33,10 @@ const trainingSchema = new Schema({
     status: {
         type: String,
         default: 'Scheduled'
+    },
+    server: {
+        type: String,
+        default: 'Training not started.'
     }
 });
 

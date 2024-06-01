@@ -12,7 +12,7 @@ module.exports = {
     .addStringOption((option) => 
         option
             .setName('time')
-            .setDescription('When should the training be hosted? Time should be in CEST.')
+            .setDescription('When should the training be hosted? Time should be in UTC.')
             .setRequired(true)),
 
     run: async ({ interaction, client, handler }) => {

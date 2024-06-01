@@ -167,7 +167,7 @@ module.exports = async (client) => {
         )
         .setFooter({ text: `This message updates every 5 minutes. Last update: ${hour}:${minute}` });
 
-    const message = await trainingChannel.send({
+    let message = await trainingChannel.send({
         embeds: [ messageEmbed ]
     });
 
@@ -305,9 +305,15 @@ module.exports = async (client) => {
                 { name: `Signaller Trainings (${scheduledSignallerTrainings.toString()} scheduled.):`, value: nextSignallerTrainingText }
             )
             .setFooter({ text: `This message updates every 5 minutes. Last update: ${hour}:${minute}` });
-
-        message.edit({
-            embeds: [ messageEmbed ]
-        });
-    }
+        
+        try {
+            message.edit({
+                embeds: [ messageEmbed ]
+            });
+        } catch (error) {
+            message = await trainingChannel.send({
+                embeds: [ messageEmbed ]
+            });
+        };
+    };
 };
