@@ -46,7 +46,6 @@ module.exports = {
             const training = await trainings.findByIdAndDelete(idCMD).exec();
 
             const linkButton = new ButtonBuilder()
-			.setCustomId('link-button')
 			.setLabel('Join here!')
             .setURL(link)
 			.setStyle(ButtonStyle.Link);
