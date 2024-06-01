@@ -24,13 +24,7 @@ function getRobloxId(id) {
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('schedule-training')
-    .setDescription('Schedules a training')
-    .addUserOption((option) => 
-        option
-            .setName('host')
-            .setDescription('Who is hosting the training?')
-            .setRequired(true))
-
+    .setDescription('Scheduled a training')
     .addStringOption((option) => 
         option
             .setName('type')
@@ -59,11 +53,17 @@ module.exports = {
         option
             .setName('additional-info')
             .setDescription('Write any additional info about the training here.')
+            .setRequired(false))
+            
+    .addUserOption((option) => 
+        option
+            .setName('host')
+            .setDescription('Who is hosting the training?')
             .setRequired(false)),
 
     run: async ({ interaction, client, handler }) => {
         try {
-            const hostCMD = interaction.options.getUser('host');
+            const hostCMD = interaction.options.getUser('host') ?? interaction.user;
             const id = hostCMD.id
             const trainingTypeCMD = interaction.options.getString('type');
             const scheduledDateCMD = interaction.options.getString('date');
