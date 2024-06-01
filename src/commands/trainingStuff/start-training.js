@@ -14,12 +14,12 @@ module.exports = {
         option
             .setName('server-link')
             .setDescription('What is the private server link?')
-            .setRequired(true))
+            .setRequired(true)
             .addChoices(
                 { name: 'PT1', value: 'https://www.roblox.com/share?code=e6e32219daff7848849aa8a449367a83&type=Server' },
                 { name: 'PT2', value: 'https://www.roblox.com/share?code=82502c8eb749614fa836d16bcdf26ae6&type=Server' },
                 { name: 'Custom', value: 'Custom' },
-            )
+            ))
     .addStringOption((option) => 
         option
             .setName('custom-link')
