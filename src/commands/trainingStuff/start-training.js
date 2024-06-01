@@ -22,14 +22,14 @@ module.exports = {
             ))
     .addStringOption((option) => 
         option
-            .setName('custom-link')
-            .setDescription('What link do you want to use? (Use is you selected Custom in the server-link option.')
-            .setRequired(false))
-    .addStringOption((option) => 
-        option
             .setName('spawn')
             .setDescription('Where should people spawn?')
-            .setRequired(true)),
+            .setRequired(true))
+    .addStringOption((option) => 
+        option
+            .setName('custom-link')
+            .setDescription('What link do you want to use? (Use is you selected Custom in the server-link option.')
+            .setRequired(false)),
     run: async ({ interaction, client, handler }) => {
         try {
             const trainingChannel = client.channels.cache.get('1218883814491820134');
