@@ -306,6 +306,14 @@ module.exports = async (client) => {
             )
             .setFooter({ text: `This message updates every 5 minutes. Last update: ${hour}:${minute}` });
         
-        
+        try {
+            message.edit({
+                embeds: [ messageEmbed ]
+            });
+        } catch (error) {
+            message = await trainingChannel.send({
+                embeds: [ messageEmbed ]
+            });
+        };
     };
 };
