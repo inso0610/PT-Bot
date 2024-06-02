@@ -164,11 +164,18 @@ module.exports = async (client) => {
         nextSignallerTrainingText = `Next: <t:${nextSignallerTraining.timestamp}:F> (<t:${nextSignallerTraining.timestamp}:R>). Hosted by: ${nextSignallerTraining.hostRobloxUsername}. \nAdditional Info: ${nextSignallerTraining.additionalInfo}`
     };
 
+    const linkButton = new ButtonBuilder()
+			.setLabel('Read the training guides before attending!')
+            .setURL("https://drive.google.com/drive/folders/1ASzcju1gkXTq1PX7qCYhv6Ly1vCze7tf?usp=drive_link")
+			.setStyle(ButtonStyle.Link);
+
+            const row = new ActionRowBuilder()
+			.addComponents(linkButton);
     
     // Message
     let messageEmbed = new EmbedBuilder()
         .setTitle('Trainings')
-        .setDescription(`**Information about the next training's will be sent here.**`)
+        .setDescription("**Information about the next training's will be sent here.**")
         .addFields(
             { name: `Driver Trainings (${scheduledDriverTrainings.toString()} scheduled.):`, value: nextDriverTrainingText },
             { name: `Conductor Trainings (${scheduledConductorTrainings.toString()} scheduled.):`, value: nextConductorTrainingText },
@@ -178,7 +185,8 @@ module.exports = async (client) => {
         .setFooter({ text: `This message updates every 5 minutes. Last update: ${hour}:${minute} UTC` });
 
     const message = await trainingChannel.send({
-        embeds: [ messageEmbed ]
+        embeds: [ messageEmbed ],
+        components: [row],
     });
 
 
