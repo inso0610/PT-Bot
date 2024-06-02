@@ -146,7 +146,7 @@ module.exports = async (client) => {
     let signallerTimes = []
     
     for (const [key, value] of Object.entries(signallerTrainings)) {
-        times.push(value.timestamp);
+        signallerTimes.push(value.timestamp);
     };
 
     let nextSignallerTrainingData = nearestDate(signallerTimes);
@@ -295,7 +295,7 @@ module.exports = async (client) => {
         signallerTimes = [];
         
         for (const [key, value] of Object.entries(signallerTrainings)) {
-            times.push(value.timestamp);
+            signallerTimes.push(value.timestamp);
         };
 
         nextSignallerTrainingData = nearestDate(signallerTimes);
