@@ -108,7 +108,7 @@ module.exports = {
 
             const trainingEmbed = new EmbedBuilder()
                 .setTitle('You have been assigned to a training!')
-                .setDescription(`**When making changes use the id: ${trainingId}.**`)
+                .setDescription(`**When making changes use this id: ${trainingId}.**`)
                 .addFields(
                     { name: 'Host Discord ID:', value: id },
                     { name: 'Host Roblox ID:', value: rblxId },
@@ -119,6 +119,26 @@ module.exports = {
                     { name: 'Timestamp:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
                     { name: 'Additional Info:', value: additionalInfoCMD }
                 );
+
+            if (hostCMD != interaction.user) {
+                const creatorEmbed = new EmbedBuilder()
+                .setTitle('You have created a training for another user.')
+                .setDescription(`**When making changes use this id: ${trainingId}.**`)
+                .addFields(
+                    { name: 'Host Discord ID:', value: id },
+                    { name: 'Host Roblox ID:', value: rblxId },
+                    { name: 'Host Roblox Username:', value: rblxName },
+                    { name: 'Training Type:', value: trainingTypeCMD },
+                    { name: 'Scheduled Date in UTC:', value: scheduledDateCMD },
+                    { name: 'Scheduled Start in UTC:', value: scheduledStartCMD },
+                    { name: 'Timestamp:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
+                    { name: 'Additional Info:', value: additionalInfoCMD }
+                );
+
+            if (hostCMD != interaction.user) {
+                
+            }
+            }
 
             const publicEmbed = new EmbedBuilder()
             .setTitle(`New ${trainingTypeCMD} training!`)
