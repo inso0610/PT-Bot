@@ -166,7 +166,7 @@ module.exports = async (client) => {
 
     const linkButton = new ButtonBuilder()
 			.setLabel('Read the training guides before attending!')
-            .setURL("https://drive.google.com/drive/folders/1ASzcju1gkXTq1PX7qCYhv6Ly1vCze7tf?usp=drive_link")
+            .setURL("https://drive.google.com/drive/folders/1Fm2EdCA4_EkeDLrnLFIM4Mrc5ihCqEmp?usp=sharing")
 			.setStyle(ButtonStyle.Link);
 
             const row = new ActionRowBuilder()
