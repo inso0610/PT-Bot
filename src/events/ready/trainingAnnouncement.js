@@ -34,7 +34,7 @@ function sleep(ms) {
     return new Promise((resolve) => {
       setTimeout(resolve, ms);
     });
-}
+};
 
 module.exports = async (client) => {
     const trainings = require('../../utils/trainings.js');
