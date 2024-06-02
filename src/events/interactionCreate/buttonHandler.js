@@ -6,6 +6,6 @@ module.exports = async (interaction, client, message) => {
             content: 'Ting virka',
             ephemeral: true,
         })
-        console.log(interaction.ButtonInteraction)
+        console.log(interaction.message)
     };
 };
