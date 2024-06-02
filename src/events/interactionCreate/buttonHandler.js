@@ -28,7 +28,7 @@ module.exports = async (interaction, client, message) => {
         try {
             const trainingChannel = client.channels.cache.get('1218883814491820134');
     
-            const id = interaction.userId
+            const id = interaction.user.id
     
             const userInfo = await getRobloxId(id);
                 if (!Array.isArray(userInfo)) {
