@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 function nearestDate (dates, target) {
     if (!target) {
