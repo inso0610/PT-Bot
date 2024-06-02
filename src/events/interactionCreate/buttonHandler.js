@@ -57,7 +57,7 @@ module.exports = async (interaction, client, message) => {
     
             const date = new Date(Date.UTC(splitDate[2], splitDate[1]-1, splitDate[0], splitTime[0], splitTime[1]));
     
-            const timestampMilli = dateCMD.getTime();
+            const timestampMilli = date.getTime();
             const timestamp = Math.floor(timestampMilli / 1000);
     
             const newTraining = new model({
