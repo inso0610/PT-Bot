@@ -108,7 +108,7 @@ module.exports = {
 
             const trainingEmbed = new EmbedBuilder()
                 .setTitle('You have been assigned to a training!')
-                .setDescription(`**When making changes use this id: ${trainingId}.**`)
+                .setDescription(`**When making changes use this id: ${trainingId}**`)
                 .addFields(
                     { name: 'Host Discord ID:', value: id },
                     { name: 'Host Roblox ID:', value: rblxId },
@@ -123,7 +123,7 @@ module.exports = {
             if (hostCMD != interaction.user) {
                 const creatorEmbed = new EmbedBuilder()
                 .setTitle('You have created a training for another user.')
-                .setDescription(`**When making changes use this id: ${trainingId}.**`)
+                .setDescription(`**When making changes use this id: ${trainingId}**`)
                 .addFields(
                     { name: 'Host Discord ID:', value: id },
                     { name: 'Host Roblox ID:', value: rblxId },
