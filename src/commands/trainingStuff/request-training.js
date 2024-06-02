@@ -7,12 +7,12 @@ module.exports = {
     .addStringOption((option) => 
         option
             .setName('date')
-            .setDescription('What date should the training be hosted?')
+            .setDescription('What date should the training be hosted? Format: dd/mm/yyyy')
             .setRequired(true))
     .addStringOption((option) => 
         option
             .setName('time')
-            .setDescription('When should the training be hosted? Time should be in UTC.')
+            .setDescription('When should the training be hosted? Time should be in UTC. Format: hh:mm')
             .setRequired(true)),
 
     run: async ({ interaction, client, handler }) => {
@@ -33,17 +33,12 @@ module.exports = {
 
         function createButtonRow() {
             const confirmButton = new ButtonBuilder()
-			.setCustomId('confirm-training')
-			.setLabel('Accept Training')
-			.setStyle(ButtonStyle.Success);
-
-            const denyButton = new ButtonBuilder()
-			.setCustomId('deny-training')
-			.setLabel('Deny Training')
-			.setStyle(ButtonStyle.Danger);
+			.setCustomId('create-training')
+			.setLabel('Create Training from information')
+			.setStyle(ButtonStyle.Primary);
 
             return new ActionRowBuilder()
-            .addComponents(confirmButton, denyButton);
+            .addComponents(confirmButton);
         }
 
         if (interaction.member.roles.cache.has('1089284424543260763')) { //Is user Passenger? 
