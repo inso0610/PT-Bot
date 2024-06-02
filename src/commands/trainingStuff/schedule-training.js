@@ -134,11 +134,7 @@ module.exports = {
                     { name: 'Timestamp:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
                     { name: 'Additional Info:', value: additionalInfoCMD }
                 );
-
-            if (hostCMD != interaction.user) {
-                
-            }
-            }
+            };
 
             const publicEmbed = new EmbedBuilder()
             .setTitle(`New ${trainingTypeCMD} training!`)
