@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -22,7 +22,7 @@ module.exports = {
         const requestChannel = client.channels.cache.get('1243281611198435338');
 
         function createEmbed(type) {
-            return request = new EmbedBuilder()
+            return new EmbedBuilder()
             .setTitle(`${type} Training Request`)
             .setFields(
                 { name: 'User:', value: `<@${interaction.member.id}>` },
@@ -31,12 +31,30 @@ module.exports = {
             );
         };
 
+        function createButtonRow() {
+            const confirmButton = new ButtonBuilder()
+			.setCustomId('confirm-training')
+			.setLabel('Accept Training')
+			.setStyle(ButtonStyle.Success);
+
+            const denyButton = new ButtonBuilder()
+			.setCustomId('deny-training')
+			.setLabel('Deny Training')
+			.setStyle(ButtonStyle.Danger);
+
+            return new ActionRowBuilder()
+            .addComponents(confirmButton, denyButton);
+        }
+
         if (interaction.member.roles.cache.has('1089284424543260763')) { //Is user Passenger? 
             const embed = createEmbed('Driver');
 
+            const row = createButtonRow();
+
             const requestMessage = await requestChannel.send({
                 content: '<@&1089284413684199474>',
-                embeds: [embed]
+                embeds: [embed],
+                components: [row],
             });
 
             requestMessage.startThread({
@@ -52,9 +70,12 @@ module.exports = {
         } else if (interaction.member.roles.cache.has('1140337698335371384')) { //Is user Driver? 
             const embed = createEmbed('Dispatcher');
 
+            const row = createButtonRow();
+
             const requestMessage = await requestChannel.send({
                 content: '<@&1089284411763204197>',
-                embeds: [embed]
+                embeds: [embed],
+                components: [row],
             });
 
             requestMessage.startThread({
@@ -70,9 +91,12 @@ module.exports = {
         } else if (interaction.member.roles.cache.has('1089284420143419503')) { //Is user Conductor? 
             const embed = createEmbed('Dispatcher');
 
+            const row = createButtonRow();
+
             const requestMessage = await requestChannel.send({
                 content: '<@&1089284411763204197>',
-                embeds: [embed]
+                embeds: [embed],
+                components: [row],
             });
 
             requestMessage.startThread({
@@ -88,9 +112,12 @@ module.exports = {
         } else if (interaction.member.roles.cache.has('1089284418541199522')) { //Is user Dispatcher? 
             const embed = createEmbed('Signaller');
 
+            const row = createButtonRow();
+
             const requestMessage = await requestChannel.send({
                 content: '<@&1089284410332942366>',
-                embeds: [embed]
+                embeds: [embed],
+                components: [row],
             });
 
             requestMessage.startThread({
@@ -106,9 +133,12 @@ module.exports = {
         } else if (interaction.member.roles.cache.has('1111370796439453777') &&	!interaction.member.roles.cache.has('1138884023465283696')) { //Is user Manager without QUS? 
             const embed = createEmbed('Signaller');
 
+            const row = createButtonRow();
+
             const requestMessage = await requestChannel.send({
                 content: '<@&1089284410332942366>',
-                embeds: [embed]
+                embeds: [embed],
+                components: [row],
             });
 
             requestMessage.startThread({
