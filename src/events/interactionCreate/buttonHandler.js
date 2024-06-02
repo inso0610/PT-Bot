@@ -114,7 +114,8 @@ module.exports = async (interaction, client, message) => {
             interaction.reply({
                 content: 'The button failed. Schedule the training using /schedule-training.',
                 ephemeral: true
-            }); 
+            });
+            console.warn(error)
         };
     };
 };
