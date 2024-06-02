@@ -134,6 +134,9 @@ module.exports = {
                     { name: 'Timestamp:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
                     { name: 'Additional Info:', value: additionalInfoCMD }
                 );
+                client.users.send(interaction.user.id, {
+                    embeds: [creatorEmbed]
+                });
             };
 
             const publicEmbed = new EmbedBuilder()
