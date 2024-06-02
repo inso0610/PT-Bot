@@ -24,7 +24,7 @@ module.exports = {
             .setRequired(true)),
 
     run: async ({ interaction, client, handler }) => {
-        const trainingChannel = client.channels.cache.get('1218883814491820134');
+        const trainingChannel = client.channels.cache.get('1246904420495523925');
         
         const idCMD = interaction.options.getString('id')
         const updatedDateCMD = interaction.options.getString('date');

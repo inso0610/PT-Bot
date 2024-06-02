@@ -39,7 +39,7 @@ function sleep(ms) {
 module.exports = async (client) => {
     const trainings = require('../../utils/trainings.js');
 
-    const trainingChannel = client.channels.cache.get('1218883814491820134');
+    const trainingChannel = client.channels.cache.get('1246904420495523925');
 
     let d = new Date();
 

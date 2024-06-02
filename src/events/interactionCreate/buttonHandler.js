@@ -26,7 +26,7 @@ module.exports = async (interaction, client, message) => {
 
     if(interaction.customId === "create-training") {
         try {
-            const trainingChannel = client.channels.cache.get('1218883814491820134');
+            const trainingChannel = client.channels.cache.get('1246904420495523925');
     
             const id = interaction.user.id
     

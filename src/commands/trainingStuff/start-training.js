@@ -32,7 +32,7 @@ module.exports = {
             .setRequired(false)),
     run: async ({ interaction, client, handler }) => {
         try {
-            const trainingChannel = client.channels.cache.get('1218883814491820134');
+            const trainingChannel = client.channels.cache.get('1246904420495523925');
             
             const idCMD = interaction.options.getString('id');
             let link = interaction.options.getString('server-link');
