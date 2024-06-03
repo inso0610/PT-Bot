@@ -46,12 +46,12 @@ module.exports = {
             const training = await trainings.findByIdAndDelete(idCMD).exec();
 
             const linkButton = new ButtonBuilder()
-			.setLabel('Join here!')
-            .setURL(link)
-			.setStyle(ButtonStyle.Link);
+			    .setLabel('Join here!')
+                .setURL(link)
+			    .setStyle(ButtonStyle.Link);
 
             const row = new ActionRowBuilder()
-			.addComponents(linkButton);
+			    .addComponents(linkButton);
 
             const startEmbed = new EmbedBuilder()
                 .setTitle(`A ${training.trainingType} training is starting!`)
