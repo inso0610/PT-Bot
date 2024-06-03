@@ -2,39 +2,39 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('
 
 function nearestDate (dates, target) {
     if (!target) {
-      let targetMilli = Date.now()
-      target = Math.floor(targetMilli / 1000);
+        let targetMilli = Date.now();
+        target = Math.floor(targetMilli / 1000);
     } else if (target instanceof Date) {
-      target = target.getTime()
-    }
+        target = target.getTime();
+    };
   
-    let nearest = Infinity
-    let winner = -1
-    let scheduled = 0
+    let nearest = Infinity;
+    let winner = -1;
+    let scheduled = 0;
   
     dates.forEach(function (date, index) {
-      if (date instanceof Date) {
-        date = date.getTime()
-      }
-      let distance = Math.abs(date - target)
-      scheduled += 1
+        if (date instanceof Date) {
+            date = date.getTime();
+        };
+        let distance = Math.abs(date - target);
+        scheduled += 1;
 
-      if (distance < nearest) {
-        nearest = distance
-        winner = index
-      }
-    })
+        if (distance < nearest) {
+            nearest = distance;
+            winner = index;
+        };
+    });
   
-    const data = [winner, scheduled]
+    const data = [winner, scheduled];
 
-    return data
+    return data;
 };
 
-function sleep(ms) {
+/* function sleep(ms) {
     return new Promise((resolve) => {
       setTimeout(resolve, ms);
     });
-};
+};*/
 
 module.exports = async (client) => {
     const trainings = require('../../utils/trainings.js');
@@ -47,14 +47,14 @@ module.exports = async (client) => {
 
     if (hour.length == 1) {
         const old = hour;
-        hour = `0${old}`
+        hour = `0${old}`;
     };
 
     let minute = d.getUTCMinutes().toString();
 
     if (minute.length == 1) {
         const old = minute;
-        minute = `0${old}`
+        minute = `0${old}`;
     };
 
     //Driver Trainings
@@ -80,7 +80,7 @@ module.exports = async (client) => {
             trainingType: 'Driver',
             timestamp: driverTimes[nextDriverTrainingIndex]
         });
-        nextDriverTrainingText = `Next: <t:${nextDriverTraining.timestamp}:F> (<t:${nextDriverTraining.timestamp}:R>). Hosted by: ${nextDriverTraining.hostRobloxUsername}. \nAdditional Info: ${nextDriverTraining.additionalInfo}`
+        nextDriverTrainingText = `Next: <t:${nextDriverTraining.timestamp}:F> (<t:${nextDriverTraining.timestamp}:R>). Hosted by: ${nextDriverTraining.hostRobloxUsername}. \nAdditional Info: ${nextDriverTraining.additionalInfo}`;
     };
 
 
@@ -107,7 +107,7 @@ module.exports = async (client) => {
             trainingType: 'Conductor',
             timestamp: conductorTimes[nextConductorTrainingIndex]
         });
-        nextConductorTrainingText = `Next: <t:${nextConductorTraining.timestamp}:F> (<t:${nextConductorTraining.timestamp}:R>). Hosted by: ${nextConductorTraining.hostRobloxUsername}. \nAdditional Info: ${nextConductorTraining.additionalInfo}`
+        nextConductorTrainingText = `Next: <t:${nextConductorTraining.timestamp}:F> (<t:${nextConductorTraining.timestamp}:R>). Hosted by: ${nextConductorTraining.hostRobloxUsername}. \nAdditional Info: ${nextConductorTraining.additionalInfo}`;
     };
 
 
@@ -134,7 +134,7 @@ module.exports = async (client) => {
             trainingType: 'Dispatcher',
             timestamp: dispatcherTimes[nextDispatcherTrainingIndex]
         });
-        nextDispatcherTrainingText = `Next: <t:${nextDispatcherTraining.timestamp}:F> (<t:${nextDispatcherTraining.timestamp}:R>). Hosted by: ${nextDispatcherTraining.hostRobloxUsername}. \nAdditional Info: ${nextDispatcherTraining.additionalInfo}`
+        nextDispatcherTrainingText = `Next: <t:${nextDispatcherTraining.timestamp}:F> (<t:${nextDispatcherTraining.timestamp}:R>). Hosted by: ${nextDispatcherTraining.hostRobloxUsername}. \nAdditional Info: ${nextDispatcherTraining.additionalInfo}`;
     };
 
     
@@ -161,7 +161,7 @@ module.exports = async (client) => {
             trainingType: 'Signaller',
             timestamp: signallerTimes[nextSignallerTrainingIndex]
         });
-        nextSignallerTrainingText = `Next: <t:${nextSignallerTraining.timestamp}:F> (<t:${nextSignallerTraining.timestamp}:R>). Hosted by: ${nextSignallerTraining.hostRobloxUsername}. \nAdditional Info: ${nextSignallerTraining.additionalInfo}`
+        nextSignallerTrainingText = `Next: <t:${nextSignallerTraining.timestamp}:F> (<t:${nextSignallerTraining.timestamp}:R>). Hosted by: ${nextSignallerTraining.hostRobloxUsername}. \nAdditional Info: ${nextSignallerTraining.additionalInfo}`;
     };
 
     const linkButton = new ButtonBuilder()
@@ -195,9 +195,7 @@ module.exports = async (client) => {
 
     // Message Updater
 
-    while (true) {
-        await sleep(300000); 
-
+    const messageUpdater = setInterval (async function() {
         d = new Date();
 
         hour = d.getUTCHours().toString();
@@ -237,7 +235,7 @@ module.exports = async (client) => {
                 trainingType: 'Driver',
                 timestamp: driverTimes[nextDriverTrainingIndex]
             });
-            nextDriverTrainingText = `Next: <t:${nextDriverTraining.timestamp}:F> (<t:${nextDriverTraining.timestamp}:R>). Hosted by: ${nextDriverTraining.hostRobloxUsername}. \nAdditional Info: ${nextDriverTraining.additionalInfo}`
+            nextDriverTrainingText = `Next: <t:${nextDriverTraining.timestamp}:F> (<t:${nextDriverTraining.timestamp}:R>). Hosted by: ${nextDriverTraining.hostRobloxUsername}. \nAdditional Info: ${nextDriverTraining.additionalInfo}`;
         };
 
 
@@ -264,7 +262,7 @@ module.exports = async (client) => {
                 trainingType: 'Conductor',
                 timestamp: conductorTimes[nextConductorTrainingIndex]
             });
-            nextConductorTrainingText = `Next: <t:${nextConductorTraining.timestamp}:F> (<t:${nextConductorTraining.timestamp}:R>). Hosted by: ${nextConductorTraining.hostRobloxUsername}. \nAdditional Info: ${nextConductorTraining.additionalInfo}`
+            nextConductorTrainingText = `Next: <t:${nextConductorTraining.timestamp}:F> (<t:${nextConductorTraining.timestamp}:R>). Hosted by: ${nextConductorTraining.hostRobloxUsername}. \nAdditional Info: ${nextConductorTraining.additionalInfo}`;
         };
 
 
@@ -291,7 +289,7 @@ module.exports = async (client) => {
                 trainingType: 'Dispatcher',
                 timestamp: dispatcherTimes[nextDispatcherTrainingIndex]
             });
-            nextDispatcherTrainingText = `Next: <t:${nextDispatcherTraining.timestamp}:F> (<t:${nextDispatcherTraining.timestamp}:R>). Hosted by: ${nextDispatcherTraining.hostRobloxUsername}. \nAdditional Info: ${nextDispatcherTraining.additionalInfo}`
+            nextDispatcherTrainingText = `Next: <t:${nextDispatcherTraining.timestamp}:F> (<t:${nextDispatcherTraining.timestamp}:R>). Hosted by: ${nextDispatcherTraining.hostRobloxUsername}. \nAdditional Info: ${nextDispatcherTraining.additionalInfo}`;
         };
 
         
@@ -318,7 +316,7 @@ module.exports = async (client) => {
                 trainingType: 'Signaller',
                 timestamp: signallerTimes[nextSignallerTrainingIndex]
             });
-            nextSignallerTrainingText = `Next: <t:${nextSignallerTraining.timestamp}:F> (<t:${nextSignallerTraining.timestamp}:R>). Hosted by: ${nextSignallerTraining.hostRobloxUsername}. \nAdditional Info: ${nextSignallerTraining.additionalInfo}`
+            nextSignallerTrainingText = `Next: <t:${nextSignallerTraining.timestamp}:F> (<t:${nextSignallerTraining.timestamp}:R>). Hosted by: ${nextSignallerTraining.hostRobloxUsername}. \nAdditional Info: ${nextSignallerTraining.additionalInfo}`;
         };
 
         
@@ -337,6 +335,6 @@ module.exports = async (client) => {
         
         message.edit({
             embeds: [ messageEmbed ]
-         });
-    };
+        });
+    }, 300000);
 };
