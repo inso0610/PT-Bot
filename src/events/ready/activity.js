@@ -1,6 +1,6 @@
 const { ActivityType } = require('discord.js');
 
-let status = [
+const status = [
     {
         name: 'Polar Tracks',
         type: ActivityType.Playing,
