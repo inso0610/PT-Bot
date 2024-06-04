@@ -1,6 +1,22 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const trainings = require('../../utils/trainings.js');
 
+function cancelTeamup(id) {
+    //const jsondata = {id: id}; 
+
+    const options = {
+        method: "DELETE", 
+        headers: {
+            "Content-Type": "application/json",
+            "Teamup-Token": process.env.TEAMUP_TOKEN, 
+            "Authorization": process.env.TEAMUP_LOGIN
+        },
+        //body: JSON.stringify(jsondata)
+    };
+
+    fetch(`https://api.teamup.com/335ezp/events/${id}`, options);
+};
+
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('cancel-training')
@@ -11,12 +27,19 @@ module.exports = {
             .setDescription('What is the ID of the training?')
             .setRequired(true)),
     run: async ({ interaction, client, handler }) => {
+
+        await interaction.deferReply({
+            ephemeral: true
+        });
+
         try {
             const trainingChannel = client.channels.cache.get('1246904420495523925');
             
             const idCMD = interaction.options.getString('id');
 
             const training = await trainings.findByIdAndDelete(idCMD).exec();
+
+            cancelTeamup(training.teamupId);
     
             const cancelEmbed = new EmbedBuilder()
                 .setTitle(`A ${training.trainingType} training was canceled!`)
@@ -26,7 +49,7 @@ module.exports = {
                 embeds: [ cancelEmbed ]
             });
 
-            interaction.reply({
+            interaction.editReply({
                 content: 'Training canceled.',
                 ephemeral: true
             })

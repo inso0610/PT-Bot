@@ -1,5 +1,39 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const trainings = require('../../utils/trainings.js')
+const trainings = require('../../utils/trainings.js');
+
+function updateTeamup(newStartDate, type, id, host) {
+    const endDate = new Date(newStartDate);
+    endDate.setMinutes(newStartDate.getMinutes() + 60);
+
+    const startISO = newStartDate.toISOString().replace('.000','');
+    const endISO = endDate.toISOString().replace('.000','');
+
+    let subcalendar
+
+    if (type === 'Driver') {
+        subcalendar = 13324153;
+    } else if (type === 'Conductor') {
+        subcalendar = 13324155;
+    } else if (type === 'Dispatcher') {
+        subcalendar = 13324157;
+    } else if (type === 'Signaller') {
+        subcalendar = 13324160;
+    };
+
+    const jsondata = {id: id, subcalendar_ids: [subcalendar], start_dt: startISO, end_dt: endISO, title: `${type} training`, who: host, signup_enabled: false, comments_enabled: false};
+
+    const options = {
+        method: "PUT", 
+        headers: {
+            "Content-Type": "application/json",
+            "Teamup-Token": process.env.TEAMUP_TOKEN, 
+            "Authorization": process.env.TEAMUP_LOGIN
+        },
+        body: JSON.stringify(jsondata)
+    };
+
+    fetch(`https://api.teamup.com/335ezp/events/${id}`, options);
+};
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -30,6 +64,10 @@ module.exports = {
         const updatedDateCMD = interaction.options.getString('date');
         const updatedStartCMD = interaction.options.getString('time');
 
+        await interaction.deferReply({
+            ephemeral: true
+        });
+
         try {
             const splitDate = updatedDateCMD.split('/');
             const splitTime = updatedStartCMD.split(':');
@@ -41,13 +79,17 @@ module.exports = {
             
             const training = await trainings.findById(idCMD).exec();
     
-            const type = training.trainingType
-            const oldTimestamp = training.timestamp
+            const type = training.trainingType;
+            const oldTimestamp = training.timestamp;
+            const teamupId = training.teamupId;
+            const rblxName = training.hostRobloxUsername;
+
+            updateTeamup(dateCMD, type, teamupId, rblxName);
     
             training.date.setUTCFullYear(splitDate[2], splitDate[1]-1, splitDate[0]);
             training.date.setUTCHours(splitTime[0], splitTime[1]);
     
-            training.timestamp = timestampCMD
+            training.timestamp = timestampCMD;
     
             training.markModified('date');
     
@@ -55,22 +97,22 @@ module.exports = {
     
             const timeChangedEmbed = new EmbedBuilder()
                 .setTitle(`A ${type} training has changed!`)
-                .setDescription(`Time: <t:${oldTimestamp}:F> -> <t:${training.timestamp}:F> \n**Info:** \nHost: ${training.hostRobloxUsername}`)
+                .setDescription(`Time: <t:${oldTimestamp}:F> -> <t:${training.timestamp}:F> \n**Info:** \nHost: ${rblxName}`)
     
             trainingChannel.send({
                 embeds: [ timeChangedEmbed ]
-            })
+            });
     
-            interaction.reply({
+            interaction.editReply({
                 content: 'Updated!',
                 ephemeral: true
-            })
+            });
         } catch (error) {
-            interaction.reply({
+            interaction.editReply({
                 content: 'Command failed. Did you use the correct ID?',
                 ephemeral: true
-            })
-            console.warn(error)
+            });
+            console.warn(error);
         }
     },
     opTeamOnly: true,

@@ -165,13 +165,19 @@ module.exports = async (client) => {
     };
 
     const linkButton = new ButtonBuilder()
-			.setLabel('Read the training guides before attending!')
-            .setURL("https://guides.polartracks.no/start")
-			.setStyle(ButtonStyle.Link);
+		.setLabel('Read the training guides before attending')
+        .setURL("https://guides.polartracks.no/start")
+		.setStyle(ButtonStyle.Link);
 
-            const row = new ActionRowBuilder()
-			.addComponents(linkButton);
-    
+    const calendarButton = new ButtonBuilder()
+        .setLabel('View all trainings here')
+        .setURL("https://teamup.com/ksopth82jo3q9yrj4i")
+		.setStyle(ButtonStyle.Link);
+
+
+    const row = new ActionRowBuilder()
+		.addComponents(linkButton, calendarButton);
+
     // Message
     let messageEmbed = new EmbedBuilder()
         .setTitle('Trainings')

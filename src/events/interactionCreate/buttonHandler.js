@@ -19,12 +19,63 @@ function getRobloxId(id) {
             };
         });
     return functionResult
-}
+};
+
+function scheduleTeamup(startDate, type, host) {
+    const endDate = new Date(startDate);
+    endDate.setMinutes(startDate.getMinutes() + 60);
+
+    const startISO = startDate.toISOString().replace('.000','')
+    const endISO = endDate.toISOString().replace('.000','')
+
+    let subcalendar
+
+    if (type === 'Driver') {
+        subcalendar = 13324153
+    } else if (type === 'Conductor') {
+        subcalendar = 13324155
+    } else if (type === 'Dispatcher') {
+        subcalendar = 13324157
+    } else if (type === 'Signaller') {
+        subcalendar = 13324160
+    };
+
+    const jsondata = {subcalendar_ids: [subcalendar], start_dt: startISO, end_dt: endISO, title: `${type} training`, who: host, signup_enabled: false, comments_enabled: false};
+
+    const options = {
+        method: "POST", 
+        headers: {
+            "Content-Type": "application/json",
+            "Teamup-Token": process.env.TEAMUP_TOKEN, 
+            "Authorization": process.env.TEAMUP_LOGIN
+        },
+        body: JSON.stringify(jsondata)
+    };
+
+    const functionResult = fetch('https://api.teamup.com/335ezp/events', options)
+        .then((response) => response.json())
+        .then((data) => {
+            try {
+                const responseData = JSON.parse(JSON.stringify(data));
+    
+                return responseData.event.id;
+            } catch (error) {
+                console.warn(JSON.parse(JSON.stringify(data)));
+                return 'Error';
+            };
+        });
+
+    return functionResult;
+};
 
 module.exports = async (interaction, client, message) => {
     if(!interaction.isButton()) return;
 
     if(interaction.customId === "create-training") {
+        interaction.deferReply({
+            ephemeral: true
+        });
+
         try {
             const trainingChannel = client.channels.cache.get('1246904420495523925');
     
@@ -59,6 +110,8 @@ module.exports = async (interaction, client, message) => {
     
             const timestampMilli = date.getTime();
             const timestamp = Math.floor(timestampMilli / 1000);
+
+            const teamupId = await scheduleTeamup(date, trainingType, rblxName); 
     
             const newTraining = new model({
                 hostDiscordId: id,
@@ -67,7 +120,8 @@ module.exports = async (interaction, client, message) => {
                 trainingType: trainingType,
                 date: date,
                 timestamp: timestamp.toString(),
-                additionalInfo: 'No additional information.'
+                additionalInfo: 'No additional information.',
+                teamupId: teamupId
             });
     
             await newTraining.save();
@@ -106,18 +160,22 @@ module.exports = async (interaction, client, message) => {
                 embeds: [publicEmbed]
             });
         
-            interaction.reply({
+            interaction.editReply({
                 content: 'The training has been scheduled.',
                 ephemeral: true
             });
         } catch (error) {
-            interaction.reply({
+            interaction.editReply({
                 content: 'The button failed. Schedule the training using /schedule-training.',
                 ephemeral: true
             });
             console.warn(error);
         };
     } else if(interaction.customId === "test-training-req") {
+        interaction.deferReply({
+            ephemeral: true
+        });
+
         const id = interaction.user.id
     
             const userInfo = await getRobloxId(id);
@@ -159,7 +217,7 @@ module.exports = async (interaction, client, message) => {
                     { name: 'Additional Info:', value: 'No additional information.' }
                 );
             
-            interaction.reply({
+            interaction.editReply({
                 embeds: [publicEmbed],
                 ephemeral: true
             });

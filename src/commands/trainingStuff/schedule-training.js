@@ -6,15 +6,15 @@ function getRobloxId(id) {
 	    .then((response) => response.json())
 	    .then((data) => {
             try {
-                const response = JSON.parse(JSON.stringify(data));
+                const responseData = JSON.parse(JSON.stringify(data));
 
-                const robloxID = response.robloxID.toString();
-                const username = response.resolved.roblox.name.toString();
+                const robloxID = responseData.robloxID.toString();
+                const username = responseData.resolved.roblox.name.toString();
 
                 const userInfo = [robloxID, username]
                 return userInfo
             } catch (error) {
-                console.log(error)
+                console.warn(error)
                 return error
             };
         });
@@ -24,6 +24,9 @@ function getRobloxId(id) {
 function scheduleTeamup(startDate, type, host) {
     const endDate = new Date(startDate);
     endDate.setMinutes(startDate.getMinutes() + 60);
+
+    const startISO = startDate.toISOString().replace('.000','')
+    const endISO = endDate.toISOString().replace('.000','')
 
     let subcalendar
 
@@ -37,23 +40,29 @@ function scheduleTeamup(startDate, type, host) {
         subcalendar = 13324160
     };
 
-    const jsondata = {subcalendar_ids: [subcalendar], start_dt: startDate, end_dt: endDate, title: `${type} training`, who: host};
+    const jsondata = {subcalendar_ids: [subcalendar], start_dt: startISO, end_dt: endISO, title: `${type} training`, who: host, signup_enabled: false, comments_enabled: false};
 
     const options = {
         method: "POST", 
         headers: {
+            "Content-Type": "application/json",
             "Teamup-Token": process.env.TEAMUP_TOKEN, 
             "Authorization": process.env.TEAMUP_LOGIN
         },
         body: JSON.stringify(jsondata)
     };
 
-    const functionResult = fetch(`https://api.teamup.com/335ezp/events`, options)
+    const functionResult = fetch('https://api.teamup.com/335ezp/events', options)
         .then((response) => response.json())
         .then((data) => {
-            const response = JSON.parse(JSON.stringify(data));
-
-            return response.event.id;
+            try {
+                const responseData = JSON.parse(JSON.stringify(data));
+    
+                return responseData.event.id;
+            } catch (error) {
+                console.warn(JSON.parse(JSON.stringify(data)));
+                return 'Error';
+            };
         });
 
     return functionResult;
@@ -100,6 +109,10 @@ module.exports = {
             .setRequired(false)),
 
     run: async ({ interaction, client, handler }) => {
+        interaction.deferReply({
+            ephemeral: true
+        });
+
         try {
             const hostCMD = interaction.options.getUser('host') ?? interaction.user;
             const id = hostCMD.id
@@ -113,11 +126,11 @@ module.exports = {
             const userInfo = await getRobloxId(id);
             if (!Array.isArray(userInfo)) {
                 console.log(userInfo)
-                interaction.reply({
+                interaction.editReply({
                     content: 'The command failed. Contact Emilsen.',
                     ephemeral: true
                 });
-                return
+                return;
             };
             const rblxId = userInfo[0];
             const rblxName = userInfo[1];
@@ -130,7 +143,11 @@ module.exports = {
             const timestampMilli = dateCMD.getTime();
             const timestampCMD = Math.floor(timestampMilli / 1000);
 
-            const teamupId = scheduleTeamup(dateCMD, trainingTypeCMD, hostCMD)
+            const teamupId = await scheduleTeamup(dateCMD, trainingTypeCMD, rblxName);
+
+            if (teamupId === 'Error') {
+                return;
+            };
     
             const newTraining = new model({
                 hostDiscordId: id,
@@ -194,11 +211,11 @@ module.exports = {
             });
 
             trainingChannel.send({
-                content: '<@&1152627043037610006>',
+                content: '<@&1140220447535923200>',
                 embeds: [publicEmbed]
             });
     
-            interaction.reply({
+            interaction.editReply({
                 content: 'The training has been scheduled.',
                 ephemeral: true
             });  
