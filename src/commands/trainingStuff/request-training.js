@@ -37,9 +37,14 @@ module.exports = {
 			.setLabel('Create Training from information')
 			.setStyle(ButtonStyle.Primary);
 
+            const testButton = new ButtonBuilder()
+			.setCustomId('test-training-req')
+			.setLabel('Test training information')
+			.setStyle(ButtonStyle.Secondary);
+
             return new ActionRowBuilder()
-            .addComponents(confirmButton);
-        }
+            .addComponents(confirmButton, testButton);
+        };
 
         if (interaction.member.roles.cache.has('1089284424543260763')) { //Is user Passenger? 
             const embed = createEmbed('Driver');

@@ -11,12 +11,12 @@ function getRobloxId(id) {
                 const robloxID = response.robloxID.toString();
                 const username = response.resolved.roblox.name.toString();
 
-                const userInfo = [robloxID, username]
-                return userInfo
+                const userInfo = [robloxID, username];
+                return userInfo;
             } catch (error) {
-                console.log(error)
-                return error
-            }
+                console.log(error);
+                return error;
+            };
         });
     return functionResult
 }
@@ -52,8 +52,8 @@ module.exports = async (interaction, client, message) => {
     
             const trainingType = title.replace(' Training Request', '')
     
-            const splitDate = dateFromMsg.split('/')
-            const splitTime = time.split(':')
+            const splitDate = dateFromMsg.split('/');
+            const splitTime = time.split(':');
     
             const date = new Date(Date.UTC(splitDate[2], splitDate[1]-1, splitDate[0], splitTime[0], splitTime[1]));
     
@@ -115,7 +115,53 @@ module.exports = async (interaction, client, message) => {
                 content: 'The button failed. Schedule the training using /schedule-training.',
                 ephemeral: true
             });
-            console.warn(error)
+            console.warn(error);
         };
+    } else if(interaction.customId === "test-training-req") {
+        const id = interaction.user.id
+    
+            const userInfo = await getRobloxId(id);
+                if (!Array.isArray(userInfo)) {
+                    console.log(userInfo)
+                    interaction.reply({
+                        content: 'The button failed. Contact Emilsen.',
+                        ephemeral: true
+                    })
+                    return
+                };
+            const rblxName = userInfo[1];
+    
+            const embed = interaction.message.embeds[0];
+            const data = embed.data;
+            const title = data.title;
+            const fields = data.fields;
+    
+            const dateFromMsg = fields[1].value;
+            const time = fields[2].value;
+    
+            const trainingType = title.replace(' Training Request', '')
+    
+            const splitDate = dateFromMsg.split('/');
+            const splitTime = time.split(':');
+    
+            const date = new Date(Date.UTC(splitDate[2], splitDate[1]-1, splitDate[0], splitTime[0], splitTime[1]));
+    
+            const timestampMilli = date.getTime();
+            const timestamp = Math.floor(timestampMilli / 1000);
+
+            const publicEmbed = new EmbedBuilder()
+                .setTitle(`New ${trainingType} training!`)
+                .addFields(
+                    { name: 'Host:', value: rblxName },
+                    { name: 'Scheduled Date in UTC:', value: dateFromMsg },
+                    { name: 'Scheduled Start in UTC:', value: time },
+                    { name: 'Timestamp:', value: `<t:${timestamp.toString()}:F> (<t:${timestamp.toString()}:R>)` },
+                    { name: 'Additional Info:', value: 'No additional information.' }
+                );
+            
+            interaction.reply({
+                embeds: [publicEmbed],
+                ephemeral: true
+            });
     };
 };
