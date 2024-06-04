@@ -16,10 +16,48 @@ function getRobloxId(id) {
             } catch (error) {
                 console.log(error)
                 return error
-            }
+            };
         });
-    return functionResult
-}
+    return functionResult;
+};
+
+function scheduleTeamup(startDate, type, host) {
+    const endDate = new Date(startDate);
+    endDate.setMinutes(startDate.getMinutes() + 60);
+
+    let subcalendar
+
+    if (type === 'Driver') {
+        subcalendar = 13324153
+    } else if (type === 'Conductor') {
+        subcalendar = 13324155
+    } else if (type === 'Dispatcher') {
+        subcalendar = 13324157
+    } else if (type === 'Signaller') {
+        subcalendar = 13324160
+    };
+
+    const jsondata = {subcalendar_ids: [subcalendar], start_dt: startDate, end_dt: endDate, title: `${type} training`, who: host};
+
+    const options = {
+        method: "POST", 
+        headers: {
+            "Teamup-Token": process.env.TEAMUP_TOKEN, 
+            "Authorization": process.env.TEAMUP_LOGIN
+        },
+        body: JSON.stringify(jsondata)
+    };
+
+    const functionResult = fetch(`https://api.teamup.com/335ezp/events`, options)
+        .then((response) => response.json())
+        .then((data) => {
+            const response = JSON.parse(JSON.stringify(data));
+
+            return response.event.id;
+        });
+
+    return functionResult;
+};
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -78,7 +116,7 @@ module.exports = {
                 interaction.reply({
                     content: 'The command failed. Contact Emilsen.',
                     ephemeral: true
-                })
+                });
                 return
             };
             const rblxId = userInfo[0];
@@ -91,6 +129,8 @@ module.exports = {
 
             const timestampMilli = dateCMD.getTime();
             const timestampCMD = Math.floor(timestampMilli / 1000);
+
+            const teamupId = scheduleTeamup(dateCMD, trainingTypeCMD, hostCMD)
     
             const newTraining = new model({
                 hostDiscordId: id,
@@ -99,7 +139,8 @@ module.exports = {
                 trainingType: trainingTypeCMD,
                 date: dateCMD,
                 timestamp: timestampCMD.toString(),
-                additionalInfo: additionalInfoCMD
+                additionalInfo: additionalInfoCMD,
+                teamupId: teamupId
             });
     
             await newTraining.save();
@@ -153,7 +194,7 @@ module.exports = {
             });
 
             trainingChannel.send({
-                content: '<@&1140220447535923200>',
+                content: '<@&1152627043037610006>',
                 embeds: [publicEmbed]
             });
     
