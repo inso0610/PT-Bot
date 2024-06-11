@@ -221,5 +221,48 @@ module.exports = async (interaction, client, message) => {
                 embeds: [publicEmbed],
                 ephemeral: true
             });
+    } else if (interaction.customId === 'roadMapInfo') {
+        const embed = new EmbedBuilder()
+            .setTitle('Roadmap')
+            .setDescription('# Check out what we are working on here')
+            .addFields(
+                { name: 'Engineering and Technology:', value: 'https://trello.com/b/eA59AXF4/engineering-and-technology-board' },
+                { name: 'Operations:', value: 'https://trello.com/b/cyYBEanG/operations-board' },
+                { name: 'Customer Experience:', value: 'https://trello.com/b/BpFQHHBE/customer-experience-board' }
+            );
+
+        interaction.reply({
+            embeds: [embed],
+            ephemeral: true
+        });
+    } else if (interaction.customId === 'socialMediaInfo') {
+        const embed = new EmbedBuilder()
+            .setTitle('Roadmap')
+            .setDescription('# Check us out on Social Media')
+            .addFields(
+                { name: 'Instagram:', value: 'https://www.instagram.com/polartracks.rblx/' },
+                { name: 'TikTok:', value: 'https://www.tiktok.com/@polartracks.rblx' },
+                { name: 'YouTube:', value: 'https://youtube.com/@PolarTracksRBLX?si=y1R5eZnebfrtY6BN' }
+            );
+
+        interaction.reply({
+            embeds: [embed],
+            ephemeral: true
+        });
+
+    } else if (interaction.customId === 'routesInfo') {
+        const embed = new EmbedBuilder()
+            .setTitle('Routes')
+            .addFields(
+                { name: 'L1:', value: 'https://docs.google.com/document/d/1KdJnZOdQn5uyjU_FCjHu6nuXu_i0GRlN_6yHUwcsKTw/edit?usp=drivesdk' },
+                { name: 'R31:', value: 'https://docs.google.com/document/d/1dmz2yEmj2FCHWZ8HaEyJAnsob8CV3sYOoQzPv8ca7BA/edit?usp=drivesdk' },
+                { name: 'RE10:', value: 'https://docs.google.com/document/d/1vsjMlxaCjoGRTAx8qkLmjuF24FMncLovNs4qZLnXRFg/edit?usp=drivesdk' },
+                { name: 'RE30:', value: 'https://docs.google.com/document/d/1CoQeuLaDlvikQgbIGzsnK203TfgZQyhfQo7nePNMgAk/edit?usp=sharing' }
+            );
+
+        interaction.reply({
+            embeds: [embed],
+            ephemeral: true
+        });
     };
 };

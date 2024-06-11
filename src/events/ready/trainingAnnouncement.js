@@ -183,10 +183,10 @@ module.exports = async (client) => {
         .setTitle('Trainings')
         .setDescription("**Information about the next training's will be sent here.**")
         .addFields(
-            { name: `Driver Trainings (${scheduledDriverTrainings.toString()} scheduled.):`, value: nextDriverTrainingText },
-            { name: `Conductor Trainings (${scheduledConductorTrainings.toString()} scheduled.):`, value: nextConductorTrainingText },
-            { name: `Dispatcher Trainings (${scheduledDispatcherTrainings.toString()} scheduled.):`, value: nextDispatcherTrainingText },
-            { name: `Signaller Trainings (${scheduledSignallerTrainings.toString()} scheduled.):`, value: nextSignallerTrainingText }
+            { name: `Driver Trainings (${scheduledDriverTrainings.toString()} scheduled):`, value: nextDriverTrainingText },
+            { name: `Conductor Trainings (${scheduledConductorTrainings.toString()} scheduled):`, value: nextConductorTrainingText },
+            { name: `Dispatcher Trainings (${scheduledDispatcherTrainings.toString()} scheduled):`, value: nextDispatcherTrainingText },
+            { name: `Signaller Trainings (${scheduledSignallerTrainings.toString()} scheduled):`, value: nextSignallerTrainingText }
         )
         .setFooter({ text: `This message updates every 5 minutes. Last update: ${hour}:${minute} UTC` });
 
@@ -331,10 +331,10 @@ module.exports = async (client) => {
             .setTitle('Trainings')
             .setDescription(`**Information about the next training's will be sent here.**`)
             .addFields(
-                { name: `Driver Trainings (${scheduledDriverTrainings.toString()} scheduled.):`, value: nextDriverTrainingText },
-                { name: `Conductor Trainings (${scheduledConductorTrainings.toString()} scheduled.):`, value: nextConductorTrainingText },
-                { name: `Dispatcher Trainings (${scheduledDispatcherTrainings.toString()} scheduled.):`, value: nextDispatcherTrainingText },
-                { name: `Signaller Trainings (${scheduledSignallerTrainings.toString()} scheduled.):`, value: nextSignallerTrainingText }
+                { name: `Driver Trainings (${scheduledDriverTrainings.toString()} scheduled):`, value: nextDriverTrainingText },
+                { name: `Conductor Trainings (${scheduledConductorTrainings.toString()} scheduled):`, value: nextConductorTrainingText },
+                { name: `Dispatcher Trainings (${scheduledDispatcherTrainings.toString()} scheduled):`, value: nextDispatcherTrainingText },
+                { name: `Signaller Trainings (${scheduledSignallerTrainings.toString()} scheduled):`, value: nextSignallerTrainingText }
             )
             .setFooter({ text: `This message updates every 5 minutes. Last update: ${hour}:${minute} UTC` });
 
