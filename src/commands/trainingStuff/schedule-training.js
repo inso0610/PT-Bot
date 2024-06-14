@@ -11,8 +11,8 @@ function getRobloxId(id) {
                 const robloxID = responseData.robloxID.toString();
                 const username = responseData.resolved.roblox.name.toString();
 
-                const userInfo = [robloxID, username]
-                return userInfo
+                const userInfo = [robloxID, username];
+                return userInfo;
             } catch (error) {
                 console.warn(error)
                 return error

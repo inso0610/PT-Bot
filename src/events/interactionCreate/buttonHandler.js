@@ -18,7 +18,7 @@ function getRobloxId(id) {
                 return error;
             };
         });
-    return functionResult
+    return functionResult;
 };
 
 function scheduleTeamup(startDate, type, host) {
