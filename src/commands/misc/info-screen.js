@@ -1,5 +1,9 @@
 const { SlashCommandBuilder } = require('discord.js');
-const puppeteer = require('puppeteer')
+const puppeteer = require('puppeteer');
+const fs = require('fs');
+const wait = require('node:timers/promises').setTimeout;
+
+const images = '././utils/images';
 //const stationCodes = require('../../utils/trainings.js');
 
 module.exports = {
@@ -46,21 +50,64 @@ module.exports = {
             )),
 
     run: async ({ interaction, client, handler }) => {
-        const stationCode = interaction.options.getString('station');
-        const track = interaction.options.getString('track') ?? null;
-        const content = interaction.options.getString('content') ?? 'departure';
-        const layout = interaction.options.getString('layout') ?? 'landscape';
-        const notice = interaction.options.getString('notice') ?? 'yes';
+        await interaction.deferReply();
 
-        let link;
-
-        if (track === null) {
-            link = `https://rtd.banenor.no/web_client/std?station=${stationCode}&layout=${layout}&content=${content}&notice=${notice}`
-        } else {
-            link = `https://rtd.kv.banenor.no/web_client/std?station=${stationCode}&header=no&content=track&track=${track}`
-        };
-        
-        interaction.reply(link);
+        try {
+            const stationCode = interaction.options.getString('station').toUpperCase();
+            const track = interaction.options.getString('track') ?? null;
+            const content = interaction.options.getString('content') ?? 'departure';
+            const layout = interaction.options.getString('layout') ?? 'landscape';
+            const notice = interaction.options.getString('notice') ?? 'yes';
+    
+            let link;
+    
+            if (track === null) {
+                link = `https://rtd.banenor.no/web_client/std?station=${stationCode}&layout=${layout}&content=${content}&notice=${notice}`
+            } else {
+                link = `https://rtd.kv.banenor.no/web_client/std?station=${stationCode}&header=no&content=track&track=${track}`
+            };
+    
+            const browser = await puppeteer.launch()
+            const page = await browser.newPage()
+    
+            if (layout === 'landscape' || track !== null ) {
+                await page.setViewport({
+                    width: 1920,
+                    height: 1080,
+                    deviceScaleFactor: 1
+                });
+            } else if (layout === 'portrait') {
+                await page.setViewport({
+                    width: 1080,
+                    height: 1920,
+                    deviceScaleFactor: 1
+                });
+            };
+    
+            await page.goto(link);
+    
+            await wait(4_000);
+    
+            await page.screenshot({ path: `${images}/screen.png` });
+    
+            if (fs.existsSync(`${images}/screen.png`)) {
+                console.log("Screenshot saved");
+                
+                await interaction.editReply({
+                    content: link,
+                    files: [{ attachment: `${images}/screen.png` }]
+                });
+    
+                fs.unlinkSync(`${images}/screen.png`)
+            } else {
+                interaction.editReply(link);
+            };
+    
+            await browser.close();
+        } catch (error) {
+            interaction.editReply('The command failed');
+            console.warn(error)
+        }
     },
 
     options: {
