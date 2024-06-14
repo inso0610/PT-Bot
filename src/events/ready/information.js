@@ -15,6 +15,7 @@ module.exports = async (client) => {
         );
 
     const boostEmbed = new EmbedBuilder()
+        .setColor('#f47fff')
         .setTitle('Booster Perks')
         .setDescription('Booster\'s in the Polar Tracks Discord Server get multiple different perks.')
         .addFields(
