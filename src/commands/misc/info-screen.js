@@ -67,45 +67,48 @@ module.exports = {
                 link = `https://rtd.kv.banenor.no/web_client/std?station=${stationCode}&header=no&content=track&track=${track}`
             };
     
-            const browser = await puppeteer.launch()
-            const page = await browser.newPage()
-    
-            if (layout === 'landscape' || track !== null ) {
-                await page.setViewport({
-                    width: 1920,
-                    height: 1080,
-                    deviceScaleFactor: 1
-                });
-            } else if (layout === 'portrait') {
-                await page.setViewport({
-                    width: 1080,
-                    height: 1920,
-                    deviceScaleFactor: 1
-                });
-            };
-    
-            await page.goto(link);
-    
-            await wait(4_000);
-    
-            await page.screenshot({ path: `${images}/screen.png` });
-    
-            if (fs.existsSync(`${images}/screen.png`)) {
-                console.log("Screenshot saved");
-                
-                await interaction.editReply({
-                    content: link,
-                    files: [{ attachment: `${images}/screen.png` }]
-                });
-    
-                fs.unlinkSync(`${images}/screen.png`)
-            } else {
+            try {
+                const browser = await puppeteer.launch()
+                const page = await browser.newPage()
+        
+                if (layout === 'landscape' || track !== null ) {
+                    await page.setViewport({
+                        width: 1920,
+                        height: 1080,
+                        deviceScaleFactor: 1
+                    });
+                } else if (layout === 'portrait') {
+                    await page.setViewport({
+                        width: 1080,
+                        height: 1920,
+                        deviceScaleFactor: 1
+                    });
+                };
+        
+                await page.goto(link);
+        
+                await wait(4_000);
+        
+                await page.screenshot({ path: `${images}/screen.png` });
+        
+                if (fs.existsSync(`${images}/screen.png`)) {
+                    console.log("Screenshot saved");
+                    
+                    await interaction.editReply({
+                        content: link,
+                        files: [{ attachment: `${images}/screen.png` }]
+                    });
+        
+                    fs.unlinkSync(`${images}/screen.png`)
+                } else {
+                    interaction.editReply(link);
+                };
+        
+                await browser.close();
+            } catch (error) {
                 interaction.editReply(link);
-            };
-    
-            await browser.close();
+            }
         } catch (error) {
-            interaction.editReply('The command failed');
             console.warn(error)
         }
     },
