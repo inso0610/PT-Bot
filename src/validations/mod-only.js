@@ -13,6 +13,6 @@ module.exports = ({ interaction, commandObj }) => {
             });
 
             return true;
-        }
-    }
+        };
+    };
 };

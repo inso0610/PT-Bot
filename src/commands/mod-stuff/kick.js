@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const modOnly = require('../../validations/mod-only');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -20,8 +21,9 @@ module.exports = {
         const kickUserId = kickUser.id;
         const reason = interaction.options.getString('reason');
         
-        interaction.reply(kickUserId)
+        interaction.reply(kickUserId);
     },
+    modOnly: true,
 
     options: {
         devOnly: false,
@@ -29,4 +31,4 @@ module.exports = {
         botPermissions: ['Administrator'],
         deleted: true,
     },
-}
+};
