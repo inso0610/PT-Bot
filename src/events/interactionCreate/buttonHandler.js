@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder } = require('discord.js');
 const model = require('../../utils/trainings.js')
 
 function getRobloxId(id) {
@@ -66,6 +66,16 @@ function scheduleTeamup(startDate, type, host) {
         });
 
     return functionResult;
+};
+
+function postToTrello(idList, name, description) {
+    const apiKey = '553fb5ca7278c746c740cfdeac53998f';
+    const apiToken = 'ATTAf286dc31c96fbd551ee76d0dfd76f85944a375a878d5ec0b74ed236753bb4b79988EF45F';
+
+    const functionResult = fetch(`https://api.trello.com/1/cards?idList=${idList}&key=${apiKey}&token=${apiToken}&name=${name}&desc=${description}`, {
+        method: 'POST',
+        headers: {'Accept': 'application/json'}
+    });
 };
 
 module.exports = async (interaction, client, message) => {
@@ -264,5 +274,116 @@ module.exports = async (interaction, client, message) => {
             embeds: [embed],
             ephemeral: true
         });
+    } else if (interaction.customId === 'acceptSuggestion') {
+        if (!interaction.member.roles.cache.has('1111370796439453777')) {
+            interaction.reply({
+                content: 'You do not have access to this button.',
+                ephemeral: true
+            });
+
+            return true;
+        };
+
+        try {
+            // Base variables
+            const acceptedSuggestions = client.channels.cache.get('1251895090952015914');
+    
+            // Variables from message
+            const message = interaction.message;
+    
+            const messageComponets = message.components[0].components;
+            const acceptButton = messageComponets[0];
+            const declineButton = messageComponets[1];
+    
+            const embed = message.embeds[0];
+            const embedData = embed.data;
+            const title = embedData.title;
+            const description = embedData.description;
+            const footer = embedData.footer;
+            const authorName = embedData.author.name;
+    
+            const thread = await client.channels.fetch(message.id);
+    
+            // code
+            acceptButton.data.disabled = true;
+            declineButton.data.disabled = true;
+    
+            const row = new ActionRowBuilder()
+                .addComponents(acceptButton, declineButton);
+    
+            interaction.message.edit({
+                components: [row]
+            });
+    
+            acceptedSuggestions.send({
+                content: `Accepted suggestion. Accepted by <@${interaction.user.id}>`,
+                embeds: [embed]
+            });
+    
+            thread.send(`<@${footer.text}> your suggestion was accepted!`);
+        
+            interaction.reply({
+                content: 'Suggestion accepted.',
+                ephemeral: true
+            });
+    
+            const trelloTitle = `${title} - ${authorName}`;
+    
+            postToTrello('64d82865454a60d3811be9a2', trelloTitle, description);
+        } catch (error) {
+            interaction.reply({
+                content: 'Button failed. Please try again later or contact Emilsen.',
+                ephemeral: true
+            });
+            console.warn(error)
+        };
+    } else if (interaction.customId === 'declineSuggestion') {
+        if (!interaction.member.roles.cache.has('1111370796439453777')) {
+            interaction.reply({
+                content: 'You do not have access to this button.',
+                ephemeral: true
+            });
+s
+            return true;
+        };
+
+        try {
+            // Variables from message
+            const message = interaction.message;
+        
+            const messageComponets = message.components[0].components;
+            const acceptButton = messageComponets[0];
+            const declineButton = messageComponets[1];
+    
+            const embed = message.embeds[0];
+            const embedData = embed.data;
+            const footer = embedData.footer;
+    
+            const thread = await client.channels.fetch(message.id);
+    
+            // code
+            acceptButton.data.disabled = true;
+            declineButton.data.disabled = true;
+    
+            const row = new ActionRowBuilder()
+                .addComponents(acceptButton, declineButton);
+    
+            interaction.message.edit({
+                components: [row]
+            });
+            
+            thread.send(`<@${footer.text}> your suggestion was declined.`);
+    
+            interaction.reply({
+                content: 'Suggestion declined.',
+                ephemeral: true
+            });
+        } catch (error) {
+            interaction.reply({
+                content: 'Button failed. Please try again later or contact Emilsen.',
+                ephemeral: true
+            });
+            console.warn(error)
+        }
     };
 };

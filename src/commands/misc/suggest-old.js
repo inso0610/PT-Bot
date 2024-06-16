@@ -1,8 +1,8 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('suggest')
+    .setName('suggesta')
     .setDescription('Sends a suggestion')
     .addStringOption((option) => 
         option
@@ -21,23 +21,7 @@ module.exports = {
             const suggestion = interaction.options.getString('suggestion');
             let suggestionTitle = interaction.options.getString('suggestion-title');
             const suggestionChannel = client.channels.cache.get('1152944134747865119');
-            //const avatarURL = "https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpeg";
-            const avatarURL = interaction.user.displayAvatarURL();
-
-            const acceptButton = new ButtonBuilder()
-                .setCustomId('acceptSuggestion')
-                .setLabel('Accept')
-                .setStyle(ButtonStyle.Success)
-                .setDisabled(false);
-
-            const declineButton = new ButtonBuilder()
-                .setCustomId('declineSuggestion')
-                .setLabel('Decline')
-                .setStyle(ButtonStyle.Danger)
-                .setDisabled(false);
-
-            const row = new ActionRowBuilder()
-                .addComponents(acceptButton, declineButton);
+            const avatarURL = "https://cdn.discordapp.com/avatars/"+interaction.user.id+"/"+interaction.user.avatar+".jpeg"
             
             const suggestionEmbed = new EmbedBuilder()
                 .setAuthor({
@@ -47,22 +31,16 @@ module.exports = {
                 })
                 .setTitle(suggestionTitle)
                 .setDescription(suggestion)
-                .setFooter({
-                    text: interaction.user.id
-                });
 
-            const suggestionMessage = await suggestionChannel.send({
-                embeds: [suggestionEmbed],
-                components: [row],
-            });
+            const suggestionMessage = await suggestionChannel.send({embeds: [suggestionEmbed]});
 
-            suggestionMessage.react('👍').then(() => suggestionMessage.react('👎'));
+            suggestionMessage.react('👍').then(() => suggestionMessage.react('👎'))
 
             if (suggestionTitle.length >= 60 ) {
                 suggestionTitle = 'Suggestion name too long to be used in thread'
-            };
+            }
 
-            /*const thread = await */suggestionMessage.startThread({
+            const thread = await suggestionMessage.startThread({
                 name: suggestionTitle,
                 autoArchiveDuration: 60,
                 reason: 'Suggestion Thread.',
@@ -74,12 +52,12 @@ module.exports = {
             });
 
         } catch (error) {
-            console.warn(`Error with suggestion command! ${error}`)
+            console.log(`Error with suggestion command! ${error}`)
             interaction.reply({
                 content: 'Command failure. Try again.',
                 ephemeral: true
-            });
-        };
+            })
+        }
     },
 
     options: {
@@ -87,6 +65,6 @@ module.exports = {
         guildOnly: false,
         userPermissions: [],
         botPermissions: ['Administrator'],
-        deleted: false,
+        deleted: true,
     },
 };
