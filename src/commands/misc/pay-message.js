@@ -13,7 +13,7 @@ function getRobloxData(id) {
                 const userInfo = [robloxID, username];
                 return userInfo;
             } catch (error) {
-                console.log(error);
+                console.warn(error);
                 return error;
             };
         });
@@ -39,7 +39,7 @@ module.exports = {
         const user = interaction.options.getUser('user');
         const amount = interaction.options.getString('amount');
 
-        const userInfo = getRobloxData(user.id)
+        const userInfo = await getRobloxData(user.id);
 
         if (!Array.isArray(userInfo)) {
             console.warn(userInfo)
@@ -54,7 +54,7 @@ module.exports = {
         const rblxName = userInfo[1];
 
         const paymentEmbed = new EmbedBuilder()
-            .setTitle('Polar Tracks Payment')
+            .setTitle('Polar Tracks Robux payout')
             .setDescription('Don\'t see it in your Robux total? It is probably on pending and Roblox will give you it once they have checked it for fraud.\n\nWe pay our staff based on activity so it may vary from month to month.\n\nFor more information don\'t hesitate to send any GA a DM.')
             .addFields(
                 { name: 'Roblox username:', value: rblxName},
@@ -75,11 +75,6 @@ module.exports = {
                 ephemeral: true
             });
         } catch (error) {
-            interaction.reply({
-                content: 'Message sent.',
-                embeds: [ paymentEmbed ],
-                ephemeral: true
-            });
             interaction.reply({
                 content: 'The command failed. Contact Emilsen.',
                 ephemeral: true
