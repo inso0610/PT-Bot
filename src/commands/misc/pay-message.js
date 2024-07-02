@@ -37,7 +37,7 @@ module.exports = {
 
     run: async ({ interaction, client, handler }) => {
         const user = interaction.options.getUser('user');
-        const amount = interaction.options.getSting('amount');
+        const amount = interaction.options.getString('amount');
 
         const userInfo = getRobloxData(user.id)
 
