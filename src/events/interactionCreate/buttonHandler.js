@@ -343,7 +343,6 @@ module.exports = async (interaction, client, message) => {
                 content: 'You do not have access to this button.',
                 ephemeral: true
             });
-s
             return true;
         };
 
