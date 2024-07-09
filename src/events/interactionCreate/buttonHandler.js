@@ -275,7 +275,7 @@ module.exports = async (interaction, client, message) => {
             ephemeral: true
         });
     } else if (interaction.customId === 'acceptSuggestion') {
-        if (!interaction.member.roles.cache.has('1111370796439453777')) {
+        if (!interaction.member.roles.cache.has('1089284397519347762')) {
             interaction.reply({
                 content: 'You do not have access to this button.',
                 ephemeral: true
@@ -338,7 +338,7 @@ module.exports = async (interaction, client, message) => {
             console.warn(error)
         };
     } else if (interaction.customId === 'declineSuggestion') {
-        if (!interaction.member.roles.cache.has('1111370796439453777')) {
+        if (!interaction.member.roles.cache.has('1089284397519347762')) {
             interaction.reply({
                 content: 'You do not have access to this button.',
                 ephemeral: true
