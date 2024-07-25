@@ -8,7 +8,7 @@ module.exports = (member, client) => {
 
     const embed = new EmbedBuilder()
         .setTitle(`Welcome ${memberUsername}!`)
-        .setDescription(`Welcome to the Polar Tracks Discord server <@${memberId}!\nHave any questions? Don't be afraid to ask anyone in our staff team.`)
+        .setDescription(`Welcome to the Polar Tracks Discord server <@${memberId}>!\nHave any questions? Don't be afraid to ask anyone in our staff team.`)
         .addFields(
             { name: 'Looking to work here?', value: 'Check out <#1156993148732583957>' },
             { name: 'Looking to get trained?', value: 'Check out <#1246904420495523925> and https://teamup.com/ksopth82jo3q9yrj4i.' },
