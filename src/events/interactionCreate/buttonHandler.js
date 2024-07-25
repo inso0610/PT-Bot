@@ -234,7 +234,7 @@ module.exports = async (interaction, client, message) => {
     } else if (interaction.customId === 'roadMapInfo') {
         const embed = new EmbedBuilder()
             .setTitle('Roadmap')
-            .setDescription('# Check out what we are working on here')
+            .setDescription('# Check out what we are working on, here')
             .addFields(
                 { name: 'Engineering and Technology:', value: 'https://trello.com/b/eA59AXF4/engineering-and-technology-board' },
                 { name: 'Operations:', value: 'https://trello.com/b/cyYBEanG/operations-board' },
