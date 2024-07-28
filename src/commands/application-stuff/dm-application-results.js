@@ -7,18 +7,47 @@ module.exports = {
 
     run: async ({ interaction, client, handler }) => {
 
-        const feedback = {
-            533678124823478278:`# Driver Manager application results:
-            ✅ 👏 | Congratulations you passed the Driver Manager application!
+        /*
+        Templates:
+        Pass: 
+        `# (Type) Manager application results:
+        ✅ 👏 | Congratulations you passed the (Type) Manager application!
                             
-            ## Feedback:
-            Gratulerer! Din søknad var utfyllende og det vi lette etter! Dessverre har du kun mulighet til å kun være en type manager. Derfor må du velge mellom PM eller DM, for å ikke skape kaos og ikke for mye jobb slik at det blir tull i systemet. Når du har valgt hvilke manager du ønsker å bli kan du sende melding til våres OM O_Tidemann eller OD Caiber06!`,
+        ## Feedback:
+        -`
 
-            1041709666167685140:`# Driver Manager application results:
-            ❌ | I'm sorry, but you have failed the Driver Manager application.
+        Fail:
+        `# (Type) Manager application results:
+        ❌ | I'm sorry, but you have failed the (Type) Manager application.
+                            
+        ## Feedback:
+        -`
+        */
+
+        const feedback = {
+            '797752888347852850':`# Signaller Manager application results:
+            ✅ 👏 | Congratulations you passed the Signaller Manager application!
                             
             ## Feedback:
-            You wrote a bit briefly, but in terms of knowledge about driving, you covered everything except for what a driver should do when approaching a signal that looks like this. Both signals apply here (Shunt signal and main signal). In this case, I would indicate that there is a signal error and contact the train conductor. Regarding the scenarios, you addressed them appropriately. However, in the scenario where a driver went AFK on the track, you didn't specify that you would contact the signaller and confront the driver. It's important to clarify that when mentioning contacting the driver, it should be after initially contacting the signaller.`
+            You answers were all short and did not explain to us why we should pick you. Even though Caiber wanted you to apply answering "Because cabier wants me" is not good enough. Your signalling knowledge is good and you passed that part however your answers in the general questions part were not good enough.`,
+
+            '796031038203494420':`# Signaller Manager application results:
+            ❌ | I'm sorry, but you have failed the Signaller Manager application.
+                            
+            ## Feedback:
+            Your answers were short in the general questions part. You knew most of the signalling theory, but yellow means that the signal is set to diverging not that the switches are getting set like you wrote.`,
+
+            '1102514225181630476':`# Signaller Manager application results:
+            ❌ | I'm sorry, but you have failed the Signaller Manager application.
+                            
+            ## Feedback:
+            Your answers in the general questions part were good and you knew the signalling theory. However there were better candidates. If you apply when the next application open's you will probably pass.`,
+            
+            '1004003667940225105':`# Signaller Manager application results:
+            ✅ 👏 | Congratulations you passed the Signaller Manager application!
+                            
+            ## Feedback:
+            Your answers in the general questions part were good and your signalling theory answers were really good.`
         };
 
         const omChat = client.channels.cache.get('1159950672322633809');
@@ -30,7 +59,7 @@ module.exports = {
         try {
             const feedbackEmbed = new EmbedBuilder()
                 .setTitle('Application Feedback')
-                .setDescription(feedback[interaction.user.id*1]);
+                .setDescription(feedback[interaction.user.id]);
 
                 const message = await interaction.user.send({
                     embeds: [feedbackEmbed]
@@ -49,60 +78,6 @@ module.exports = {
             });
             return
         };
-
-        /*let feedbackEmbed = new EmbedBuilder()
-            .setTitle('Application Feedback')
-            .setDescription(`# Driver Manager application results:
-
-            ✅ 👏 | Congratulations you passed the Driver Manager application!
-                
-            ## Feedback:
-            -`);
-
-        await interaction.deferReply({
-            content: 'Wait...',
-            ephemeral: true
-        });
-
-        const omChat = client.channels.cache.get('1159950672322633809');
-
-        omChat.send({
-            content: `Emilsen getting statistics: <@${interaction.user.id}> used </dm-results:1159940990614904895>`
-        })
-        
-        if (interaction.user.id === '') {
-            feedbackEmbed = new EmbedBuilder()
-                .setTitle('Application Feedback')
-                .setDescription(`# Signaller Manager application results:
-
-                ❌ | I'm sorry, but you have failed the Signaller Manager application.
-                
-                ## Feedback:
-                -`);
-
-            try {
-                interaction.user.send({
-                    embeds: [ feedbackEmbed ]
-                });
-                interaction.editReply({
-                content: 'Your feedback has been sent to your DM\'s.',
-                ephemeral: true
-            });
-            } catch (error) {
-                interaction.editReply({
-                    content: 'I was not able to send you a DM. Maybe try checking if you allow DM\'s from this server.',
-                    ephemeral: true
-                });
-                
-                console.log(error);
-            }
-
-        } else {
-            interaction.editReply({
-                content: `We do not have any feedback ready for you. This could be because we have not finished writing it or you have not applied for signaller manager.`,
-                ephemeral: true
-            })
-        }*/
     },
 
     options: {

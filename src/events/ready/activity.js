@@ -1,6 +1,6 @@
 const { ActivityType } = require('discord.js');
 
-let status = [
+const status = [
     {
         name: 'Polar Tracks',
         type: ActivityType.Playing,
@@ -20,6 +20,8 @@ let status = [
 ];
 
 module.exports = (client) => {
+    console.log(`${client.user.tag} is online.`)
+
     setInterval(() => {
         let random = Math.floor(Math.random() * status.length);
         client.user.setActivity(status[random]);
