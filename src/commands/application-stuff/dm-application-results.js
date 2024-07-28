@@ -29,7 +29,7 @@ module.exports = {
             ✅ 👏 | Congratulations you passed the Platform Manager application!
                             
             ## Feedback:
-            Your answers were short, but you showd that you had a good amount of knowledge on the role of Dispatcher. The only big error you did was that you did not know when proceed should be used and when shunt with caution should be used.`,
+            Your answers were short, but you show'd that you had a good amount of knowledge on the role of Dispatcher. The only big error you did was that you did not know when proceed should be used and when shunt with caution should be used.`,
 
             '606391401889923073':`# Platform Manager application results:
             ❌ | I'm sorry, but you have failed the Platform Manager application.
