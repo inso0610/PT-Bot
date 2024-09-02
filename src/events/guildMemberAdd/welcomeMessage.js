@@ -20,11 +20,7 @@ module.exports = (member, client) => {
         embeds: [ embed ]
     });
 
-    try {
-        client.users.send(memberId, {
-            embeds: [ embed ]
-        });
-    } catch (error) {
-        console.warn(`Failed to send welcome DM:\n\n${error}`);
-    };
+    client.users.send(memberId, {
+          embeds: [ embed ]
+    }).catch(e=>{console.warn(`Failed to send welcome DM:\n\n${e}`)});
 };
