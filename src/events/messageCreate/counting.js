@@ -3,13 +3,13 @@ module.exports = (message) => {
         return;
     };
 
-    console.log(message.channelId)
-
     const channelId = message.channelId.toString()
 
     if (channelId !== '1285519874138837002') {
         return;
     };
+
+    console.log(message.channelId)
 
     const counting = require('../../utils/counting.js');
 
@@ -18,6 +18,8 @@ module.exports = (message) => {
     let numberInText = Number(text);
 
     if (numberInText === NaN) {
+        console.log('MessageDeleted')
+
         message.delete();
 
         message.channel.send(`<@${message.author.id}> only numbers are allowed here!`);
