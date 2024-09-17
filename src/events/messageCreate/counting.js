@@ -5,7 +5,7 @@ module.exports = async (message) => {
         return;
     };
 
-    const channelId = message.channelId
+    const channelId = message.channelId.toString()
 
     if (channelId !== '1285519874138837002') {
         return;
