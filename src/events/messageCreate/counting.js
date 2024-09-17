@@ -19,7 +19,7 @@ module.exports = async (message) => {
 
     console.log(numberInText)
 
-    if (numberInText === NaN) {
+    if (numberInText !== numberInText) {
         console.log('MessageDeleted');
 
         message.channel.send(`<@${message.author.id}> only numbers are allowed here!`);
