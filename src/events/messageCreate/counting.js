@@ -15,14 +15,16 @@ module.exports = async (message) => {
 
     const text = message.content;
 
-    let numberInText = Number(text);
+    const numberInText = Number(text);
+
+    console.log(numberInText)
 
     if (numberInText === NaN) {
-        console.log('MessageDeleted')
-
-        message.delete();
+        console.log('MessageDeleted');
 
         message.channel.send(`<@${message.author.id}> only numbers are allowed here!`);
+
+        message.delete();
         return;
     };
 
