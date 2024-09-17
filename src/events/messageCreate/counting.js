@@ -30,22 +30,23 @@ module.exports = async (message) => {
 
         const botReply = await message.channel.send(`<@${message.author.id}> only numbers are allowed here!`);
 
+        await message.delete();
+
         await sleep(3000)
 
         botReply.delete()
 
-        await message.delete();
         return;
     };
 
     if (numberInText < 1) {
         const botReply = await message.channel.send(`<@${message.author.id}> only numbers above 0 are allowed here!`);
-
+        
+        await message.delete();
+        
         await sleep(3000)
 
         botReply.delete()
-
-        await message.delete();
         return;
     }
 
