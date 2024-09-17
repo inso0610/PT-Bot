@@ -12,4 +12,4 @@ const countingSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('counting', countingSchema);
+module.exports = mongoose.model('counting', countingSchema, 'counting');

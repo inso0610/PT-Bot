@@ -48,11 +48,11 @@ module.exports = async (message) => {
         nextNumber.lastNumberSenderId = '0';
 
         message.channel.send(`<@${message.author.id}> tried to count twice!\nThe count has been restarted.\n**The next number is 1.**`)
-    } else if (numberInText === nextNumber.nextNumber) {
+    } else if (numberInText !== nextNumber.nextNumber) {
         nextNumber.nextNumber = 1;
         nextNumber.lastNumberSenderId = '0';
 
-        message.channel.send(`<@${message.author.id}> tried to count twice!\nThe count has been restarted.\n**The next number is 1.**`)
+        message.channel.send(`<@${message.author.id}> incorrect number!\nThe correct number was **${nextNumber.nextNumber}**.\nThe count has been restarted.\n**The next number is 1.**`)
     };
 
     await nextNumber.save();
