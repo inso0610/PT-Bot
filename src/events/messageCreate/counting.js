@@ -1,3 +1,5 @@
+const counting = require('../../utils/counting.js');
+
 module.exports = async (message) => {
     if (message.author.bot) {
         return;
@@ -11,16 +13,14 @@ module.exports = async (message) => {
 
     console.log(message.channelId)
 
-    const counting = require('../../utils/counting.js');
-
     const text = message.content;
 
     const numberInText = Number(text);
 
-    console.log(numberInText)
+    //console.log(numberInText)
 
     if (numberInText !== numberInText) {
-        console.log('MessageDeleted');
+        //console.log('MessageDeleted');
 
         message.channel.send(`<@${message.author.id}> only numbers are allowed here!`);
 
