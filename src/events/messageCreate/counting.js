@@ -42,7 +42,7 @@ module.exports = async (message) => {
         nextNumber.nextNumber = numberInText + 1;
         nextNumber.lastNumberSenderId = message.author.id;
 
-        message.react('✔');
+        message.react('✅');
     } else if (message.author.id === nextNumber.lastNumberSenderId) {
         message.channel.send(`<@${message.author.id}> tried to count twice!\nThe count has been restarted.\n**The next number is 1.**`);
 
