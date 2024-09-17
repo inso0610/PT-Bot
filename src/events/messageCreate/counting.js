@@ -5,7 +5,7 @@ module.exports = async (message) => {
         return;
     };
 
-    const channelId = message.channelId.toString()
+    const channelId = message.channelId
 
     if (channelId !== '1285519874138837002') {
         return;
@@ -24,7 +24,7 @@ module.exports = async (message) => {
 
         message.channel.send(`<@${message.author.id}> only numbers are allowed here!`);
 
-        message.delete();
+        await message.delete();
         return;
     };
 
@@ -46,4 +46,6 @@ module.exports = async (message) => {
 
         message.channel.send(`<@${message.author.id}> tried to count twice!\nThe count has been restarted.\n**The next number is 1.**`)
     };
+
+    await nextNumber.save();
 };
