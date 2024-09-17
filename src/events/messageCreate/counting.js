@@ -26,7 +26,7 @@ module.exports = async (message) => {
         return;
     };
 
-    const nextNumber = await trainings.findById('66e9500b12c20d26f47cdd88').exec();
+    const nextNumber = await counting.findById('66e9500b12c20d26f47cdd88').exec();
 
     if (numberInText === nextNumber.Number && message.author.id !== nextNumber.lastNumberSenderId) {
         nextNumber.Number = numberInText + 1;
