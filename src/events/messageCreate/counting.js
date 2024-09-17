@@ -3,6 +3,8 @@ module.exports = (message) => {
         return;
     };
 
+    console.log(message.channelId)
+
     if (message.channelId !== '1285519874138837002') {
         return;
     };
