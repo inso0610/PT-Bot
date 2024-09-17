@@ -28,6 +28,8 @@ module.exports = async (message) => {
 
     const nextNumber = await counting.findById('66e9500b12c20d26f47cdd88').exec();
 
+    console.log(nextNumber.nextNumber)
+
     if (numberInText === nextNumber.nextNumber && message.author.id !== nextNumber.lastNumberSenderId) {
         nextNumber.nextNumber = numberInText + 1;
         nextNumber.lastNumberSenderId = message.author.id;
