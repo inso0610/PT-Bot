@@ -1,5 +1,11 @@
 const counting = require('../../utils/counting.js');
 
+function sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+};
+
 module.exports = async (message) => {
     if (message.author.bot) {
         return;
@@ -22,14 +28,22 @@ module.exports = async (message) => {
     if (numberInText !== numberInText) {
         //console.log('MessageDeleted');
 
-        const botReply = message.channel.send(`<@${message.author.id}> only numbers are allowed here!`);
+        const botReply = await message.channel.send(`<@${message.author.id}> only numbers are allowed here!`);
+
+        sleep(3000)
+
+        botReply.delete()
 
         await message.delete();
         return;
     };
 
     if (numberInText < 1) {
-        const botReply = message.channel.send(`<@${message.author.id}> only numbers above 0 are allowed here!`);
+        const botReply = await message.channel.send(`<@${message.author.id}> only numbers above 0 are allowed here!`);
+
+        sleep(3000)
+
+        botReply.delete()
 
         await message.delete();
         return;
