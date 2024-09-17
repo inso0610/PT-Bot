@@ -22,7 +22,7 @@ module.exports = async (message) => {
     if (numberInText !== numberInText) {
         //console.log('MessageDeleted');
 
-        message.channel.send(`<@${message.author.id}> only numbers are allowed here!`);
+        const botReply = message.channel.send(`<@${message.author.id}> only numbers are allowed here!`);
 
         await message.delete();
         return;
@@ -36,23 +36,23 @@ module.exports = async (message) => {
             nextNumber: 1,
             lastNumberSenderId: '0'
         });
-    }
-
-    console.log(nextNumber)
+    };
 
     if (numberInText === nextNumber.nextNumber && message.author.id !== nextNumber.lastNumberSenderId) {
         nextNumber.nextNumber = numberInText + 1;
         nextNumber.lastNumberSenderId = message.author.id;
+
+        message.react('✔');
     } else if (message.author.id === nextNumber.lastNumberSenderId) {
+        message.channel.send(`<@${message.author.id}> tried to count twice!\nThe count has been restarted.\n**The next number is 1.**`);
+
         nextNumber.nextNumber = 1;
         nextNumber.lastNumberSenderId = '0';
-
-        message.channel.send(`<@${message.author.id}> tried to count twice!\nThe count has been restarted.\n**The next number is 1.**`)
     } else if (numberInText !== nextNumber.nextNumber) {
+        message.channel.send(`<@${message.author.id}> incorrect number!\nThe correct number was **${nextNumber.nextNumber}**.\nThe count has been restarted.\n**The next number is 1.**`);
+
         nextNumber.nextNumber = 1;
         nextNumber.lastNumberSenderId = '0';
-
-        message.channel.send(`<@${message.author.id}> incorrect number!\nThe correct number was **${nextNumber.nextNumber}**.\nThe count has been restarted.\n**The next number is 1.**`)
     };
 
     await nextNumber.save();
