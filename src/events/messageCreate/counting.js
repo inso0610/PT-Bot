@@ -28,6 +28,13 @@ module.exports = async (message) => {
         return;
     };
 
+    if (numberInText < 1) {
+        const botReply = message.channel.send(`<@${message.author.id}> only numbers above 0 are allowed here!`);
+
+        await message.delete();
+        return;
+    }
+
     let nextNumber = await counting.findById('66e9500b12c20d26f47cdd88').exec();
 
     if (!nextNumber) {
