@@ -5,7 +5,9 @@ module.exports = (message) => {
 
     console.log(message.channelId)
 
-    if (message.channelId !== '1285519874138837002') {
+    const channelId = message.channelId.toString()
+
+    if (channelId !== '1285519874138837002') {
         return;
     };
 
