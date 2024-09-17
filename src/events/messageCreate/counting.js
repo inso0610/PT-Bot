@@ -28,7 +28,15 @@ module.exports = async (message) => {
         return;
     };
 
-    const nextNumber = await counting.findById('66e9500b12c20d26f47cdd88').exec();
+    let nextNumber = await counting.findById('66e9500b12c20d26f47cdd88').exec();
+
+    if (!nextNumber) {
+        nextNumber = new counting({
+            _id: '66e9500b12c20d26f47cdd88',
+            nextNumber: 1,
+            lastNumberSenderId: '0'
+        });
+    }
 
     console.log(nextNumber)
 
