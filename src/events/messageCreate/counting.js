@@ -11,7 +11,7 @@ module.exports = async (message) => {
         return;
     };
 
-    console.log(message.channelId)
+    //console.log(message.channelId)
 
     const text = message.content;
 
