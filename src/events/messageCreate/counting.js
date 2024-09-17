@@ -29,15 +29,15 @@ module.exports = async (message) => {
     const nextNumber = await counting.findById('66e9500b12c20d26f47cdd88').exec();
 
     if (numberInText === nextNumber.Number && message.author.id !== nextNumber.lastNumberSenderId) {
-        nextNumber.Number = numberInText + 1;
+        nextNumber.nextNumber = numberInText + 1;
         nextNumber.lastNumberSenderId = message.author.id;
     } else if (message.author.id === nextNumber.lastNumberSenderId) {
-        nextNumber.Number = 1;
+        nextNumber.nextNumber = 1;
         nextNumber.lastNumberSenderId = '0';
 
         message.channel.send(`<@${message.author.id}> tried to count twice!\nThe count has been restarted.\n**The next number is 1.**`)
-    } else if (numberInText === nextNumber.Number) {
-        nextNumber.Number = 1;
+    } else if (numberInText === nextNumber.nextNumber) {
+        nextNumber.nextNumber = 1;
         nextNumber.lastNumberSenderId = '0';
 
         message.channel.send(`<@${message.author.id}> tried to count twice!\nThe count has been restarted.\n**The next number is 1.**`)
