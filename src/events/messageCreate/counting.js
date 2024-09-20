@@ -28,33 +28,25 @@ module.exports = async (message) => {
     if (numberInText !== numberInText) {
         //console.log('MessageDeleted');
 
-        try {
-            const botReply = await message.channel.send(`<@${message.author.id}> only numbers are allowed here!`);
-    
-            await message.delete()
-    
-            await sleep(3000)
-    
-            botReply.delete()
-        } catch (error) {
-            console.warn(error)
-        }
+        const botReply = await message.channel.send(`<@${message.author.id}> only numbers are allowed here!`);
+
+        await message.delete().catch(e=>{console.warn(e)});
+
+        await sleep(3000)
+
+        botReply.delete().catch(e=>{console.warn(e)});
 
         return;
     };
 
     if (numberInText < 1) {
-        try {
-            const botReply = await message.channel.send(`<@${message.author.id}> only numbers above 0 are allowed here!`);
-            
-            await message.delete();
-            
-            await sleep(3000)
-    
-            botReply.delete()
-        } catch (error) {
-            console.warn(error)
-        }
+        const botReply = await message.channel.send(`<@${message.author.id}> only numbers above 0 are allowed here!`);
+        
+        await message.delete().catch(e=>{console.warn(e)});;
+        
+        await sleep(3000)
+
+        botReply.delete().catch(e=>{console.warn(e)});
         return;
     }
 
