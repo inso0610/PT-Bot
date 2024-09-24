@@ -13,7 +13,7 @@ module.exports = {
             .setRequired(true)),
 
     run: async ({ interaction, client, handler }) => {
-        const countChannel = client.channels.cache.get('countChannel');
+        const countChannel = client.channels.cache.get('1285519874138837002');
         const nextCount = interaction.options.getNumber('new-count')
 
         await interaction.deferReply({
