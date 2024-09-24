@@ -14,7 +14,7 @@ module.exports = {
 
     run: async ({ interaction, client, handler }) => {
         const countChannel = client.channels.cache.get('countChannel');
-        const nextCount = interaction.options.getString('new-count')
+        const nextCount = interaction.options.getNumber('new-count')
 
         await interaction.deferReply({
             ephemeral: true
@@ -36,7 +36,7 @@ module.exports = {
     
             await nextNumber.save();
     
-            trainingChannel.send({
+            countChannel.send({
                 content: `The count has been edited to: ${nextNumber.toString()}`
             });
     
