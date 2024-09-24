@@ -37,7 +37,7 @@ module.exports = {
             await nextNumber.save();
     
             countChannel.send({
-                content: `The count has been edited to: ${nextNumber.nextNumber.toString()}`
+                content: `The next number has been edited to: ${nextNumber.nextNumber.toString()}`
             });
     
             interaction.editReply({
