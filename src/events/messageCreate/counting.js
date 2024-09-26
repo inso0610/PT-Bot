@@ -25,11 +25,11 @@ module.exports = async (message) => {
 
     //console.log(numberInText)
 
-    if (message.author.id === '935889950547771512') {
-        return;
-    };
-
     if (numberInText !== numberInText) {
+        if (message.author.id === '935889950547771512') {
+            return;
+        };
+
         //console.log('MessageDeleted');
 
         const botReply = await message.channel.send(`<@${message.author.id}> only numbers are allowed here!`);
@@ -44,6 +44,10 @@ module.exports = async (message) => {
     };
 
     if (numberInText < 1) {
+        if (message.author.id === '935889950547771512') {
+            return;
+        };
+
         const botReply = await message.channel.send(`<@${message.author.id}> only numbers above 0 are allowed here!`);
         
         await message.delete().catch(e=>{console.warn(e)});; 
