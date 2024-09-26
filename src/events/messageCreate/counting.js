@@ -25,6 +25,10 @@ module.exports = async (message) => {
 
     //console.log(numberInText)
 
+    if (message.author.id === '935889950547771512') {
+        return;
+    };
+
     if (numberInText !== numberInText) {
         //console.log('MessageDeleted');
 
@@ -42,7 +46,7 @@ module.exports = async (message) => {
     if (numberInText < 1) {
         const botReply = await message.channel.send(`<@${message.author.id}> only numbers above 0 are allowed here!`);
         
-        await message.delete().catch(e=>{console.warn(e)});;
+        await message.delete().catch(e=>{console.warn(e)});; 
         
         await sleep(3000)
 
