@@ -71,6 +71,8 @@ module.exports = async (message) => {
     if (numberInText === nextNumber.nextNumber && message.author.id !== nextNumber.lastNumberSenderId) {
         nextNumber.nextNumber = numberInText + 1;
         nextNumber.lastNumberSenderId = message.author.id;
+        
+        await sleep(1000)
 
         message.react('✅');
     } else if (message.author.id === nextNumber.lastNumberSenderId) {
