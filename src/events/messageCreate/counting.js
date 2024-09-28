@@ -21,6 +21,20 @@ module.exports = async (message) => {
 
     const text = message.content;
 
+    const loweredText = text.toLowerCase()
+
+    if (loweredText.includes('0x') === true && message.author.id !== '935889950547771512' ) {
+        const botReply = await message.channel.send(`<@${message.author.id}> only numbers are allowed here!`);
+
+        await message.delete().catch(e=>{console.warn(e)});
+
+        await sleep(3000)
+
+        botReply.delete().catch(e=>{console.warn(e)});
+
+        return;
+    };
+
     const numberInText = Number(text);
 
     //console.log(numberInText)
