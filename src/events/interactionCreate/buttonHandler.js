@@ -264,10 +264,11 @@ module.exports = async (interaction, client, message) => {
         const embed = new EmbedBuilder()
             .setTitle('Routes')
             .addFields(
-                { name: 'L1:', value: 'https://docs.google.com/document/d/1KdJnZOdQn5uyjU_FCjHu6nuXu_i0GRlN_6yHUwcsKTw/edit?usp=drivesdk' },
-                { name: 'R31:', value: 'https://docs.google.com/document/d/1dmz2yEmj2FCHWZ8HaEyJAnsob8CV3sYOoQzPv8ca7BA/edit?usp=drivesdk' },
-                { name: 'RE10:', value: 'https://docs.google.com/document/d/1vsjMlxaCjoGRTAx8qkLmjuF24FMncLovNs4qZLnXRFg/edit?usp=drivesdk' },
-                { name: 'RE30:', value: 'https://docs.google.com/document/d/1CoQeuLaDlvikQgbIGzsnK203TfgZQyhfQo7nePNMgAk/edit?usp=sharing' }
+                { name: 'L1:', value: 'https://docs.google.com/document/d/1KdJnZOdQn5uyjU_FCjHu6nuXu_i0GRlN_6yHUwcsKTw/edit?usp=drive_link' },
+                { name: 'L2:', value: 'https://docs.google.com/document/d/1VKi7F_Sn_alyazmH6qdd2WC7qV9kc7EVzNfuoQS2lVk/edit?usp=drive_link' },
+                { name: 'R31:', value: 'https://docs.google.com/document/d/1dmz2yEmj2FCHWZ8HaEyJAnsob8CV3sYOoQzPv8ca7BA/edit?usp=drive_link' },
+                { name: 'RE10:', value: 'https://docs.google.com/document/d/1CoQeuLaDlvikQgbIGzsnK203TfgZQyhfQo7nePNMgAk/edit?usp=drive_link' },
+                { name: 'RE30:', value: 'https://docs.google.com/document/d/1vsjMlxaCjoGRTAx8qkLmjuF24FMncLovNs4qZLnXRFg/edit?usp=drive_link' }
             );
 
         interaction.reply({
