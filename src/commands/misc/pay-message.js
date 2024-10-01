@@ -64,24 +64,24 @@ module.exports = {
                 text: `Payment message for user with id: ${rblxId}`
             });
 
-        try {
             client.users.send(user.id, {
                 embeds: [ paymentEmbed ]
-            });
+            }).catch( e=> {
+                console.log(e);
+                interaction.reply({
+                    content: 'The command failed. Contact Emilsen.',
+                    ephemeral: true
+                });
+                return
+            })
 
             interaction.reply({
                 content: 'Message sent.',
                 embeds: [ paymentEmbed ],
                 ephemeral: true
             });
-        } catch (error) {
-            interaction.reply({
-                content: 'The command failed. Contact Emilsen.',
-                ephemeral: true
-            });
 
-            console.warn(error)
-        }
+            console.warn(error);
     },
     gaOnly: true,
 
