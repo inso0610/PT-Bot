@@ -80,8 +80,6 @@ module.exports = {
                 embeds: [ paymentEmbed ],
                 ephemeral: true
             });
-
-            console.warn(error);
     },
     gaOnly: true,
 
