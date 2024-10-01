@@ -72,7 +72,7 @@ module.exports = {
                     content: 'The command failed. Contact Emilsen.',
                     ephemeral: true
                 });
-                return
+                return;
             })
 
             interaction.reply({
