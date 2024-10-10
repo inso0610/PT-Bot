@@ -17,7 +17,7 @@ module.exports = {
             .setRequired(true)
             .addChoices(
                 { name: 'PT1', value: 'https://www.roblox.com/share?code=e6e32219daff7848849aa8a449367a83&type=Server' },
-                { name: 'PT2', value: 'https://www.roblox.com/share?code=82502c8eb749614fa836d16bcdf26ae6&type=Server' },
+                { name: 'PT2', value: 'https://www.roblox.com/share?code=fcb4fa1da60fd54ebe150cb48c08eb37&type=Server' },
                 { name: 'Custom', value: 'Custom' },
             ))
     .addStringOption((option) => 
