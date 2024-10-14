@@ -6,7 +6,7 @@ const status = [
         type: ActivityType.Playing,
     },
     {
-        name: 'Rail Cow Girl',
+        name: 'Tickets',
         type: ActivityType.Watching,
     },
     {
@@ -14,8 +14,8 @@ const status = [
         type: ActivityType.Watching,
     },
     {
-        name: 'Railroading with JM',
-        type: ActivityType.Watching,
+        name: 'with the signaller',
+        type: ActivityType.Competing,
     }
 ];
 
