@@ -16,6 +16,14 @@ const status = [
     {
         name: 'with the signaller',
         type: ActivityType.Competing,
+    },
+    {
+        name: 'RailCowGirl',
+        type: ActivityType.Watching
+    },
+    {
+        name: 'Railroading with JM',
+        type: ActivityType.Watching,
     }
 ];
 
