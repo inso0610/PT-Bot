@@ -1,7 +1,6 @@
 require('dotenv').config();
 const { Client, IntentsBitField } = require('discord.js');
 const mongoose = require('mongoose');
-//const {  CommandHandler } = require('djs-commander');
 const { CommandKit } = require('commandkit');
 const path = require('path');
 
