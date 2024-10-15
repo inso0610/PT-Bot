@@ -238,7 +238,7 @@ module.exports = async (interaction, client, message) => {
             .addFields(
                 { name: 'Engineering and Technology:', value: 'https://trello.com/b/eA59AXF4/engineering-and-technology-board' },
                 { name: 'Operations:', value: 'https://trello.com/b/cyYBEanG/operations-board' },
-                { name: 'Customer Experience:', value: 'https://trello.com/b/BpFQHHBE/customer-experience-board' }
+                { name: 'Community Team:', value: 'https://trello.com/b/BpFQHHBE/customer-experience-board' }
             );
 
         interaction.reply({
