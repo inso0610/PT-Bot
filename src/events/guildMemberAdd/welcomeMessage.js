@@ -16,7 +16,7 @@ module.exports = (member, client) => {
         );
     
     welcomeChannel.send({
-        content: `Welcome <@${memberId}>!`,
+        content: `Welcome ${memberUsername}!`,
         embeds: [ embed ]
     });
 
