@@ -231,7 +231,7 @@ module.exports = async (interaction, client, message) => {
                 embeds: [publicEmbed],
                 ephemeral: true
             });
-    } else if (interaction.customId === 'roadMapInfo') {
+    /*} else if (interaction.customId === 'roadMapInfo') {
         const embed = new EmbedBuilder()
             .setTitle('Roadmap')
             .setDescription('# Check out what we are working on, here')
@@ -244,7 +244,7 @@ module.exports = async (interaction, client, message) => {
         interaction.reply({
             embeds: [embed],
             ephemeral: true
-        });
+        });*/
     } else if (interaction.customId === 'socialMediaInfo') {
         const embed = new EmbedBuilder()
             .setTitle('Roadmap')

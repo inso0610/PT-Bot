@@ -26,10 +26,15 @@ module.exports = async (client) => {
 
     // Buttons
 
-    const roadMapButton = new ButtonBuilder()
+    /*const roadMapButton = new ButtonBuilder()
         .setCustomId('roadMapInfo')
 		.setLabel('Roadmaps')
-		.setStyle(ButtonStyle.Primary);
+		.setStyle(ButtonStyle.Primary);*/
+
+    const roadMapButton = new ButtonBuilder()
+        .setURL('https://trello.com/b/eA59AXF4/engineering-and-technology-board')
+        .setLabel('Development roadmap')
+        .setStyle(ButtonStyle.Link);
 
     const socialMediaButton = new ButtonBuilder()
         .setCustomId('socialMediaInfo')
