@@ -28,9 +28,9 @@ new CommandKit({
     commandsPath: `${__dirname}/commands`,
     eventsPath: `${__dirname}/events`,
     validationsPath: `${__dirname}/validations`,
-    devGuildIds: [''],
+    //devGuildIds: [''],
     devUserIds: ['935889950547771512'],
-    devRoleIds: ['DEV_ROLE_ID_1', 'DEV_ROLE_ID_2'],
+    //devRoleIds: ['DEV_ROLE_ID_1', 'DEV_ROLE_ID_2'],
     skipBuiltInValidations: true,
     bulkRegister: true,
 });
