@@ -68,14 +68,37 @@ function scheduleTeamup(startDate, type, host) {
     return functionResult;
 };
 
-function postToTrello(idList, name, description) {
-    const apiKey = '553fb5ca7278c746c740cfdeac53998f';
+async function postToTrello(idList, name, description) {
+    /*const apiKey = '553fb5ca7278c746c740cfdeac53998f';
     const apiToken = 'ATTAf286dc31c96fbd551ee76d0dfd76f85944a375a878d5ec0b74ed236753bb4b79988EF45F';
 
     const functionResult = fetch(`https://api.trello.com/1/cards?idList=${idList}&key=${apiKey}&token=${apiToken}&name=${name}&desc=${description}`, {
         method: 'POST',
         headers: {'Accept': 'application/json'}
-    });
+    });*/
+
+    const apiKey = 'pk_152548784_D7XNOTUV0P985AOUT0RCH4VKG1QD642V'
+
+    const query = new URLSearchParams({
+        custom_task_ids: 'false',
+    }).toString();
+
+    const resp = await fetch(
+        `https://api.clickup.com/api/v2/list/${idList}/task?${query}`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: apiKey
+            },
+            body: JSON.stringify({
+                name: name,
+                description: description,
+                tags: ['suggestion'],
+                status: 'ACCEPTED SUGGESTIONS',
+            })
+        }
+    );
 };
 
 module.exports = async (interaction, client, message) => {
@@ -330,7 +353,7 @@ module.exports = async (interaction, client, message) => {
     
             const trelloTitle = `${title} - ${authorName}`;
     
-            postToTrello('64d82865454a60d3811be9a2', trelloTitle, description);
+            postToTrello('901205295987', trelloTitle, description);
         } catch (error) {
             interaction.reply({
                 content: 'Button failed. Please try again later or contact Emilsen.',
