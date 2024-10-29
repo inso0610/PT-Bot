@@ -32,7 +32,7 @@ module.exports = async (client) => {
 		.setStyle(ButtonStyle.Primary);*/
 
     const roadMapButton = new ButtonBuilder()
-        .setURL('https://trello.com/b/eA59AXF4/engineering-and-technology-board')
+        .setURL('https://sharing.clickup.com/9012433031/b/6-901205295987-2/board')
         .setLabel('Development roadmap')
         .setStyle(ButtonStyle.Link);
 
