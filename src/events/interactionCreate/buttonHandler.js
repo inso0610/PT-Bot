@@ -312,25 +312,27 @@ module.exports = async (interaction, client, message) => {
             // Base variables
             const acceptedSuggestions = client.channels.cache.get('1251895090952015914');
     
-            // Variables from message
-            const message = interaction.message;
+           // Variables from message
+           const message = interaction.message;
     
-            const messageComponets = message.components[0].components;
-            const acceptButton = messageComponets[0];
-            const declineButton = messageComponets[1];
-    
-            const embed = message.embeds[0];
-            const embedData = embed.data;
-            const title = embedData.title;
-            const description = embedData.description;
-            const footer = embedData.footer;
-            const authorName = embedData.author.name;
-    
-            const thread = await client.channels.fetch(message.id);
-    
-            // code
-            acceptButton.data.disabled = true;
-            declineButton.data.disabled = true;
+           const messageComponets = message.components[0].components;
+           const acceptButton = messageComponets[0];
+           const declineButton = messageComponets[1];
+           const emAcceptButton = messageComponets[3];
+   
+           const embed = message.embeds[0];
+           const embedData = embed.data;
+           const title = embedData.title;
+           const description = embedData.description;
+           const footer = embedData.footer;
+           const authorName = embedData.author.name;
+   
+           const thread = await client.channels.fetch(message.id);
+   
+           // code
+           acceptButton.data.disabled = true;
+           declineButton.data.disabled = true;
+           emAcceptButton.data.data = true;
     
             const row = new ActionRowBuilder()
                 .addComponents(acceptButton, declineButton);
@@ -362,7 +364,7 @@ module.exports = async (interaction, client, message) => {
             console.warn(error)
         };
     } else if (interaction.customId === 'declineSuggestion') {
-        if (!interaction.member.roles.cache.has('1089284397519347762') && !interaction.member.roles.cache.has('1089284396282032178')) {
+        if (!interaction.member.roles.cache.has('1089284397519347762') && !interaction.member.roles.cache.has('1089284396282032178') && !interaction.member.roles.cache.has('1302284945451913308')) {
             interaction.reply({
                 content: 'You do not have access to this button.',
                 ephemeral: true
@@ -373,10 +375,11 @@ module.exports = async (interaction, client, message) => {
         try {
             // Variables from message
             const message = interaction.message;
-        
+    
             const messageComponets = message.components[0].components;
             const acceptButton = messageComponets[0];
             const declineButton = messageComponets[1];
+            const emAcceptButton = messageComponets[3];
     
             const embed = message.embeds[0];
             const embedData = embed.data;
@@ -387,6 +390,7 @@ module.exports = async (interaction, client, message) => {
             // code
             acceptButton.data.disabled = true;
             declineButton.data.disabled = true;
+            emAcceptButton.data.data = true;
     
             const row = new ActionRowBuilder()
                 .addComponents(acceptButton, declineButton);
@@ -408,5 +412,63 @@ module.exports = async (interaction, client, message) => {
             });
             console.warn(error)
         }
+    } else if (interaction.customId === 'acceptSuggestion-EM') {
+        if (!interaction.member.roles.cache.has('1302284945451913308')) {
+            interaction.reply({
+                content: 'You do not have access to this button.',
+                ephemeral: true
+            });
+
+            return true;
+        };
+
+        try {
+            // Base variables
+            const acceptedSuggestions = client.channels.cache.get('1302286236995813467');
+    
+            // Variables from message
+            const message = interaction.message;
+    
+            const messageComponets = message.components[0].components;
+            const acceptButton = messageComponets[0];
+            const declineButton = messageComponets[1];
+            const emAcceptButton = messageComponets[3];
+    
+            const embed = message.embeds[0];
+            const embedData = embed.data;
+            const footer = embedData.footer;
+    
+            const thread = await client.channels.fetch(message.id);
+    
+            // code
+            acceptButton.data.disabled = true;
+            declineButton.data.disabled = true;
+            emAcceptButton.data.data = true;
+    
+            const row = new ActionRowBuilder()
+                .addComponents(acceptButton, declineButton);
+    
+            interaction.message.edit({
+                components: [row]
+            });
+    
+            acceptedSuggestions.send({
+                content: `Accepted Community suggestion. Accepted by <@${interaction.user.id}>`,
+                embeds: [embed]
+            });
+    
+            thread.send(`<@${footer.text}> your suggestion was accepted!`);
+        
+            interaction.reply({
+                content: 'Suggestion accepted.',
+                ephemeral: true
+            });
+        } catch (error) {
+            interaction.reply({
+                content: 'Button failed. Please try again later or contact Emilsen.',
+                ephemeral: true
+            });
+            console.warn(error)
+        };
     };
 };

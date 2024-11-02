@@ -26,7 +26,7 @@ module.exports = {
 
             const acceptButton = new ButtonBuilder()
                 .setCustomId('acceptSuggestion')
-                .setLabel('Accept')
+                .setLabel('Accept-Development')
                 .setStyle(ButtonStyle.Success)
                 .setDisabled(false);
 
@@ -36,8 +36,14 @@ module.exports = {
                 .setStyle(ButtonStyle.Danger)
                 .setDisabled(false);
 
+            const acceptButtonEm = new ButtonBuilder()
+                .setCustomId('acceptSuggestion-EM')
+                .setLabel('Accept-Community')
+                .setStyle(ButtonStyle.Primary)
+                .setDisabled(false);
+
             const row = new ActionRowBuilder()
-                .addComponents(acceptButton, declineButton);
+                .addComponents(acceptButton, declineButton, acceptButtonEm);
             
             const suggestionEmbed = new EmbedBuilder()
                 .setAuthor({
