@@ -6,13 +6,13 @@ module.exports = {
     .setDescription('Sends a suggestion')
     .addStringOption((option) => 
         option
-            .setName('suggestion')
-            .setDescription('What is the suggestions?')
+            .setName('suggestion-title')
+            .setDescription('What is the suggestion title?')
             .setRequired(true))
     .addStringOption((option) => 
         option
-            .setName('suggestion-title')
-            .setDescription('What is the suggestion title?')
+            .setName('suggestion')
+            .setDescription('What is the suggestions?')
             .setRequired(true)),
 
 
