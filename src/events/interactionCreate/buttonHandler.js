@@ -312,27 +312,27 @@ module.exports = async (interaction, client, message) => {
             // Base variables
             const acceptedSuggestions = client.channels.cache.get('1251895090952015914');
     
-           // Variables from message
-           const message = interaction.message;
+            // Variables from message
+            const message = interaction.message;
     
-           const messageComponets = message.components[0].components;
-           const acceptButton = messageComponets[0];
-           const declineButton = messageComponets[1];
-           const emAcceptButton = messageComponets[3];
+            const messageComponets = message.components[0].components;
+            const acceptButton = messageComponets[0];
+            const declineButton = messageComponets[1];
+            const emAcceptButton = messageComponets[2];
    
-           const embed = message.embeds[0];
-           const embedData = embed.data;
-           const title = embedData.title;
-           const description = embedData.description;
-           const footer = embedData.footer;
-           const authorName = embedData.author.name;
+            const embed = message.embeds[0];
+            const embedData = embed.data;
+            const title = embedData.title;
+            const description = embedData.description;
+            const footer = embedData.footer;
+            const authorName = embedData.author.name;
    
-           const thread = await client.channels.fetch(message.id);
+            const thread = await client.channels.fetch(message.id);
    
-           // code
-           acceptButton.data.disabled = true;
-           declineButton.data.disabled = true;
-           emAcceptButton.data.data = true;
+            // code
+            acceptButton.data.disabled = true;
+            declineButton.data.disabled = true;
+            emAcceptButton.data.data = true;
     
             const row = new ActionRowBuilder()
                 .addComponents(acceptButton, declineButton);
@@ -379,7 +379,7 @@ module.exports = async (interaction, client, message) => {
             const messageComponets = message.components[0].components;
             const acceptButton = messageComponets[0];
             const declineButton = messageComponets[1];
-            const emAcceptButton = messageComponets[3];
+            const emAcceptButton = messageComponets[2];
     
             const embed = message.embeds[0];
             const embedData = embed.data;
@@ -432,7 +432,7 @@ module.exports = async (interaction, client, message) => {
             const messageComponets = message.components[0].components;
             const acceptButton = messageComponets[0];
             const declineButton = messageComponets[1];
-            const emAcceptButton = messageComponets[3];
+            const emAcceptButton = messageComponets[2];
     
             const embed = message.embeds[0];
             const embedData = embed.data;
