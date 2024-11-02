@@ -332,7 +332,7 @@ module.exports = async (interaction, client, message) => {
             // code
             acceptButton.data.disabled = true;
             declineButton.data.disabled = true;
-            emAcceptButton.data.data = true;
+            emAcceptButton.data.disabled = true;
     
             const row = new ActionRowBuilder()
                 .addComponents(acceptButton, declineButton, emAcceptButton);
@@ -390,7 +390,7 @@ module.exports = async (interaction, client, message) => {
             // code
             acceptButton.data.disabled = true;
             declineButton.data.disabled = true;
-            emAcceptButton.data.data = true;
+            emAcceptButton.data.disabled = true;
     
             const row = new ActionRowBuilder()
                 .addComponents(acceptButton, declineButton, emAcceptButton);
@@ -443,7 +443,7 @@ module.exports = async (interaction, client, message) => {
             // code
             acceptButton.data.disabled = true;
             declineButton.data.disabled = true;
-            emAcceptButton.data.data = true;
+            emAcceptButton.data.disabled = true;
     
             const row = new ActionRowBuilder()
                 .addComponents(acceptButton, declineButton, emAcceptButton);
