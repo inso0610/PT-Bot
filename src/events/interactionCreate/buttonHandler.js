@@ -335,7 +335,7 @@ module.exports = async (interaction, client, message) => {
             emAcceptButton.data.data = true;
     
             const row = new ActionRowBuilder()
-                .addComponents(acceptButton, declineButton);
+                .addComponents(acceptButton, declineButton, emAcceptButton);
     
             interaction.message.edit({
                 components: [row]
@@ -393,7 +393,7 @@ module.exports = async (interaction, client, message) => {
             emAcceptButton.data.data = true;
     
             const row = new ActionRowBuilder()
-                .addComponents(acceptButton, declineButton);
+                .addComponents(acceptButton, declineButton, emAcceptButton);
     
             interaction.message.edit({
                 components: [row]
@@ -446,7 +446,7 @@ module.exports = async (interaction, client, message) => {
             emAcceptButton.data.data = true;
     
             const row = new ActionRowBuilder()
-                .addComponents(acceptButton, declineButton);
+                .addComponents(acceptButton, declineButton, emAcceptButton);
     
             interaction.message.edit({
                 components: [row]
