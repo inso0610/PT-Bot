@@ -7,7 +7,7 @@ module.exports = {
     .addStringOption((option) => 
         option
             .setName('date')
-            .setDescription('What date should the training be hosted? Format: dd/mm/yyyy')
+            .setDescription('What date should the training be hosted? The date should be in UTC. Format: dd/mm/yyyy')
             .setRequired(true))
     .addStringOption((option) => 
         option
