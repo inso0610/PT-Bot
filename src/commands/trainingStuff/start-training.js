@@ -1,5 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const trainings = require('../../utils/trainings.js');
+const activity = require('../../utils/operationsActivity.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -44,6 +45,14 @@ module.exports = {
             };
 
             const training = await trainings.findByIdAndDelete(idCMD).exec();
+
+            const managerActivity = await activity.find( {discordId: training.hostDiscordId} ).exec()
+
+            if (managerActivity) {
+                managerActivity.trainings += 1;
+
+                await managerActivity.save();
+            };
 
             const linkButton = new ButtonBuilder()
 			    .setLabel('Join here!')
