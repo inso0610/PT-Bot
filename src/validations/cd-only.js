@@ -6,7 +6,7 @@ module.exports = ({ interaction, commandObj }) => {
                 ephemeral: true
             });
             return true;
-        } else if (!interaction.member.roles.cache.has('1089284398760874104') && !interaction.member.roles.cache.has('1089284396282032178')) {
+        } else if (!interaction.member.roles.cache.has('1294321619149262942') && !interaction.member.roles.cache.has('1089284396282032178')) {
             interaction.reply({
                 content: 'You do not have access to this command.',
                 ephemeral: true

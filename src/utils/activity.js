@@ -17,6 +17,10 @@ const activitySchema = new Schema({
     trainings: {
         type: Number,
         default: 0
+    },
+    events: {
+        type: Number,
+        default: 0
     }
 });
 

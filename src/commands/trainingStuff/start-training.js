@@ -1,6 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const trainings = require('../../utils/trainings.js');
-const activity = require('../../utils/operationsActivity.js');
+const activity = require('../../utils/activity.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
