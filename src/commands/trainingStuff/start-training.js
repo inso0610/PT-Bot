@@ -46,7 +46,7 @@ module.exports = {
 
             const training = await trainings.findByIdAndDelete(idCMD).exec();
 
-            const managerActivity = await activity.find( {discordId: training.hostDiscordId} ).exec()
+            const managerActivity = await activity.findOne( {discordId: training.hostDiscordId} ).exec()
 
             if (managerActivity) {
                 managerActivity.trainings += 1;
