@@ -14,7 +14,7 @@ const status = [
         type: ActivityType.Watching,
     },
     {
-        name: 'with the signaller',
+        name: 'signalling with the signaller',
         type: ActivityType.Competing,
     },
     {
