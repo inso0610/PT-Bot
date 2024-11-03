@@ -4,11 +4,11 @@ const activity = require('../../utils/activity.js');
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('edit-activity')
-    .setDescription('Add\'s activity to a manager')
+    .setDescription('Edit\'s the activity of a manager')
     .addStringOption((option) => 
         option
             .setName('type')
-            .setDescription('What type of activity are you adding?')
+            .setDescription('What type of activity are you editing?')
             .setRequired(true)
             .addChoices(
 				{ name: 'Shift', value: 'shifts' },
@@ -28,15 +28,15 @@ module.exports = {
     .addUserOption((option) => 
         option
             .setName('manager')
-            .setDescription('Who are you adding activity to?')
+            .setDescription('Who are you editing the activity of?')
             .setRequired(true)),
 
     run: async ({ interaction, client, handler }) => {
         const type =  interaction.options.getString('type');
         const manager = interaction.options.getUser('manager');
-        const operator = interaction.options.getString('operator')
+        const operator = interaction.options.getString('operator');
 
-        const managerActivity = await activity.find( {discordId: manager.id} ).exec()
+        const managerActivity = await activity.findOne( {discordId: manager.id} ).exec()
 
         if (managerActivity) {
             if (operator === 'add') {
@@ -60,6 +60,7 @@ module.exports = {
             });
         };
     },
+    dirOnly: true,
 
     options: {
         devOnly: false,
