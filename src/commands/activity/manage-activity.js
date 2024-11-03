@@ -41,7 +41,7 @@ module.exports = {
             .setRequired(true)),
 
     run: async ({ interaction, client, handler }) => {
-        interaction.deferReply({
+        await interaction.deferReply({
             ephemeral: true
         });
 
@@ -49,9 +49,17 @@ module.exports = {
         const manager = interaction.options.getUser('manager');
 
         if (activityFunction === 'create') {
+            if (await activity.findOne( {discordId: manager.id} )) {
+                interaction.editReply({
+                    content: 'This manager already exists in the system.',
+                    ephemeral: true
+                });
+                return;
+            };
+            
             const robloxId = await getRobloxId(manager.id);
-            if (Array.isArray(userInfo)) {
-                console.log(userInfo[0])
+            if (Array.isArray(robloxId)) {
+                console.log(robloxId[0])
                 interaction.editReply({
                     content: 'The command failed. Contact Emilsen.',
                     ephemeral: true
@@ -72,22 +80,22 @@ module.exports = {
             });
             
         } else if (activityFunction === 'delete' ) {
-            activity.findOneAndDelete( {discordId: manager.id} );
+            await activity.findOneAndDelete( {discordId: manager.id} );
 
             interaction.editReply({
                 content: 'Deleted successfully.',
                 ephemeral: true
             });
         } else if (activityFunction === 'reset' ) {
-            const managerActivity = await activity.find( {discordId: manager.id} ).exec();
+            const managerActivity = await activity.findOne( {discordId: manager.id} ).exec();
 
             if (managerActivity) {
                 const oldActivityEmbed = new EmbedBuilder()
                 .setTitle('Old Activity')
                 .addFields(
-                    { name: 'Shifts:', value: managerActivity.shifts },
-                    { name: 'Trainings:', value: managerActivity.trainings },
-                    { name: 'Events:', value: managerActivity.events }
+                    { name: 'Shifts:', value: managerActivity.shifts.toString() },
+                    { name: 'Trainings:', value: managerActivity.trainings.toString() },
+                    { name: 'Events:', value: managerActivity.events.toString() }
                 );
 
                 managerActivity.shifts = 0;
@@ -108,16 +116,16 @@ module.exports = {
                 });
             };
         } else if (activityFunction === 'get' ) {
-            const managerActivity = await activity.find( {discordId: manager.id} ).exec();
+            const managerActivity = await activity.findOne( {discordId: manager.id} ).exec();
 
             if (managerActivity) {
                 const activityEmbed = new EmbedBuilder()
-                .setTitle('Activity')
-                .addFields(
-                    { name: 'Shifts:', value: managerActivity.shifts },
-                    { name: 'Trainings:', value: managerActivity.trainings },
-                    { name: 'Events:', value: managerActivity.events }
-                );
+                    .setTitle('Activity')
+                    .addFields(
+                        { name: 'Shifts:', value: managerActivity.shifts.toString() },
+                        { name: 'Trainings:', value: managerActivity.trainings.toString() },
+                        { name: 'Events:', value: managerActivity.events.toString() }
+                    );  
 
                 interaction.editReply({
                     content: 'Got activity.',
@@ -130,33 +138,9 @@ module.exports = {
                     ephemeral: true
                 });
             };
-        }
-
-        const managerActivity = await activity.find( {discordId: manager.id} ).exec()
-
-        if (managerActivity) {
-            if (operator === 'add') {
-                managerActivity[type] += 1;
-            } else if (operator === 'remove') {
-                managerActivity[type] -= 1;
-            } else if (operator === 'reset') {
-                managerActivity[type] = 0;
-            };
-
-            await managerActivity.save();
-
-            interaction.reply({
-                content: 'Successfully registered',
-                ephemeral: true
-            });
-        } else {
-            interaction.reply({
-                content: 'This user is not in the activity system',
-                ephemeral: true
-            });
         };
     },
-    dirOnly: true,
+    smOnly: true,
 
     options: {
         devOnly: false,

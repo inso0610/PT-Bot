@@ -60,7 +60,7 @@ module.exports = {
             });
         };
     },
-    dirOnly: true,
+    smOnly: true,
 
     options: {
         devOnly: false,

@@ -1,66 +1,47 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const activity = require('../../utils/activity.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('edit-activity')
-    .setDescription('Edit\'s the activity of a manager')
-    .addStringOption((option) => 
-        option
-            .setName('type')
-            .setDescription('What type of activity are you editing?')
-            .setRequired(true)
-            .addChoices(
-				{ name: 'Shift', value: 'shifts' },
-				{ name: 'Training', value: 'trainings' },
-				{ name: 'Event', value: 'events' }
-			))
-    .addStringOption((option) => 
-        option
-            .setName('operator')
-            .setDescription('What do you want to do with the managers activity?')
-            .setRequired(true)
-            .addChoices(
-				{ name: 'Add', value: 'add' },
-				{ name: 'Remove', value: 'remove' },
-				{ name: 'Reset', value: 'reset' },
-			))
-    .addUserOption((option) => 
-        option
-            .setName('manager')
-            .setDescription('Who are you editing the activity of?')
-            .setRequired(true)),
+    .setName('reset-all-activity')
+    .setDescription('Reset all activity for every manager'),
 
     run: async ({ interaction, client, handler }) => {
-        const type =  interaction.options.getString('type');
-        const manager = interaction.options.getUser('manager');
-        const operator = interaction.options.getString('operator');
+        interaction.reply({
+            content: 'Reset started',
+            ephemeral: true
+        });
 
-        const managerActivity = await activity.findOne( {discordId: manager.id} ).exec()
+        const allActivity = await activity.find();
 
-        if (managerActivity) {
-            if (operator === 'add') {
-                managerActivity[type] += 1;
-            } else if (operator === 'remove') {
-                managerActivity[type] -= 1;
-            } else if (operator === 'reset') {
-                managerActivity[type] = 0;
-            };
+        const activityChannel = client.channels.cache.get('1302679726795657328');
 
-            await managerActivity.save();
+        const timestamp = Math.floor(Date.now() / 1000);
 
-            interaction.reply({
-                content: 'Successfully registered',
-                ephemeral: true
+        activityChannel.send(`**Activity reset <t:${timestamp}:F> by <@${interaction.user.id}>**`)
+
+        for (const [key, value] of Object.entries(allActivity)) {
+            const embed = new EmbedBuilder()
+                .setTitle('Activity')
+                .setDescription(`Activity for <@${value.discordId}>`)
+                .addFields(
+                    { name: 'Shifts:', value: value.shifts.toString() },
+                    { name: 'Trainings:', value: value.trainings.toString().toString() },
+                    { name: 'Events:', value: value.events.toString() }
+                );
+            
+            activityChannel.send({
+                embeds: [embed]
             });
-        } else {
-            interaction.reply({
-                content: 'This user is not in the activity system',
-                ephemeral: true
-            });
+
+            value.shifts = 0;
+            value.trainings = 0;
+            value.events = 0;
+
+            value.save();
         };
     },
-    dirOnly: true,
+    cdOnly: true,
 
     options: {
         devOnly: false,
