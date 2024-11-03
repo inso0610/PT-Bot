@@ -181,7 +181,7 @@ module.exports = async (client) => {
     // Message
     let messageEmbed = new EmbedBuilder()
         .setTitle('Trainings')
-        .setDescription("**Information about the next training's will be sent here.**")
+        .setDescription("**Information about the next trainings will be sent here.**")
         .addFields(
             { name: `Driver Trainings (${scheduledDriverTrainings.toString()} scheduled):`, value: nextDriverTrainingText },
             { name: `Conductor Trainings (${scheduledConductorTrainings.toString()} scheduled):`, value: nextConductorTrainingText },
@@ -329,7 +329,7 @@ module.exports = async (client) => {
         // Message
         messageEmbed = new EmbedBuilder()
             .setTitle('Trainings')
-            .setDescription(`**Information about the next training's will be sent here.**`)
+            .setDescription(`**Information about the next trainings will be sent here.**`)
             .addFields(
                 { name: `Driver Trainings (${scheduledDriverTrainings.toString()} scheduled):`, value: nextDriverTrainingText },
                 { name: `Conductor Trainings (${scheduledConductorTrainings.toString()} scheduled):`, value: nextConductorTrainingText },
