@@ -2,10 +2,8 @@ const { EmbedBuilder } = require('discord.js');
 
 module.exports = async (message, client) => {
     if (message.author.bot || message.guild !== null) {
-        console.log('1')
         return;
     };
-    console.log('2')
 
     console.log(message.mentions.first())
 
