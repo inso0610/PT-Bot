@@ -5,7 +5,7 @@ module.exports = async (message, client) => {
         return;
     };
 
-    if (message.isMemberMentioned(client.user)) {
+    if (message.mentions.has(client.user.id)) {
         const WelcomeEmbed = new EmbedBuilder()
             .setTitle('Welcome to our ticket system!')
             .setDescription('Please reply with the topic of your ticket.');
