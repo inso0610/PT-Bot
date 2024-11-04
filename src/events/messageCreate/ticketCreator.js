@@ -1,6 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
 
 module.exports = async (message, client) => {
+    console.log('TicketCreator Event')
+
     if (message.author.bot || message.guild !== null) {
         return;
     };
@@ -13,7 +15,7 @@ module.exports = async (message, client) => {
             .setTitle('Welcome to our ticket system!')
             .setDescription('Please reply with the topic of your ticket.');
 
-        message.reply({
+        client.users.send(message.author.id, {
             embeds: [WelcomeEmbed]
         });
     };
