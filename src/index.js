@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Client, IntentsBitField } = require('discord.js');
+const { Client, IntentsBitField, Partials } = require('discord.js');
 const mongoose = require('mongoose');
 const { CommandKit } = require('commandkit');
 const path = require('path');
@@ -13,7 +13,7 @@ const client = new Client({
         IntentsBitField.Flags.DirectMessages
     ],
     partials: [
-        "CHANNEL"
+        Partials.Channel
     ]
 });
 
