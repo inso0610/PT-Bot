@@ -16,6 +16,8 @@ module.exports = async (message, client) => {
             embeds: [WelcomeEmbed]
         });
 
+        console.log(message.content)
+
         const messageFilter = (m) => m.author === message.author;
 
         const response1 = await message.channel.awaitMessages(messageFilter, {max: 1, time: 60_000});
