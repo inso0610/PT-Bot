@@ -1,30 +1,45 @@
 const { EmbedBuilder } = require('discord.js');
 
 module.exports = async (message, client) => {
-    console.log('TicketCreator Event')
+    console.log('TicketCreator Event');
 
-    if (message.author.bot || message.guild !== null || message.content !== '<@1152626581022445599>') {
+    if (message.author.bot) {
         return;
-    };
+    }
 
     if (message.mentions.has(client.user)) {
         const WelcomeEmbed = new EmbedBuilder()
             .setTitle('Welcome to our ticket system!')
             .setDescription('Please reply with the topic of your ticket.');
 
-        await client.users.send(message.author.id, {
-            embeds: [WelcomeEmbed]
-        });
+        try {
+            // Send welcome embed to user
+            await message.author.send({ embeds: [WelcomeEmbed] }).catch();
 
-        const messageFilter = (m) => m.author === message.author;
+            const messageFilter = (m) => m.author.id === message.author.id;
 
-        const response1 = await message.channel.awaitMessages(messageFilter, {max: 1, time: 60_000});
+            const response1 = await message.channel.awaitMessages({
+                filter: messageFilter,
+                max: 1,
+                time: 60_000,
+                errors: ['time'],
+            });
 
-        if (!response1) {
-            client.users.send(message.author.id, 'The ticket creator timed out. You can ping me if you need more help.');
-            return;
+            // If a response is received, log the content
+            if (response1.size > 0) {
+                const userResponse = response1.first().content;
+                console.log(userResponse);
+
+                // Optional: Confirm receipt to user
+                await message.author.send('Thank you! We received your topic.');
+            }
+        } catch (error) {
+            // Handle cases where no message was received or there was a DM error
+            if (error instanceof Error && error.message.includes('time')) {
+                await message.author.send('The ticket creator timed out. You can ping me if you need more help.').catch();
+            } else {
+                console.error('Error sending DM:', error);
+            };
         };
-
-        console.log(response1.content);
     };
 };
