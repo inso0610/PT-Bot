@@ -12,7 +12,7 @@ module.exports = async (message, client) => {
             .setTitle('Welcome to our ticket system!')
             .setDescription('Please reply with the topic of your ticket.');
 
-        client.users.send(interaction.user.id, {
+        await client.users.send(interaction.user.id, {
             embeds: [WelcomeEmbed]
         });
 
