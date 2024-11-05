@@ -22,6 +22,7 @@ module.exports = async (message, client) => {
                 filter: messageFilter,
                 max: 1,
                 time: 60_000,
+                errors: ['time'],
             });
 
             // If a response is received, log the content
@@ -34,8 +35,11 @@ module.exports = async (message, client) => {
             }
         } catch (error) {
             // Handle cases where no message was received or there was a DM error
-            await message.author.send('The ticket creator timed out. You can ping me if you need more help.').catch();
-            console.error('Error recieving DM:', error);
+            if (error instanceof Error && error.message.includes('time')) {
+                await message.author.send('The ticket creator timed out. You can ping me if you need more help.').catch();
+            } else {
+                console.error('Error sending DM:', error);
+            };
         };
     };
 };
