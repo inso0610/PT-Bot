@@ -12,14 +12,14 @@ module.exports = async (message, client) => {
             .setTitle('Welcome to our ticket system!')
             .setDescription('Please reply with the topic of your ticket.');
 
-        await client.users.send(message.user.id, {
+        await client.users.send(message.author.id, {
             embeds: [WelcomeEmbed]
         });
 
         const response1 = await message.channel.awaitMessages(filter, {max: 1, time: 60_000});
 
         if (!response1) {
-            client.users.send(message.user.id, 'The ticket creator timed out. You can ping me if you need more help.');
+            client.users.send(message.author.id, 'The ticket creator timed out. You can ping me if you need more help.');
             return;
         };
 
