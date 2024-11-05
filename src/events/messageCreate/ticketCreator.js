@@ -18,7 +18,7 @@ module.exports = async (message, client) => {
 
         const messageFilter = (m) => m.author === message.author;
 
-        const response1 = await message.channel.awaitMessages(filter, {max: 1, time: 60_000});
+        const response1 = await message.channel.awaitMessages(messageFilter, {max: 1, time: 60_000});
 
         if (!response1) {
             client.users.send(message.author.id, 'The ticket creator timed out. You can ping me if you need more help.');
