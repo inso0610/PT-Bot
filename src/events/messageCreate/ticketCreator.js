@@ -7,8 +7,6 @@ module.exports = async (message, client) => {
         return;
     };
 
-    console.log(message.mentions.first())
-
     if (message.mentions.has(client.user)) {
         console.log('3')
         const WelcomeEmbed = new EmbedBuilder()
