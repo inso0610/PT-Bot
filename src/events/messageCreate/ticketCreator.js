@@ -3,7 +3,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = async (message, client) => {
     console.log('TicketCreator Event')
 
-    if (message.author.bot || message.guild !== null || message.content) {
+    if (message.author.bot || message.guild !== null) {
         return;
     };
 
