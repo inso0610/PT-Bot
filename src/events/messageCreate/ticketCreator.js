@@ -3,7 +3,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = async (message, client) => {
     console.log('TicketCreator Event')
 
-    if (message.author.bot || message.guild !== null) {
+    if (message.author.bot || message.guild !== null || message.content !== '<@1152626581022445599>') {
         return;
     };
 
@@ -15,8 +15,6 @@ module.exports = async (message, client) => {
         await client.users.send(message.author.id, {
             embeds: [WelcomeEmbed]
         });
-
-        console.log(message.content)
 
         const messageFilter = (m) => m.author === message.author;
 
