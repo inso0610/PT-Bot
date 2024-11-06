@@ -25,4 +25,4 @@ module.exports = {
         botPermissions: ['Administrator'],
         deleted: false,
     },
-}
+};
