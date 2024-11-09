@@ -64,12 +64,12 @@ module.exports = async (client) => {
 
     // Message
 
-    await infoChannel.send({
+    /*await infoChannel.send({
         embeds: [mainEmbed],
         components: [actionRow],
     });
 
     webhookClient.send({
         embeds: [boostEmbed]
-    })
+    })*/
 };

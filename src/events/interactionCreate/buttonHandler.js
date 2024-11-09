@@ -1,6 +1,10 @@
 const { EmbedBuilder, ActionRowBuilder } = require('discord.js');
 const model = require('../../utils/trainings.js')
 
+const tickets = require('../../utils/tickets.js');
+
+const { ticketChannels, allowedTransfers, closeTicket } = require( '../../utils/ticketChannels.js');
+
 function getRobloxId(id) {
     const functionResult = fetch(`https://api.blox.link/v4/public/guilds/1089282844657987587/discord-to-roblox/${id.toString()}`, { method: "GET", headers: { "Authorization": "66ef19b6-b0f6-41f4-b883-63d833484ac6" } })
 	    .then((response) => response.json())
@@ -470,5 +474,145 @@ module.exports = async (interaction, client, message) => {
             });
             console.warn(error)
         };
+    } else if (interaction.customId === 'claimTicket') {
+        const message = interaction.message;
+
+        const ticket = await tickets.findOne({ticketMessageId: message.id}).exec()
+
+        if (!ticket) {
+            interaction.reply({
+                content: 'The claiming failed. Please contact Emilsen so he can claim it manually for you.',
+                ephemeral: true
+            });
+            return
+        };
+
+        ticket.claimedId = interaction.user.id;
+
+        //const departmentSplit = ticket.department.split('-')
+
+        //const category = ticketChannels[departmentSplit[0]]
+
+        //const pings = category.pings;
+
+        const ticketEmbed = new EmbedBuilder()
+        .setTitle('🎫 Ticket')
+        .setDescription(`Claimed by: ${interaction.user.username}`)
+        .addFields(
+            {name: 'ID', value: String(ticket._id)},
+            {name: 'Topic', value: ticket.topic},
+            {name: 'Important note', value: ticket.importantNote},
+            {name: 'Creator', value: ticket.creatorUsername},
+            {name: 'Department', value: ticket.department},
+        );
+
+        message.edit({
+            //content: `<@&${pings[departmentSplit[1]]}>`,
+            embeds: [ticketEmbed],
+            components: []
+        });
+
+        ticket.log.push(`<@${message.author.id}> claimed this ticket.`);
+
+        ticket.save();
+
+        const ticketCreator = client.users.cache.get(ticket.creatorId);
+
+        ticketCreator.send(`Your ticket with the id: \`${String(ticket._id)}\` has been claimed by <@${interaction.user.id}>.\nTo reply to the ticket you have to add this anywhere in the message: [${String(ticket._id)}].`).catch(e => {
+            console.warn(e)
+            interaction.reply({
+                content: 'The ticket creator may not be able to see your replies, please contact Emilsen.',
+                ephemeral: true
+            });
+            return;
+        });
+
+        const claimedTicketMessage = new EmbedBuilder()
+            .setTitle('Claimed ticket')
+            .setDescription(`Ticket id: ${String(ticket._id)}`)
+            .addFields(
+                { name: 'Department', value: ticket.department },
+                { name: 'Topic', value: ticket.topic },
+                { name: 'Created by', value: ticket.creatorUsername }
+            );
+
+        const ticketCommands = new EmbedBuilder()
+            .setTitle('Ticket commands')
+            .addFields(
+                { name: `\`/ticket reply ${String(ticket._id)} (message) (prompt)\``, value: 'Send a reply to the creator of the ticket. If you want to prompt the person to close the ticket set prompt to true.'},
+                { name: `\`/ticket note ${String(ticket._id)} (message) (important)\``, value: 'Add a note to the ticket. If you set important to true it will be set as the important note.'},
+                { name: `\`/ticket questions ${String(ticket._id)}\``, value: 'Sends the questions sent by the ticket creator.'},
+                { name: `\`/ticket unassign ${String(ticket._id)}\``, value: 'Unassigns you and makes the ticket claimable for someone else.'},
+                { name: `\`/ticket transfer ${String(ticket._id)} (new category)\``, value: 'Transfers the ticket to a new department.'},
+                { name: `\`/ticket logs ${String(ticket._id)}\``, value: 'Sends the ticket logs.'},
+                { name: `\`/ticket info ${String(ticket._id)}\``, value: 'Send the ticket information.'},
+                { name: `\`/ticket notes ${String(ticket._id)}\``, value: 'Sends all ticket notes.'},
+                { name: `\`/ticket close ${String(ticket._id)}\``, value: 'Closes the ticket.'}
+            );
+
+        interaction.user.send({
+            embeds: [claimedTicketMessage, ticketCommands]
+        }).catch(e => {
+            interaction.reply({
+                content: `I could not send you the ticket information. Do \`/ticket info ${String(ticket._id)}\` to send it manually.`,
+                ephemeral: true
+            });
+
+            console.warn(e);
+
+            return;
+        });
+
+        interaction.reply({
+            content: 'The ticket has been claimed. Please check your DMs.',
+            ephemeral: true
+        })
+    } else if (interaction.customId === 'closeTicket-Yes') {
+        const message = interaction.message;
+    
+        const messageComponets = message.components[0].components;
+        const yesButton = messageComponets[0];
+        const noButton = messageComponets[1];
+
+        const embed = message.embeds[0];
+        const embedData = embed.data;
+        const footer = embedData.footer;
+
+        closeTicket(footer.text, interaction, client)
+
+        yesButton.data.disabled = true;
+        noButton.data.disabled = true;
+
+        const row = new ActionRowBuilder()
+            .addComponents(yesButton, noButton);
+    
+        message.edit({
+            components: [row]
+        });
+    } else if (interaction.customId === 'closeTicket-No') {
+        const message = interaction.message;
+    
+        const messageComponets = message.components[0].components;
+        const yesButton = messageComponets[0];
+        const noButton = messageComponets[1];
+
+        const embed = message.embeds[0];
+        const embedData = embed.data;
+        const footer = embedData.footer;
+
+        yesButton.data.disabled = true;
+        noButton.data.disabled = true;
+
+        const row = new ActionRowBuilder()
+            .addComponents(yesButton, noButton);
+    
+        message.edit({
+            components: [row]
+        });
+
+        interaction.reply({
+            content:'Ticket closure canceled.',
+            ephemeral: true
+        });
     };
 };
