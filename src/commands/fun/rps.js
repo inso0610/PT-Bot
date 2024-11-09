@@ -24,7 +24,7 @@ module.exports = {
         try {
             if (selection === 'Rock' && botSelection === 1) {
                 gameEmbed = new EmbedBuilder()
-                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Assistance`)
+                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Bot`)
                 .setDescription(`Your selection: ${selection}
                 Bot's selection: Rock
                 Result: Tie`);
@@ -34,7 +34,7 @@ module.exports = {
                 });
             } else if (selection === 'Rock' && botSelection === 2) {
                 gameEmbed = new EmbedBuilder()
-                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Assistance`)
+                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Bot`)
                 .setDescription(`Your selection: ${selection}
                 Bot's selection: Paper
                 Result: Bot won`);
@@ -44,7 +44,7 @@ module.exports = {
                 });
             } else if (selection === 'Rock' && botSelection === 3) {
                 gameEmbed = new EmbedBuilder()
-                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Assistance`)
+                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Bot`)
                 .setDescription(`Your selection: ${selection}
                 Bot's selection: Scissors
                 Result: You won`);
@@ -54,7 +54,7 @@ module.exports = {
                 });
             } else if (selection === 'Paper' && botSelection === 1) {
                 gameEmbed = new EmbedBuilder()
-                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Assistance`)
+                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Bot`)
                 .setDescription(`Your selection: ${selection}
                 Bot's selection: Rock
                 Result: You won`);
@@ -64,7 +64,7 @@ module.exports = {
                 });
             } else if (selection === 'Paper' && botSelection === 2) {
                 gameEmbed = new EmbedBuilder()
-                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Assistance`)
+                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Bot`)
                 .setDescription(`Your selection: ${selection}
                 Bot's selection: Paper
                 Result: Tie`);
@@ -74,7 +74,7 @@ module.exports = {
                 });
             } else if (selection === 'Paper' && botSelection === 3) {
                 gameEmbed = new EmbedBuilder()
-                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Assistance`)
+                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Bot`)
                 .setDescription(`Your selection: ${selection}
                 Bot's selection: Scissors
                 Result: Bot won`);
@@ -84,7 +84,7 @@ module.exports = {
                 });
             } else if (selection === 'Scissors' && botSelection === 1) {
                 gameEmbed = new EmbedBuilder()
-                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Assistance`)
+                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Bot`)
                 .setDescription(`Your selection: ${selection}
                 Bot's selection: Rock
                 Result: Bot won`);
@@ -94,7 +94,7 @@ module.exports = {
                 });
             } else if (selection === 'Scissors' && botSelection === 2) {
                 gameEmbed = new EmbedBuilder()
-                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Assistance`)
+                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Bot`)
                 .setDescription(`Your selection: ${selection}
                 Bot's selection: Paper
                 Result: You won`);
@@ -104,7 +104,7 @@ module.exports = {
                 });
             } else if (selection === 'Scissors' && botSelection === 3) {
                 gameEmbed = new EmbedBuilder()
-                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Assistance`)
+                .setTitle(`Rock Paper Scissors: ${interaction.user.tag} vs PT Bot`)
                 .setDescription(`Your selection: ${selection}
                 Bot's selection: Scissors
                 Result: Tie`);

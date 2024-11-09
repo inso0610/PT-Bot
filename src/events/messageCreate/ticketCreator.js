@@ -1,8 +1,38 @@
 const { EmbedBuilder } = require('discord.js');
 
-module.exports = async (message, client) => {
-    console.log('TicketCreator Event');
+const sendDM = async (message) => {
+    return message.author.send({ content: message }).catch(e => {
+        message.reply({
+            content: "Oooof (Insert train crash noises) I can't DM you, please check your DM settings!"
+        }).catch(e => {
+            console.warn(e);
+        });
+        console.warn(e);
+        throw e; // Stop further execution if DM fails
+    });
+};
 
+const collectResponse = async (prompt) => {
+    await sendDM(prompt);
+
+    return new Promise((resolve, reject) => {
+        const collector = message.user.dmChannel.createMessageCollector({
+            filter: i => i.author.id === message.author.id,
+            time: 60000,
+            max: 1
+        });
+
+        collector.on('collect', i => resolve(i.content));
+        collector.on('end', (_, reason) => {
+            if (reason === 'time') {
+                message.author.send("You took too long to respond. Please try again.");
+                reject(new Error("Timeout"));
+            }
+        });
+    });
+};
+
+module.exports = async (message, client) => {
     if (message.author.bot) {
         return;
     }
@@ -10,36 +40,30 @@ module.exports = async (message, client) => {
     if (message.mentions.has(client.user)) {
         const WelcomeEmbed = new EmbedBuilder()
             .setTitle('Welcome to our ticket system!')
-            .setDescription('Please reply with the topic of your ticket.');
+            .setDescription('Let\'s start creating your ticket.');
 
         try {
-            // Send welcome embed to user
+            // If the user already has a ticket ask if the person wants to create a new one
+
             await message.author.send({ embeds: [WelcomeEmbed] }).catch();
 
-            const messageFilter = (m) => m.author.id === message.author.id;
+            const ticketTopic = await collectResponse('Please reply with the topic of your ticket.');
 
-            const response1 = await message.channel.awaitMessages({
-                filter: messageFilter,
-                max: 1,
-                time: 60_000,
-                errors: ['time'],
-            });
+            const ticketDescription = await collectResponse('Please reply with a more detailed description of your ticket.')
 
-            // If a response is received, log the content
-            if (response1.size > 0) {
-                const userResponse = response1.first().content;
-                console.log(userResponse);
+            const additionalComments = await collectResponse('Please reply with any additional comments.')
 
-                // Optional: Confirm receipt to user
-                await message.author.send('Thank you! We received your topic.');
-            }
+            // Ask if everything is correct
+
+            // Create ticket in MongoDB
+
+            // Respond that the ticket was created
+
+            // Send message in tickets channel
         } catch (error) {
-            // Handle cases where no message was received or there was a DM error
-            if (error instanceof Error && error.message.includes('time')) {
-                await message.author.send('The ticket creator timed out. You can ping me if you need more help.').catch();
-            } else {
-                console.error('Error sending DM:', error);
-            };
+            await message.author.send('Something failed in the ticket creation system.').catch();
+
+            console.warn(`Ticket creator error: ${error}`);
         };
     };
 };
