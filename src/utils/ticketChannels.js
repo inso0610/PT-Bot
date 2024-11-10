@@ -97,7 +97,14 @@ async function closeTicket(id, interaction, client) {
 
     ticketMessage.delete();
 
-    const ticketCreator = client.users.cache.get(ticket.creatorId);
+    const ticketCreator = await client.users.fetch(ticket.creatorId);
+
+    if (!ticketCreator) {
+        return interaction.reply({
+            content: 'Could not find the user.',
+            ephemeral: true
+        });
+    };
 
     ticketCreator.send(`The ticket with the id \`${String(ticket._id)}\` was closed by <@${interaction.user.id}>`).catch(e => {
         console.warn(e);
@@ -107,7 +114,14 @@ async function closeTicket(id, interaction, client) {
         });
     });
 
-    const claimedUser = client.users.cache.get(ticket.claimedId);
+    const claimedUser = await client.users.fetch(ticket.claimedId);
+
+    if (!claimedUser) {
+        return interaction.reply({
+            content: 'Could not find the user.',
+            ephemeral: true
+        });
+    };
 
     claimedUser.send(`The ticket with the id \`${String(ticket._id)}\` was closed by <@${interaction.user.id}>`).catch(e => {
         console.warn(e);

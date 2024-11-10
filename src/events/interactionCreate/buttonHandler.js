@@ -484,7 +484,7 @@ module.exports = async (interaction, client, message) => {
                 content: 'The claiming failed. Please contact Emilsen so he can claim it manually for you.',
                 ephemeral: true
             });
-            return
+            return;
         };
 
         ticket.claimedId = interaction.user.id;
@@ -496,15 +496,15 @@ module.exports = async (interaction, client, message) => {
         //const pings = category.pings;
 
         const ticketEmbed = new EmbedBuilder()
-        .setTitle('🎫 Ticket')
-        .setDescription(`Claimed by: ${interaction.user.username}`)
-        .addFields(
-            {name: 'ID', value: String(ticket._id)},
-            {name: 'Topic', value: ticket.topic},
-            {name: 'Important note', value: ticket.importantNote},
-            {name: 'Creator', value: ticket.creatorUsername},
-            {name: 'Department', value: ticket.department},
-        );
+            .setTitle('🎫 Ticket')
+            .setDescription(`Claimed by: ${interaction.user.username}`)
+            .addFields(
+                {name: 'ID', value: String(ticket._id)},
+                {name: 'Topic', value: ticket.topic},
+                {name: 'Important note', value: ticket.importantNote},
+                {name: 'Creator', value: ticket.creatorUsername},
+                {name: 'Department', value: ticket.department},
+            );
 
         message.edit({
             //content: `<@&${pings[departmentSplit[1]]}>`,
@@ -512,11 +512,19 @@ module.exports = async (interaction, client, message) => {
             components: []
         });
 
-        ticket.log.push(`<@${message.author.id}> claimed this ticket.`);
+        ticket.log.push(`<@${interaction.user.id}> claimed this ticket.`);
 
         ticket.save();
 
-        const ticketCreator = client.users.cache.get(ticket.creatorId);
+        const ticketCreator = await client.users.fetch(ticket.creatorId);
+
+        if (!ticketCreator) {
+            interaction.reply({
+                content: 'Could not find the ticket creator.',
+                ephemeral: true
+            });
+            return;
+        };
 
         ticketCreator.send(`Your ticket with the id: \`${String(ticket._id)}\` has been claimed by <@${interaction.user.id}>.\nTo reply to the ticket you have to add this anywhere in the message: [${String(ticket._id)}].`).catch(e => {
             console.warn(e)

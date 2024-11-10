@@ -51,7 +51,7 @@ module.exports = async (message, client) => {
     
         return new Promise((resolve, reject) => {
             const collector = message.author.dmChannel.createMessageCollector({
-                filter: i => i.content === 'Yes' || 'No',
+                filter: i => i.content.toLowerCase() === 'yes' || i.content.toLowerCase() === 'no',
                 time: 60000,
                 max: 1
             });
@@ -102,7 +102,7 @@ module.exports = async (message, client) => {
                     return;
                 };
 
-                if (existingResponse === 'No') {
+                if (existingResponse.toLowerCase() === 'no') {
                     sendDM('The ticket creation process has been stopped.');
                     return;
                 };
@@ -110,7 +110,7 @@ module.exports = async (message, client) => {
 
             // Ask important questions
 
-            const ticketTopic = await collectResponse('Please reply with the topic of your ticket. (Images or videos need to be added as a link)');
+            const ticketTopic = await collectResponse('What is the topic of your ticket? (Images or videos need to be added as a link)');
 
             if (Array.isArray(ticketTopic)) {
                 return;
@@ -145,7 +145,7 @@ module.exports = async (message, client) => {
                 return;
             };
 
-            if (confimationResponse === 'No') {
+            if (confimationResponse.toLowerCase() === 'no') {
                 sendDM('The ticket creation process has been stopped.')
                 return;
             };

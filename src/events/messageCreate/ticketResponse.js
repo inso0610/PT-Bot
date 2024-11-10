@@ -61,7 +61,14 @@ module.exports = async (message, client) => {
 
     ticket.save();
 
-    const claimedUser = client.users.cache.get(ticket.claimedId);
+    const claimedUser = await client.users.fetch(ticket.claimedId);
+
+    if (!claimedUser) {
+        return interaction.editReply({
+            content: 'Could not find the user.',
+            ephemeral: true
+        });
+    };
 
     claimedUser.send(`Reply from <@${message.author.id}> for the ticket with the id \`${String(ticket._id)}\`:\n\`\`\`${content}\`\`\``).catch(e => {    
         message.reply({

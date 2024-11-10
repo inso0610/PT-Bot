@@ -37,7 +37,7 @@ const ticketSchema = new Schema({
     },
     notes: {
         type: Array,
-        default: ['No imporant note.']
+        default: []
     },
     log: {
         type: Array,
