@@ -354,18 +354,21 @@ module.exports = {
                 components: [row]
             });
 
-            const claimedUser = await client.users.fetch(ticket.claimedId);
+            const creator = await client.users.fetch(ticket.creatorId);
 
-            if (!claimedUser) {
+            if (!creator) {
                 return interaction.reply({
                     content: 'Could not find the user.',
                     ephemeral: true
                 });
             };
 
-            claimedUser.send(`<@${interaction.user.id}> unclaimed your ticket.`).catch(e => {
+            creator.send(`<@${interaction.user.id}> unclaimed your ticket.`).catch(e => {
                 console.warn(e);
-                return;
+                return interaction.reply({
+                    content: 'The creator could not recieve the unclaim message.',
+                    ephemeral: true
+                })
             });
 
             interaction.reply({
