@@ -51,7 +51,7 @@ module.exports = async (message, client) => {
     
         return new Promise((resolve, reject) => {
             const collector = message.author.dmChannel.createMessageCollector({
-                filter: i => i.content.toLowerCase() === 'yes' || i.content.toLowerCase() === 'no',
+                filter: i => i.content.toLowerCase() === 'yes' && i.author.id === message.author.id || i.content.toLowerCase() && i.author.id === message.author.id === 'no',
                 time: 60000,
                 max: 1
             });
@@ -75,7 +75,7 @@ module.exports = async (message, client) => {
     
         return new Promise((resolve, reject) => {
             const collector = message.author.dmChannel.createMessageCollector({
-                filter: i => i.content.toLowerCase() === 'english' || i.content.toLowerCase() === 'norwegian',
+                filter: i => i.content.toLowerCase() === 'english' && i.author.id === message.author.id || i.content.toLowerCase() === 'norwegian' && i.author.id === message.author.id,
                 time: 60000,
                 max: 1
             });
@@ -153,7 +153,9 @@ module.exports = async (message, client) => {
                 return;
             };
 
-            const languageSelection = await collectResponseLang('What language do you want support in? We only support English and Norwegian.').toUpperCase();
+            const languageSelectionPrompt = await collectResponseLang('What language do you want support in? We only support English and Norwegian.');
+
+const languageSelection = languageSelectionPrompt.toUpperCase()
 
             if (Array.isArray(languageSelection)) {
                 return;
