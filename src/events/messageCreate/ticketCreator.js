@@ -155,7 +155,7 @@ module.exports = async (message, client) => {
 
             const languageSelectionPrompt = await collectResponseLang('What language do you want support in? We only support English and Norwegian.');
 
-const languageSelection = languageSelectionPrompt.toUpperCase()
+const languageSelection = languageSelectionPrompt.toUpperCase();
 
             if (Array.isArray(languageSelection)) {
                 return;
