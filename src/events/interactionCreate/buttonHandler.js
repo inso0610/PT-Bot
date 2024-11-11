@@ -504,6 +504,7 @@ module.exports = async (interaction, client, message) => {
                 {name: 'Important note', value: ticket.importantNote},
                 {name: 'Creator', value: ticket.creatorUsername},
                 {name: 'Department', value: ticket.department},
+                {name: 'Language', value: ticket.language}
             );
 
         message.edit({

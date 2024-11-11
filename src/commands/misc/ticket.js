@@ -232,6 +232,7 @@ module.exports = {
                     {name: 'Important note', value: ticket.importantNote},
                     {name: 'Creator', value: ticket.creatorUsername},
                     {name: 'Department', value: ticket.department},
+                    {name: 'Language', value: ticket.language}
                 );
     
                 ticketMessage.edit({
@@ -336,7 +337,8 @@ module.exports = {
                     {name: 'Topic', value: ticket.topic},
                     {name: 'Important note', value: ticket.importantNote},
                     {name: 'Creator', value: ticket.creatorUsername},
-                    {name: 'Department', value: ticket.department}
+                    {name: 'Department', value: ticket.department},
+                    {name: 'Language', value: ticket.language}
                 );
         
             const claimButton = new ButtonBuilder()
@@ -377,7 +379,7 @@ module.exports = {
             });
             
         } else if (subcommand === "transfer") {
-            interaction.deferReply({
+            await interaction.deferReply({
                 ephemeral: true
             });
 
@@ -438,12 +440,12 @@ module.exports = {
                 .setTitle('🎫 Ticket')
                 .setDescription('Awaiting to be claimed')
                 .addFields(
-                    {name: 'Transfered from', value: oldDepartment},
                     {name: 'ID', value: String(ticket._id)},
                     {name: 'Topic', value: ticket.topic},
                     {name: 'Important note', value: ticket.importantNote},
                     {name: 'Creator', value: ticket.creatorUsername},
-                    {name: 'Department', value: ticket.department}
+                    {name: 'Department', value: ticket.department},
+                    {name: 'Language', value: ticket.language}
                 );
         
             const claimButton = new ButtonBuilder()
@@ -456,7 +458,7 @@ module.exports = {
                 .addComponents(claimButton);
 
             const ticketMessage = await channel.send({
-                content: `<@&${pings[departmentSplit[1]]}>`,
+                content: `<@&${pings[departmentSplit[1]]} Transfered from: ${oldDepartment}>`,
                 embeds: [ticketEmbed],
                 components: [row]
             });

@@ -66,6 +66,30 @@ module.exports = async (message, client) => {
         });
     };
 
+    const collectResponseLang = async (prompt) => {
+        const DM = await sendDM(prompt);
+
+        if (Array.isArray(DM)) {
+            return DM
+        };
+    
+        return new Promise((resolve, reject) => {
+            const collector = message.author.dmChannel.createMessageCollector({
+                filter: i => i.content.toLowerCase() === 'english' || i.content.toLowerCase() === 'norwegian',
+                time: 60000,
+                max: 1
+            });
+    
+            collector.on('collect', i => resolve(i.content));
+            collector.on('end', (_, reason) => {
+                if (reason === 'time') {
+                    message.author.send("You took too long to respond. Please try again.");
+                    reject(new Error("Timeout"));
+                }
+            });
+        });
+    };
+
     if (message.author.bot) {
         return;
     };
@@ -93,7 +117,8 @@ module.exports = async (message, client) => {
                         {name: 'Id', value: String(exitingTicket._id)},
                         {name: 'Topic', value: exitingTicket.topic},
                         {name: 'Description', value: exitingTicket.description},
-                        {name: 'Comments', value: exitingTicket.comments}
+                        {name: 'Comments', value: exitingTicket.comments},
+                        {name: 'Language', value: exitingTicket.language}  
                     );
                 
                 const existingResponse = await collectResponseYesNo({embeds: [exitstingEmbed]})
@@ -128,6 +153,12 @@ module.exports = async (message, client) => {
                 return;
             };
 
+            const languageSelection = await collectResponseLang('What language do you want support in? We only support English and Norwegian.').toUpperCase();
+
+            if (Array.isArray(languageSelection)) {
+                return;
+            };
+
             // Ask if everything is correct
 
             const confirmationEmbed = new EmbedBuilder()
@@ -136,7 +167,8 @@ module.exports = async (message, client) => {
                     .addFields(
                         {name: 'Topic', value: ticketTopic},
                         {name: 'Description', value: ticketDescription},
-                        {name: 'Comments', value: additionalComments}
+                        {name: 'Comments', value: additionalComments},
+                        {name: 'Language', value: languageSelection}
                     );
 
             const confimationResponse = await collectResponseYesNo({embeds: [confirmationEmbed]});
@@ -166,7 +198,8 @@ module.exports = async (message, client) => {
                 topic: ticketTopic,
                 description: ticketDescription,
                 comments: additionalComments,
-                ticketMessageId: ''
+                ticketMessageId: '',
+                language: languageSelection 
             });
 
             const departmentSplit = ticket.department.split('-')
@@ -183,7 +216,8 @@ module.exports = async (message, client) => {
                     {name: 'Topic', value: ticket.topic},
                     {name: 'Important note', value: ticket.importantNote},
                     {name: 'Creator', value: ticket.creatorUsername},
-                    {name: 'Department', value: ticket.department}
+                    {name: 'Department', value: ticket.department},
+                    {name: 'Language', value: ticket.language}
                 );
             
             const claimButton = new ButtonBuilder()

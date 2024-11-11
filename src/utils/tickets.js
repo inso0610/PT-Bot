@@ -46,7 +46,11 @@ const ticketSchema = new Schema({
     ticketMessageId: {
         type:String,
         required: true
-    }
+    },
+    language: {
+        type:String,
+        required: true
+    },
 });
 
 module.exports = mongoose.model('tickets', ticketSchema);
