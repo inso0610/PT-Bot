@@ -51,7 +51,7 @@ module.exports = async (message, client) => {
     
         return new Promise((resolve, reject) => {
             const collector = message.author.dmChannel.createMessageCollector({
-                filter: i => i.content.toLowerCase() === 'yes' && i.author.id === message.author.id || i.content.toLowerCase() && i.author.id === message.author.id === 'no',
+                filter: i => i.content.toLowerCase() === 'yes' && i.author.id === message.author.id || i.content.toLowerCase() === 'no' && i.author.id === message.author.id,
                 time: 60000,
                 max: 1
             });
