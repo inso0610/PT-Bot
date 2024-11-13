@@ -105,7 +105,7 @@ async function postToTrello(idList, name, description) {
     );
 };
 
-module.exports = async (interaction, client, message) => {
+module.exports = async (interaction, client) => {
     if(!interaction.isButton()) return;
 
     if(interaction.customId === "create-training") {
