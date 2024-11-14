@@ -54,11 +54,11 @@ module.exports = {
             if (member.roles.cache.has('1089284413684199474') || member.roles.cache.has('1089284414976049272') || member.roles.cache.has('1089284411763204197') || member.roles.cache.has('1089284410332942366')) {
                 activityRequirement = activityRequirements['DM-SM'];
 
-                pings = '<@1089284408042848377> <@1089284399830409337>';
+                pings = '<@&1089284408042848377> <@&1089284399830409337>';
             } else if (member.roles.cache.has('1089284409250824264')) {
                 activityRequirement = activityRequirements.EM;
 
-                pings = '<@1294321619149262942> <@1294321619149262942>';
+                pings = '<@&1294321619149262942>';
             };
     
             const missingActivity = {
