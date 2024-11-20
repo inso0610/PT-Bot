@@ -1,46 +1,50 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const activity = require('../../utils/activity.js');
 const activityRequirements = require('../../utils/activityRequirement.js');
+const storedDates = require('../../utils/storedDates.js');
 
-module.exports = {
-    data: new SlashCommandBuilder()
-    .setName('reset-all-activity')
-    .setDescription('Reset all activity for every manager'),
+module.exports = (client) => {
+    const guild = client.guilds.cache.get('1089282844657987587');
 
-    run: async ({ interaction, client, handler }) => {
-        interaction.reply({
-            content: 'Reset started',
-            ephemeral: true
-        });
+    const activityChannel = client.channels.cache.get('1302679726795657328');
 
-        const guild = client.guilds.cache.get('1089282844657987587');
+    async function resetAllActivity() {
+        const resetDate = Date.now();
+
+        const dateFromNew = new Date(resetDate);
+
+        let lastReset = await storedDates.findOne({ type: 'Last Reset' }).exec();
+
+        if (!lastReset) {
+            lastReset = new storedDates({
+                type: 'Last Reset',
+                date: resetDate
+            });
+        } else if (lastReset.date.getMonth() === dateFromNew.getMonth()) {
+            return;
+        };
+
+        lastReset.date = resetDate;
+
+        lastReset.save();
 
         const allActivity = await activity.find().exec();
 
-        const activityChannel = client.channels.cache.get('1302679726795657328');
+        const timestamp = Math.floor(resetDate / 1000);
 
-        const timestamp = Math.floor(Date.now() / 1000);
+        activityChannel.send(`**Activity reset <t:${timestamp}:F> automatically.**`)
 
-        activityChannel.send(`**Activity reset <t:${timestamp}:F> by <@${interaction.user.id}>**`)
+        console.log('Will reset')
 
         for (const [key, value] of Object.entries(allActivity)) {
             if (!guild) {
-                interaction.reply({
-                    content: 'Could not fetch guild.',
-                    ephemeral: true
-                });
-                return true;
+                return;
             }
             
             const member = await guild.members.fetch(value.discordId);
     
-            if (!member) {
-                interaction.reply({
-                    content: 'Could not fetch member.',
-                    ephemeral: true
-                });
-    
-                return true;
+            if (!member) {   
+                return;
             };
 
             let activityRequirement = {
@@ -93,14 +97,7 @@ module.exports = {
 
             value.save();
         };
-    },
-    cdOnly: true,
+    };
 
-    options: {
-        devOnly: false,
-        guildOnly: false,
-        userPermissions: [],
-        botPermissions: ['Administrator'],
-        deleted: false,
-    },
-}
+    setInterval(resetAllActivity, 60_000)
+};

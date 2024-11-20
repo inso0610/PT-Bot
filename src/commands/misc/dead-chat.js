@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js')
-const deadChat = require('../../utils/deadChat.js');
+const deadChat = require('../../utils/storedDates.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -28,18 +28,19 @@ module.exports = {
             deadChatSchema.save();
         };
 
-        let deadChatSchema = await deadChat.findOne().exec();
+        let deadChatSchema = await deadChat.findOne( {type: 'Dead Chat'} ).exec();
 
             if (!deadChatSchema) {
                 deadChatSchema = new deadChat({
-                    lastPing: Date.now()
+                    type: 'Dead Chat',
+                    date: Date.now()
                 });
 
                 ping()
             } else {
-                const difference = Math.round(Date.now() - deadChatSchema.lastPing) / 1000;
+                const difference = Math.round(Date.now() - deadChatSchema.date.getTime()) / 1000;
 
-                deadChatSchema.lastPing = Date.now();
+                deadChatSchema.date = Date.now();
 
                 console.log(difference);
 
