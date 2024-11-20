@@ -119,6 +119,12 @@ module.exports = async (message, client) => {
             const allExisting = await tickets.find({creatorId: message.author.id}).exec();
 
             if (exitingTicket ) {
+                if (allExisting.length > 1) {
+                    sendDM('You already have two tickets. Please request for one of them to be closed before creating a new one.');
+
+                    return;
+                };
+
                 const exitstingEmbed = new EmbedBuilder()
                     .setTitle('You already have a ticket created')
                     .setDescription('Do you want to create a new one? Your old one will NOT be closed.\n\nPlease reply with Yes/No')
