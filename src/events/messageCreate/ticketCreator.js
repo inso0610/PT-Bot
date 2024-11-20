@@ -114,7 +114,7 @@ module.exports = async (message, client) => {
 
             // If the user already has a ticket ask if the person wants to create a new one
             const exitingTicket = await tickets.findOne({creatorId: message.author.id}).exec();
-            const allExisting = await ticket.find({creatorId: message.author.id}).exec();
+            const allExisting = await tickets.find({creatorId: message.author.id}).exec();
 
             if (exitingTicket ) {
                 const exitstingEmbed = new EmbedBuilder()
