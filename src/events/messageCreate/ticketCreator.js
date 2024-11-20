@@ -102,7 +102,7 @@ module.exports = async (message, client) => {
             .setDescription('Let\'s start creating your ticket.');
 
         try {
-            if (creatingATicket.includes(message.user.id)) {
+            if (creatingATicket.includes(message.author.id)) {
                 message.reply('You are already creating a ticket.');
             };
 
@@ -114,8 +114,9 @@ module.exports = async (message, client) => {
 
             // If the user already has a ticket ask if the person wants to create a new one
             const exitingTicket = await tickets.findOne({creatorId: message.author.id}).exec();
+            const allExisting = await ticket.find({creatorId: message.author.id}).exec();
 
-            if (exitingTicket) {
+            if (exitingTicket ) {
                 const exitstingEmbed = new EmbedBuilder()
                     .setTitle('You already have a ticket created')
                     .setDescription('Do you want to create a new one? Your old one will NOT be closed.\n\nPlease reply with Yes/No')
@@ -130,7 +131,7 @@ module.exports = async (message, client) => {
                 const existingResponse = await collectResponseYesNo({embeds: [exitstingEmbed]})
 
                 if (Array.isArray(existingResponse)) {
-                    const index = creatingATicket.indexOf(message.user.id);
+                    const index = creatingATicket.indexOf(message.author.id);
 
                     if (index) {
                         creatingATicket.splice(index);
@@ -141,7 +142,7 @@ module.exports = async (message, client) => {
 
                 if (existingResponse.toLowerCase() === 'no') {
                     sendDM('The ticket creation process has been stopped.');
-                    const index = creatingATicket.indexOf(message.user.id);
+                    const index = creatingATicket.indexOf(message.author.id);
 
                     if (index) {
                         creatingATicket.splice(index);
@@ -153,12 +154,12 @@ module.exports = async (message, client) => {
 
             // Ask important questions
 
-            creatingATicket.push(message.user.id);
+            creatingATicket.push(message.author.id);
 
             const ticketTopic = await collectResponse('What is the topic of your ticket? (Images or videos need to be added as a link)');
 
             if (Array.isArray(ticketTopic)) {
-                const index = creatingATicket.indexOf(message.user.id);
+                const index = creatingATicket.indexOf(message.author.id);
 
                 if (index) {
                     creatingATicket.splice(index);
@@ -170,7 +171,7 @@ module.exports = async (message, client) => {
             const ticketDescription = await collectResponse('Please reply with a more detailed description of your ticket. (Images or videos need to be added as a link)');
 
             if (Array.isArray(ticketDescription)) {
-                const index = creatingATicket.indexOf(message.user.id);
+                const index = creatingATicket.indexOf(message.author.id);
 
                 if (index) {
                     creatingATicket.splice(index);
@@ -182,7 +183,7 @@ module.exports = async (message, client) => {
             const additionalComments = await collectResponse('Do you have any additional comments? (Images or videos need to be added as a link)');
 
             if (Array.isArray(additionalComments)) {
-                const index = creatingATicket.indexOf(message.user.id);
+                const index = creatingATicket.indexOf(message.author.id);
 
                 if (index) {
                     creatingATicket.splice(index);
@@ -196,7 +197,7 @@ module.exports = async (message, client) => {
             const languageSelection = languageSelectionPrompt.toUpperCase();
 
             if (Array.isArray(languageSelection)) {
-                const index = creatingATicket.indexOf(message.user.id);
+                const index = creatingATicket.indexOf(message.author.id);
 
                 if (index) {
                     creatingATicket.splice(index);
@@ -220,7 +221,7 @@ module.exports = async (message, client) => {
             const confimationResponse = await collectResponseYesNo({embeds: [confirmationEmbed]});
 
             if (Array.isArray(confimationResponse)) {
-                const index = creatingATicket.indexOf(message.user.id);
+                const index = creatingATicket.indexOf(message.author.id);
 
                 if (index) {
                     creatingATicket.splice(index);
@@ -231,7 +232,7 @@ module.exports = async (message, client) => {
 
             if (confimationResponse.toLowerCase() === 'no') {
                 sendDM('The ticket creation process has been stopped.')
-                const index = creatingATicket.indexOf(message.user.id);
+                const index = creatingATicket.indexOf(message.author.id);
 
                 if (index) {
                     creatingATicket.splice(index);
@@ -245,7 +246,7 @@ module.exports = async (message, client) => {
             const DM2 = await sendDM('The ticket has been created.')
 
             if (Array.isArray(DM2)) {
-                const index = creatingATicket.indexOf(message.user.id);
+                const index = creatingATicket.indexOf(message.author.id);
 
                 if (index) {
                     creatingATicket.splice(index);
