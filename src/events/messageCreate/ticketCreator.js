@@ -306,7 +306,7 @@ module.exports = async (message, client) => {
 
             ticket.save();
 
-            const index = creatingATicket.indexOf(message.user.id);
+            const index = creatingATicket.indexOf(message.author.id);
 
             if (index) {
                 creatingATicket.splice(index);
@@ -315,7 +315,7 @@ module.exports = async (message, client) => {
         } catch (error) {
             await message.author.send('Something failed in the ticket creation system.').catch();
 
-            const index = creatingATicket.indexOf(message.user.id);
+            const index = creatingATicket.indexOf(message.author.id);
 
             if (index) {
                 creatingATicket.splice(index);
