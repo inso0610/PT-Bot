@@ -15,9 +15,17 @@ module.exports = {
             return;
         };
 
+        const englishChat = client.channels.cache.get('1101035696334057483');
+
         function ping() {
-            interaction.reply('<@&1308429122975957132>')
-            deadChatSchema.save()
+            englishChat.send(`<@&1308429122975957132> requested by <@${interaction.user.id}>`);
+
+            interaction.reply({
+                content: 'Finished',
+                ephemeral: true
+            });
+
+            deadChatSchema.save();
         };
 
         let deadChatSchema = await deadChat.findOne().exec();
