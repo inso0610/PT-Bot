@@ -3,6 +3,8 @@ const tickets = require('../../utils/tickets.js');
 
 const { ticketChannels, allowedTransfers } = require( '../../utils/ticketChannels.js');
 
+const creatingATicket = []
+
 module.exports = async (message, client) => {
     const sendDM = async (messageContent) => {
         //return message.author.dmChannel.send({ content: messageContent }).catch(e => {
@@ -100,6 +102,10 @@ module.exports = async (message, client) => {
             .setDescription('Let\'s start creating your ticket.');
 
         try {
+            if (creatingATicket.includes(message.user.id)) {
+                message.reply('You are already creating a ticket.');
+            };
+
             const DM1 = await sendDM({ embeds: [WelcomeEmbed] });
 
             if (Array.isArray(DM1)) {
@@ -124,40 +130,78 @@ module.exports = async (message, client) => {
                 const existingResponse = await collectResponseYesNo({embeds: [exitstingEmbed]})
 
                 if (Array.isArray(existingResponse)) {
+                    const index = creatingATicket.indexOf(message.user.id);
+
+                    if (index) {
+                        creatingATicket.splice(index);
+                    };
+
                     return;
                 };
 
                 if (existingResponse.toLowerCase() === 'no') {
                     sendDM('The ticket creation process has been stopped.');
+                    const index = creatingATicket.indexOf(message.user.id);
+
+                    if (index) {
+                        creatingATicket.splice(index);
+                    };
+
                     return;
                 };
             };
 
             // Ask important questions
 
+            creatingATicket.push(message.user.id);
+
             const ticketTopic = await collectResponse('What is the topic of your ticket? (Images or videos need to be added as a link)');
 
             if (Array.isArray(ticketTopic)) {
+                const index = creatingATicket.indexOf(message.user.id);
+
+                if (index) {
+                    creatingATicket.splice(index);
+                };
+
                 return;
             };
 
             const ticketDescription = await collectResponse('Please reply with a more detailed description of your ticket. (Images or videos need to be added as a link)');
 
             if (Array.isArray(ticketDescription)) {
+                const index = creatingATicket.indexOf(message.user.id);
+
+                if (index) {
+                    creatingATicket.splice(index);
+                };
+
                 return;
             };
 
             const additionalComments = await collectResponse('Do you have any additional comments? (Images or videos need to be added as a link)');
 
             if (Array.isArray(additionalComments)) {
+                const index = creatingATicket.indexOf(message.user.id);
+
+                if (index) {
+                    creatingATicket.splice(index);
+                };
+
                 return;
             };
 
             const languageSelectionPrompt = await collectResponseLang('What language do you want support in? We only support English and Norwegian.');
 
-const languageSelection = languageSelectionPrompt.toUpperCase();
+            const languageSelection = languageSelectionPrompt.toUpperCase();
 
             if (Array.isArray(languageSelection)) {
+                const index = creatingATicket.indexOf(message.user.id);
+
+                if (index) {
+                    creatingATicket.splice(index);
+                };
+
                 return;
             };
 
@@ -176,11 +220,23 @@ const languageSelection = languageSelectionPrompt.toUpperCase();
             const confimationResponse = await collectResponseYesNo({embeds: [confirmationEmbed]});
 
             if (Array.isArray(confimationResponse)) {
+                const index = creatingATicket.indexOf(message.user.id);
+
+                if (index) {
+                    creatingATicket.splice(index);
+                };
+
                 return;
             };
 
             if (confimationResponse.toLowerCase() === 'no') {
                 sendDM('The ticket creation process has been stopped.')
+                const index = creatingATicket.indexOf(message.user.id);
+
+                if (index) {
+                    creatingATicket.splice(index);
+                };
+
                 return;
             };
 
@@ -189,6 +245,12 @@ const languageSelection = languageSelectionPrompt.toUpperCase();
             const DM2 = await sendDM('The ticket has been created.')
 
             if (Array.isArray(DM2)) {
+                const index = creatingATicket.indexOf(message.user.id);
+
+                if (index) {
+                    creatingATicket.splice(index);
+                };
+
                 return;
             };
 
@@ -242,9 +304,21 @@ const languageSelection = languageSelectionPrompt.toUpperCase();
             ticket.ticketMessageId = ticketMessage.id;
 
             ticket.save();
+
+            const index = creatingATicket.indexOf(message.user.id);
+
+            if (index) {
+                creatingATicket.splice(index);
+            };
             
         } catch (error) {
             await message.author.send('Something failed in the ticket creation system.').catch();
+
+            const index = creatingATicket.indexOf(message.user.id);
+
+            if (index) {
+                creatingATicket.splice(index);
+            };
 
             console.warn(`Ticket creator error: ${error}`);
         };
