@@ -104,6 +104,8 @@ module.exports = async (message, client) => {
         try {
             if (creatingATicket.includes(message.author.id)) {
                 message.reply('You are already creating a ticket.');
+
+                return;
             };
 
             const DM1 = await sendDM({ embeds: [WelcomeEmbed] });
