@@ -4,11 +4,11 @@ const applications = require('../../utils/applications.js');
 
 const statusIcons = {
     ['Closed']: '<:DangerMain:1177580208585457724>',
-    ['Opening soon']: '<:ExpectProceed:1177580797105025115>',
-    ['Opening soon (Not Public)']: '<:ExpectDivert:1177580734555377674>',
+    ['Opening soon']: '<a:ExpectProceed:1177580797105025115>',
+    ['Opening soon (Not Public)']: '<a:ExpectDivert:1177580734555377674>',
     ['Open']: '<:Proceed:1177580346611601550>',
     ['Open (Not Public)']: '<:DivertMain:1177580426341134397>',
-    ['Closing soon']: '<:ExpectDanger:1177580587419185253> ',
+    ['Closing soon']: '<a:ExpectDanger:1177580587419185253> ',
     ['Results out']: '<:DangerMain:1177580208585457724>',
 };
 
