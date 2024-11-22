@@ -35,7 +35,7 @@ new CommandKit({
     //devGuildIds: [''],
     devUserIds: ['935889950547771512'],
     //devRoleIds: ['DEV_ROLE_ID_1', 'DEV_ROLE_ID_2'],
-    skipBuiltInValidations: true,
+    skipBuiltInValidations: false,
     bulkRegister: true,
 });
 
