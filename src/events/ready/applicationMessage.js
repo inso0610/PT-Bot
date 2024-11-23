@@ -14,9 +14,10 @@ const statusIcons = {
 
 module.exports = async (client) => {
     const channel = client.channels.cache.get('1156993148732583957');
+    
     let message;
 
-    message = await channel.messages.fetch('1309919904794935398').catch( e => {  // Replace with your actual message ID
+    message = await channel.messages.fetch('1310001298036363365').catch( e => {  // Replace with your actual message ID
         console.warn(e);
     });
 

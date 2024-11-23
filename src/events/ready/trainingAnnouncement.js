@@ -37,25 +37,12 @@ function nearestDate (dates, target) {
     });
 };*/
 
-const linkButton = new ButtonBuilder()
-	.setLabel('Read the training guides before attending')
-    .setURL("https://guides.polartracks.no/start")
-	.setStyle(ButtonStyle.Link);
-
-const calendarButton = new ButtonBuilder()
-    .setLabel('View all trainings here')
-    .setURL("https://teamup.com/ksopth82jo3q9yrj4i")
-	.setStyle(ButtonStyle.Link);
-
-const row = new ActionRowBuilder()
-	.addComponents(linkButton, calendarButton);
-
 module.exports = async (client) => {
     const trainingChannel = client.channels.cache.get('1246904420495523925');
 
     let message;
 
-    message = await trainingChannel.messages.fetch('1309833967704346677').catch( e => {  // Replace with your actual message ID
+    message = await trainingChannel.messages.fetch('1310001147574227046').catch( e => {  // Replace with your actual message ID
         console.warn(e);
     });
 
@@ -65,6 +52,19 @@ module.exports = async (client) => {
         });
         trainingChannel.send('<@935889950547771512> Had to make a new training message!');
     };
+
+    const linkButton = new ButtonBuilder()
+	    .setLabel('Read the training guides before attending')
+        .setURL("https://guides.polartracks.no/start")
+	    .setStyle(ButtonStyle.Link);
+
+    const calendarButton = new ButtonBuilder()
+        .setLabel('View all trainings here')
+        .setURL("https://teamup.com/ksopth82jo3q9yrj4i")
+	    .setStyle(ButtonStyle.Link);
+
+    const row = new ActionRowBuilder()
+	    .addComponents(linkButton, calendarButton);
 
     async function updateMessage() {
         const d = new Date();
