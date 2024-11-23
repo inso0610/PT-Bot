@@ -128,7 +128,7 @@ module.exports = {
             if (previousStatus === 'Results out' && application.status !== 'Results out') {
                 application.results = {};
 
-                application.markModified();
+                application.markModified('results');
     
                 await application.save();
     
@@ -173,7 +173,7 @@ module.exports = {
                     feedback: feedback
                 };
 
-                application.markModified();
+                application.markModified(`results.${user.id}`);
 
                 await application.save();
 
