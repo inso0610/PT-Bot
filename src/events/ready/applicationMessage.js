@@ -26,23 +26,23 @@ module.exports = async (client) => {
         channel.send('<@935889950547771512> Had to make a new application message!');
     };
 
-    const d = new Date();
-
-    let hour = d.getUTCHours().toString();
-
-    if (hour.length == 1) {
-        const old = hour;
-        hour = `0${old}`
-    };
-
-    let minute = d.getUTCMinutes().toString();
-
-    if (minute.length == 1) {
-        const old = minute;
-        minute = `0${old}`
-    };
-
     async function updateMessage() {
+        const d = new Date();
+
+        let hour = d.getUTCHours().toString();
+    
+        if (hour.length == 1) {
+            const old = hour;
+            hour = `0${old}`
+        };
+    
+        let minute = d.getUTCMinutes().toString();
+    
+        if (minute.length == 1) {
+            const old = minute;
+            minute = `0${old}`
+        };
+
         const operationsApplications = await applications.find({ department: 'Operations' }).exec();
 
         const operationsEmbed = new EmbedBuilder()
