@@ -171,6 +171,8 @@ module.exports = {
                     feedback: feedback
                 };
 
+                application.markModified();
+
                 await application.save();
 
                 sendDM('The feedback has been saved.', true);
