@@ -83,7 +83,7 @@ module.exports = {
         
                     return [e]
                 });
-            }
+            };
         };
 
         const subcommand = interaction.options.getSubcommand();

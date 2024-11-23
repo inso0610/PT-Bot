@@ -321,6 +321,8 @@ module.exports = async (message, client) => {
             };
             
         } catch (error) {
+            if (error.message === "Timeout") return;
+
             await message.author.send('Something failed in the ticket creation system.').catch();
 
             const index = creatingATicket.indexOf(message.author.id);

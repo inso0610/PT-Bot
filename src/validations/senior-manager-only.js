@@ -1,4 +1,4 @@
-module.exports = ({ interaction, commandObj }) => {
+module.exports = async ({ interaction, commandObj }) => {
     if (commandObj.smOnly) {
         if (interaction.guild === null) {
             interaction.reply({
@@ -12,6 +12,6 @@ module.exports = ({ interaction, commandObj }) => {
                 ephemeral: true
             });
             return true;
-        }
-    }
+        };
+    };
 };

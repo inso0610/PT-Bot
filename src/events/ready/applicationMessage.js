@@ -1,6 +1,7 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, time } = require('discord.js');
 
 const applications = require('../../utils/applications.js');
+const { data } = require('../../commands/application-stuff/application.js');
 
 const statusIcons = {
     ['Closed']: '<:DangerMain:1177580208585457724>',
@@ -13,13 +14,17 @@ const statusIcons = {
 };
 
 module.exports = async (client) => {
-    const channel = client.channels.cache.get('1308424908665126982');
+    const channel = client.channels.cache.get('1156993148732583957');
     let message;
 
-    message = await channel.messages.fetch('1309659122471407676').catch(async () => {  // Replace with your actual message ID
+    message = await channel.messages.fetch('1309887401627484252').catch( e => {  // Replace with your actual message ID
+        console.warn(e);
+    });
+
+    if (!message) {
         message = await channel.send({ content: '# Applications' });
         channel.send('<@935889950547771512> Had to make a new application message!');
-    });
+    };
 
     async function updateMessage() {
         const operationsApplications = await applications.find({ department: 'Operations' }).exec();
@@ -30,7 +35,8 @@ module.exports = async (client) => {
                 name: application.role,
                 value: `${statusIcons[application.status]} (${application.status})`,
                 inline: false
-            })));
+            })))
+            .setTimestamp(Date.now());;
 
         const marketingApplications = await applications.find({ department: 'Marketing' }).exec();
         
@@ -40,7 +46,8 @@ module.exports = async (client) => {
                 name: application.role,
                 value: `${statusIcons[application.status]} (${application.status})`,
                 inline: false
-            })));
+            })))
+            .setTimestamp(Date.now());;
 
         const communityApplications = await applications.find({ department: 'Community' }).exec();
         
@@ -50,7 +57,8 @@ module.exports = async (client) => {
                 name: application.role,
                 value: `${statusIcons[application.status]} (${application.status})`,
                 inline: false
-            })));
+            })))
+            .setTimestamp(Date.now());;
 
         const developmentApplications = await applications.find({ department: 'Development' }).exec();
         
@@ -60,13 +68,15 @@ module.exports = async (client) => {
                 name: application.role,
                 value: `${statusIcons[application.status]} (${application.status})`,
                 inline: false
-            })));
+            })))
+            .setTimestamp(Date.now());
 
         message.edit({
+            content: '# Applications',
             embeds: [operationsEmbed, marketingEmbed, communityEmbed, developmentEmbed]  // Add the other embeds as well
         });
-    }
+    };
 
     updateMessage();
-    setInterval(updateMessage, 60000);
+    const messageUpdater = setInterval(updateMessage, 60000);
 };
