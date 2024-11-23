@@ -1,7 +1,6 @@
 const { EmbedBuilder, time } = require('discord.js');
 
 const applications = require('../../utils/applications.js');
-const { data } = require('../../commands/application-stuff/application.js');
 
 const statusIcons = {
     ['Closed']: '<:DangerMain:1177580208585457724>',
@@ -17,7 +16,7 @@ module.exports = async (client) => {
     const channel = client.channels.cache.get('1156993148732583957');
     let message;
 
-    message = await channel.messages.fetch('1309990601126707231').catch( e => {  // Replace with your actual message ID
+    message = await channel.messages.fetch('1309919904794935398').catch( e => {  // Replace with your actual message ID
         console.warn(e);
     });
 
@@ -26,7 +25,6 @@ module.exports = async (client) => {
         channel.send('<@935889950547771512> Had to make a new application message!');
     };
 
-    async function updateMessage() {
     const d = new Date();
 
     let hour = d.getUTCHours().toString();
@@ -43,6 +41,7 @@ module.exports = async (client) => {
         minute = `0${old}`
     };
 
+    async function updateMessage() {
         const operationsApplications = await applications.find({ department: 'Operations' }).exec();
 
         const operationsEmbed = new EmbedBuilder()
