@@ -26,6 +26,22 @@ module.exports = async (client) => {
         channel.send('<@935889950547771512> Had to make a new application message!');
     };
 
+    const d = new Date();
+
+    let hour = d.getUTCHours().toString();
+
+    if (hour.length == 1) {
+        const old = hour;
+        hour = `0${old}`
+    };
+
+    let minute = d.getUTCMinutes().toString();
+
+    if (minute.length == 1) {
+        const old = minute;
+        minute = `0${old}`
+    };
+
     async function updateMessage() {
         const operationsApplications = await applications.find({ department: 'Operations' }).exec();
 
@@ -36,7 +52,7 @@ module.exports = async (client) => {
                 value: `${statusIcons[application.status]} (${application.status})`,
                 inline: false
             })))
-            .setTimestamp(Date.now());;
+            //.setFooter({ text: `This message updates every minute. Last update: ${hour}:${minute} UTC` });
 
         const marketingApplications = await applications.find({ department: 'Marketing' }).exec();
         
@@ -46,8 +62,8 @@ module.exports = async (client) => {
                 name: application.role,
                 value: `${statusIcons[application.status]} (${application.status})`,
                 inline: false
-            })))
-            .setTimestamp(Date.now());;
+            })));
+            //.setFooter({ text: `This message updates every minute. Last update: ${hour}:${minute} UTC` });
 
         const communityApplications = await applications.find({ department: 'Community' }).exec();
         
@@ -57,8 +73,8 @@ module.exports = async (client) => {
                 name: application.role,
                 value: `${statusIcons[application.status]} (${application.status})`,
                 inline: false
-            })))
-            .setTimestamp(Date.now());;
+            })));
+            //.setFooter({ text: `This message updates every minute. Last update: ${hour}:${minute} UTC` });
 
         const developmentApplications = await applications.find({ department: 'Development' }).exec();
         
@@ -69,7 +85,7 @@ module.exports = async (client) => {
                 value: `${statusIcons[application.status]} (${application.status})`,
                 inline: false
             })))
-            .setTimestamp(Date.now());
+            .setFooter({ text: `This message updates every minute. Last update: ${hour}:${minute} UTC` });
 
         message.edit({
             content: '# Applications',
