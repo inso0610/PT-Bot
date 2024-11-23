@@ -26,6 +26,7 @@ module.exports = async (client) => {
         channel.send('<@935889950547771512> Had to make a new application message!');
     };
 
+    async function updateMessage() {
     const d = new Date();
 
     let hour = d.getUTCHours().toString();
@@ -42,7 +43,6 @@ module.exports = async (client) => {
         minute = `0${old}`
     };
 
-    async function updateMessage() {
         const operationsApplications = await applications.find({ department: 'Operations' }).exec();
 
         const operationsEmbed = new EmbedBuilder()
