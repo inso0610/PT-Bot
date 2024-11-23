@@ -127,6 +127,8 @@ module.exports = {
     
             if (previousStatus === 'Results out' && application.status !== 'Results out') {
                 application.results = {};
+
+                application.markModified();
     
                 await application.save();
     
