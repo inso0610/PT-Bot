@@ -37,6 +37,19 @@ function nearestDate (dates, target) {
     });
 };*/
 
+const linkButton = new ButtonBuilder()
+	.setLabel('Read the training guides before attending')
+    .setURL("https://guides.polartracks.no/start")
+	.setStyle(ButtonStyle.Link);
+
+const calendarButton = new ButtonBuilder()
+    .setLabel('View all trainings here')
+    .setURL("https://teamup.com/ksopth82jo3q9yrj4i")
+	.setStyle(ButtonStyle.Link);
+
+const row = new ActionRowBuilder()
+	.addComponents(linkButton, calendarButton);
+
 module.exports = async (client) => {
     const trainingChannel = client.channels.cache.get('1246904420495523925');
 
@@ -192,9 +205,10 @@ module.exports = async (client) => {
 
         message.edit({
             content: '',
-            embeds: [ messageEmbed ]
+            embeds: [ messageEmbed ],
+            components: [row]
         });
-    }
+    };
 
     /*let d = new Date();
 
@@ -318,20 +332,6 @@ module.exports = async (client) => {
         });
         nextSignallerTrainingText = `Next: <t:${nextSignallerTraining.timestamp}:F> (<t:${nextSignallerTraining.timestamp}:R>). Hosted by: ${nextSignallerTraining.hostRobloxUsername}. \nAdditional Info: ${nextSignallerTraining.additionalInfo}`;
     };*/
-
-    const linkButton = new ButtonBuilder()
-		.setLabel('Read the training guides before attending')
-        .setURL("https://guides.polartracks.no/start")
-		.setStyle(ButtonStyle.Link);
-
-    const calendarButton = new ButtonBuilder()
-        .setLabel('View all trainings here')
-        .setURL("https://teamup.com/ksopth82jo3q9yrj4i")
-		.setStyle(ButtonStyle.Link);
-
-
-    const row = new ActionRowBuilder()
-		.addComponents(linkButton, calendarButton);
 
     /*// Message
     let messageEmbed = new EmbedBuilder()
