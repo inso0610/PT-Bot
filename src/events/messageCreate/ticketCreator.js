@@ -38,6 +38,7 @@ module.exports = async (message, client) => {
             collector.on('end', (_, reason) => {
                 if (reason === 'time') {
                     message.author.send("You took too long to respond. Please try again.");
+                    
                     reject(new Error("Timeout"));
                 }
             });
@@ -321,15 +322,15 @@ module.exports = async (message, client) => {
             };
             
         } catch (error) {
-            if (error.message === "Timeout") return;
-
-            await message.author.send('Something failed in the ticket creation system.').catch();
-
             const index = creatingATicket.indexOf(message.author.id);
 
             if (index) {
                 creatingATicket.splice(index);
             };
+
+            if (error.message === "Timeout") return;
+
+            await message.author.send('Something failed in the ticket creation system.').catch();
 
             console.warn(`Ticket creator error: ${error}`);
         };
