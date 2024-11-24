@@ -499,7 +499,7 @@ module.exports = {
                     .addComponents(claimButton);
     
                 const ticketMessage = await channel.send({
-                    content: `<@&${pings[departmentSplit[1]]} Transfered from: ${oldDepartment}>`,
+                    content: `<@&${pings[departmentSplit[1]]}> Transfered from: ${oldDepartment}`,
                     embeds: [ticketEmbed],
                     components: [row]
                 });
