@@ -98,8 +98,8 @@ module.exports = async (client) => {
         const nextDriverTrainingIndex = nextDriverTrainingData[0];
         const scheduledDriverTrainings = nextDriverTrainingData[1];
         
-        const nextDriverTraining = {};
-        const nextDriverTrainingText = 'No Driver training\'s scheduled.';
+        let nextDriverTraining = {};
+        let nextDriverTrainingText = 'No Driver training\'s scheduled.';
 
         if (nextDriverTrainingIndex != -1) {
             nextDriverTraining = await trainings.findOne({ 
@@ -125,8 +125,8 @@ module.exports = async (client) => {
         const nextConductorTrainingIndex = nextConductorTrainingData[0];
         const scheduledConductorTrainings = nextConductorTrainingData[1];
         
-        const nextConductorTraining = {};
-        const nextConductorTrainingText = 'No Conductor training\'s scheduled.';
+        let nextConductorTraining = {};
+        let nextConductorTrainingText = 'No Conductor training\'s scheduled.';
 
         if (nextConductorTrainingIndex != -1) {
             nextConductorTraining = await trainings.findOne({ 
@@ -152,8 +152,8 @@ module.exports = async (client) => {
         const nextDispatcherTrainingIndex = nextDispatcherTrainingData[0];
         const scheduledDispatcherTrainings = nextDispatcherTrainingData[1];
         
-        const nextDispatcherTraining = {};
-        const nextDispatcherTrainingText = 'No Dispatcher training\'s scheduled.';
+        let nextDispatcherTraining = {};
+        let nextDispatcherTrainingText = 'No Dispatcher training\'s scheduled.';
 
         if (nextDispatcherTrainingIndex != -1) {
             nextDispatcherTraining = await trainings.findOne({ 
@@ -179,8 +179,8 @@ module.exports = async (client) => {
         const nextSignallerTrainingIndex = nextSignallerTrainingData[0];
         const scheduledSignallerTrainings = nextSignallerTrainingData[1];
         
-        const nextSignallerTraining = {};
-        const nextSignallerTrainingText = 'No Signaller training\'s scheduled.';
+        let nextSignallerTraining = {};
+        let nextSignallerTrainingText = 'No Signaller training\'s scheduled.';
 
         if (nextSignallerTrainingIndex != -1) {
             nextSignallerTraining = await trainings.findOne({ 
