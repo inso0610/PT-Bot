@@ -1,5 +1,5 @@
-//Departments: OPS-<ALL,DM,CM,PM,SM>, COMMUNITY-ALL (Standard), DEV-<ALL,AT,DEV,BOT>, MARKETING-<ALL,SOCIAL,WEB>, SENIOR-<ALL,SA,OM,DEV>
-//SPECIAL-RA, DIRECTO-<ALL,MD,OD,ED>, ADVISORS-<ALL,GA,CA,GH>
+//Departments: OPS-<ALL,DM,CM,PM,SM>, COMMUNITY-ALL (Standard), DEV-<ALL,AT,DEV,BOT,AR,WEB>, MARKETING-<ALL,SOCIAL>, SENIOR-<ALL,SA,OM,DEV>
+//SPECIAL-RA, DIRECTOR-<ALL,MD,OD,ED>, ADVISORS-<ALL,GA,CA,GH>
 
 const tickets = require('./tickets.js');
 
@@ -24,17 +24,17 @@ const ticketChannels = {
         channel: '1304847708841836564',
         pings: {
             ALL: '1304848035435646986',
-            AT: '1224256761335382128',
+            AR: '1314328161449676900',
             DEV: '1089284405379465256',
-            BOT: '1304849124528754729'
+            BOT: '1304849124528754729',
+            WEB: '1281956551178981566'
         }
     },
     MARKETING: {
         channel: '1304845302963896462',
         pings: {
             ALL: '1304845486922006529',
-            SOCIAL: '1281956316293763142',
-            WEB: '1281956551178981566'
+            SOCIAL: '1281956316293763142'
         }
     },
     SENIOR: {
@@ -72,8 +72,7 @@ const ticketChannels = {
     }
 };
 
-const allowedTransfers = ['OPS-ALL', 'OPS-DM', 'OPS-CM', 'OPS-PM', 'OPS-SM', 'COMMUNITY-ALL', 'DEV-ALL', 'DEV-AT', 'DEV-DEV', 'DEV-BOT', 'MARKETING-ALL', 'MARKETING-SOCIAL',
-    'MARKETING-WEB', 'SENIOR-ALL', 'SENIOR-SA', 'SENIOR-OM', 'SENIOR-DEV', 'SPECIAL-RA', 'DIRECTOR-ALL', 'DIRECTOR-MD', 'DIRECTOR-OD', 'DIRECTOR-ED', 'ADVISOR-ALL', 'ADVISOR-GA',
+const allowedTransfers = ['OPS-ALL', 'OPS-DM', 'OPS-CM', 'OPS-PM', 'OPS-SM', 'COMMUNITY-ALL', 'DEV-ALL', 'DEV-AR', 'DEV-DEV', 'DEV-BOT', 'DEV-WEB', 'MARKETING-ALL', 'MARKETING-SOCIAL', 'SENIOR-ALL', 'SENIOR-SA', 'SENIOR-OM', 'SENIOR-DEV', 'SPECIAL-RA', 'DIRECTOR-ALL', 'DIRECTOR-MD', 'DIRECTOR-OD', 'DIRECTOR-ED', 'ADVISOR-ALL', 'ADVISOR-GA',
     'ADVISOR-CA', 'ADVISOR-GH'];
 
 async function closeTicket(id, interaction, client) {
