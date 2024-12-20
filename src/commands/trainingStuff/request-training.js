@@ -177,7 +177,7 @@ module.exports = {
             });
         } else {
             interaction.reply({
-                content: 'Request failed. You are not in the group or you are fully train.',
+                content: 'Request failed. Either you are not in the group or you are fully trained.',
                 ephemeral: true
             });
         };
