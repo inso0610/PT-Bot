@@ -219,7 +219,7 @@ module.exports = async (message, client) => {
 
             const confirmationEmbed = new EmbedBuilder()
                     .setTitle('Is this correct?')
-                    .setDescription('Please reply with Yes/No')
+                    .setDescription('Please reply with Yes/No\nReply with No if you don\'t want to create the ticket.')
                     .addFields(
                         {name: 'Topic', value: ticketTopic},
                         {name: 'Description', value: ticketDescription},
