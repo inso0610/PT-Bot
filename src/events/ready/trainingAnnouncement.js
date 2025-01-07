@@ -203,7 +203,7 @@ module.exports = async (client) => {
             )
             //.setFooter({ text: `This message updates every minute. Last update: ${hour}:${minute} UTC` });
             .setFooter({ text: 'Last update' })
-            .setTimestamp(d.toISOString())
+            .setTimestamp(d)
 
         message.edit({
             content: '',
