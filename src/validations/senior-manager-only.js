@@ -6,7 +6,7 @@ module.exports = async ({ interaction, commandObj }) => {
                 ephemeral: true
             });
             return true;
-        } else if (!interaction.member.roles.cache.has('1167782024040435752')) {
+        } else if (!interaction.member.roles.cache.has('1326233866083762277')) {
             interaction.reply({
                 content: 'You do not have access to this command.',
                 ephemeral: true
