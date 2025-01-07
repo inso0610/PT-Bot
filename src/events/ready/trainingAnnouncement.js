@@ -69,7 +69,7 @@ module.exports = async (client) => {
     async function updateMessage() {
         const d = new Date();
 
-        let hour = d.getUTCHours().toString();
+        /*let hour = d.getUTCHours().toString();
 
         if (hour.length == 1) {
             const old = hour;
@@ -81,7 +81,7 @@ module.exports = async (client) => {
         if (minute.length == 1) {
             const old = minute;
             minute = `0${old}`
-        };
+        };*/
         //Driver Trainings
 
         const driverTrainings = await trainings.find({ 
@@ -201,7 +201,9 @@ module.exports = async (client) => {
                 { name: `Dispatcher Trainings (${scheduledDispatcherTrainings.toString()} scheduled):`, value: nextDispatcherTrainingText },
                 { name: `Signaller Trainings (${scheduledSignallerTrainings.toString()} scheduled):`, value: nextSignallerTrainingText }
             )
-            .setFooter({ text: `This message updates every minute. Last update: ${hour}:${minute} UTC` });
+            //.setFooter({ text: `This message updates every minute. Last update: ${hour}:${minute} UTC` });
+            .setFooter({ text: 'Last update' })
+            .setTimestamp(d.toISOString())
 
         message.edit({
             content: '',
