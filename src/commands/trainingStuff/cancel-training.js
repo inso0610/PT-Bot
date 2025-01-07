@@ -39,6 +39,13 @@ module.exports = {
 
             const training = await trainings.findByIdAndDelete(idCMD).exec();
 
+            if (!training) {
+                return interaction.editReply({
+                    content: 'This training does not exist.',
+                    ephemeral: true
+                });
+            };
+
             cancelTeamup(training.teamupId);
     
             const cancelEmbed = new EmbedBuilder()

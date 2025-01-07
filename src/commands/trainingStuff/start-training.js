@@ -46,6 +46,13 @@ module.exports = {
 
             const training = await trainings.findByIdAndDelete(idCMD).exec();
 
+            if (!training) {
+                return interaction.reply({
+                    content: 'This training does not exist.',
+                    ephemeral: true
+                });
+            };
+
             const managerActivity = await activity.findOne( {discordId: training.hostDiscordId} ).exec()
 
             if (managerActivity) {
