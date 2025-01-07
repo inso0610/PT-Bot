@@ -177,7 +177,7 @@ module.exports = {
                     { name: 'Timestamp:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
                     { name: 'Additional Info:', value: additionalInfoCMD }
                 )
-                .setFooter('This message does not update. For updated information, please check the message at the top of the trainings channel.');
+                .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.'});
 
             if (hostCMD != interaction.user) {
                 const creatorEmbed = new EmbedBuilder()
@@ -193,7 +193,7 @@ module.exports = {
                     { name: 'Timestamp:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
                     { name: 'Additional Info:', value: additionalInfoCMD }
                 )
-                .setFooter('This message does not update. For updated information, please check the message at the top of the trainings channel.');
+                .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.'});
                 client.users.send(interaction.user.id, {
                     embeds: [creatorEmbed]
                 });
@@ -206,7 +206,7 @@ module.exports = {
                 { name: 'Start:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
                 { name: 'Additional Info:', value: additionalInfoCMD }
             )
-            .setFooter('This message does not update. For updated information, please check the message at the top of the trainings channel.');
+            .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.'});
             client.users.send(id, {
                 embeds: [trainingEmbed]
             });
