@@ -177,17 +177,17 @@ module.exports = async (interaction, client) => {
                     { name: 'Scheduled Start in UTC:', value: time },
                     { name: 'Timestamp:', value: `<t:${timestamp.toString()}:F> (<t:${timestamp.toString()}:R>)` },
                     { name: 'Additional Info:', value: 'No additional information.' }
-                );
+                )
+                .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.'});
                 
             const publicEmbed = new EmbedBuilder()
                 .setTitle(`New ${trainingType} training!`)
                 .addFields(
                     { name: 'Host:', value: rblxName },
-                    { name: 'Scheduled Date in UTC:', value: dateFromMsg },
-                    { name: 'Scheduled Start in UTC:', value: time },
-                    { name: 'Timestamp:', value: `<t:${timestamp.toString()}:F> (<t:${timestamp.toString()}:R>)` },
+                    { name: 'Start:', value: `<t:${timestamp.toString()}:F> (<t:${timestamp.toString()}:R>)` },
                     { name: 'Additional Info:', value: 'No additional information.' }
-                );
+                )
+                .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.'});
             client.users.send(id, {
                 embeds: [trainingEmbed]
             });
@@ -248,11 +248,10 @@ module.exports = async (interaction, client) => {
                 .setTitle(`New ${trainingType} training!`)
                 .addFields(
                     { name: 'Host:', value: rblxName },
-                    { name: 'Scheduled Date in UTC:', value: dateFromMsg },
-                    { name: 'Scheduled Start in UTC:', value: time },
-                    { name: 'Timestamp:', value: `<t:${timestamp.toString()}:F> (<t:${timestamp.toString()}:R>)` },
+                    { name: 'Start:', value: `<t:${timestamp.toString()}:F> (<t:${timestamp.toString()}:R>)` },
                     { name: 'Additional Info:', value: 'No additional information.' }
-                );
+                )
+                .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.'});
             
             interaction.editReply({
                 embeds: [publicEmbed],

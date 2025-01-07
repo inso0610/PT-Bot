@@ -78,6 +78,13 @@ module.exports = {
             const timestampCMD = Math.floor(timestampMilli / 1000);
             
             const training = await trainings.findById(idCMD).exec();
+
+            if (!training) {
+                return interaction.editReply({
+                    content: 'This training does not exist.',
+                    ephemeral: true
+                });
+            };
     
             const type = training.trainingType;
             const oldTimestamp = training.timestamp;

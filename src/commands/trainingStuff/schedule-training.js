@@ -176,7 +176,8 @@ module.exports = {
                     { name: 'Scheduled Start in UTC:', value: scheduledStartCMD },
                     { name: 'Timestamp:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
                     { name: 'Additional Info:', value: additionalInfoCMD }
-                );
+                )
+                .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.'});
 
             if (hostCMD != interaction.user) {
                 const creatorEmbed = new EmbedBuilder()
@@ -191,7 +192,8 @@ module.exports = {
                     { name: 'Scheduled Start in UTC:', value: scheduledStartCMD },
                     { name: 'Timestamp:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
                     { name: 'Additional Info:', value: additionalInfoCMD }
-                );
+                )
+                .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.'});
                 client.users.send(interaction.user.id, {
                     embeds: [creatorEmbed]
                 });
@@ -201,11 +203,10 @@ module.exports = {
             .setTitle(`New ${trainingTypeCMD} training!`)
             .addFields(
                 { name: 'Host:', value: rblxName },
-                { name: 'Scheduled Date in UTC:', value: scheduledDateCMD },
-                { name: 'Scheduled Start in UTC:', value: scheduledStartCMD },
-                { name: 'Timestamp:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
+                { name: 'Start:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
                 { name: 'Additional Info:', value: additionalInfoCMD }
-            );
+            )
+            .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.'});
             client.users.send(id, {
                 embeds: [trainingEmbed]
             });
