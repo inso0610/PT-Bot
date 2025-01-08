@@ -1,4 +1,4 @@
-//Departments: OPS-<ALL,DM,CM,PM,SM>, COMMUNITY-ALL (Standard), DEV-<ALL,AT,DEV,BOT,AR,WEB>, MARKETING-<ALL,SOCIAL>, SENIOR-<ALL,SA,OM,DEV>
+//Departments: OPS-<ALL,DM,CM,PM,SM>, COMMUNITY-ALL (Standard), DEV-<ALL,AT,DEV,BOT,AR,WEB>, MARKETING-<ALL,SOCIAL>, SENIOR-<ALL,SA,OM>
 //SPECIAL-RA, DIRECTOR-<ALL,MD,OD,ED>, ADVISORS-<ALL,GA,CA,GH>
 
 const tickets = require('./tickets.js');
@@ -43,7 +43,6 @@ const ticketChannels = {
             ALL: '1326233866083762277',
             SA: '1089284402791588070',
             OM: '1089284408042848377',
-            DEV: '1205914736651145367'
         }
     },
     SPECIAL: {
