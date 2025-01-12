@@ -38,7 +38,38 @@ module.exports = {
                 .setName('transfer')
                 .setDescription('Transfer a ticket.')
                 .addStringOption(option => option.setName('id').setDescription('What is the ID of the ticket?').setRequired(true))
-                .addStringOption(option => option.setName('new-category').setDescription('What is the new category?').setRequired(true)))
+                .addStringOption(option => 
+                    option
+                        .setName('new-category')
+                        .setDescription('What is the new category?')
+                        .setRequired(true)
+                        .addChoices(
+                            { name: 'Community Team (COMMUNITY-ALL)', value: 'COMMUNITY-ALL' },
+                            { name: 'Operations Team (OPS-ALL)', value: 'OPS-ALL' },
+                            { name: 'Driver Managers (OPS-DM)', value: 'OPS-DM' },
+                            { name: 'Conductor Managers (OPS-CM)', value: 'OPS-CM' },
+                            { name: 'Platform Managers (OPS-PM)', value: 'OPS-PM' },
+                            { name: 'Signaller Managers (OPS-SM)', value: 'OPS-SM' },
+                            { name: 'Marketing Team (MARKETING-ALL)', value: 'MARKETING-ALL' },
+                            { name: 'Social Media Team (MARKETING-SOCIAL)', value: 'MARKETING-SOCIAL' },
+                            { name: 'Development Team (DEV-ALL)', value: 'DEV-ALL' },
+                            { name: 'Audio Recorders (DEV-AR)', value: 'DEV-AR' },
+                            { name: 'Game Developers (DEV-DEV)', value: 'DEV-DEV' },
+                            { name: 'Bot Developers (DEV-BOT)', value: 'DEV-BOT' },
+                            { name: 'Web Developers (DEV-WEB)', value: 'DEV-WEB' },
+                            { name: 'Senior Managment (SENIOR-ALL)', value: 'SENIOR-ALL' },
+                            { name: 'Social Media Admins (SENIOR-SA)', value: 'SENIOR-SA' },
+                            { name: 'Operations Managers (SENIOR-OM)', value: 'SENIOR-OM' },
+                            { name: 'Railway Advisors (SPECIAL-RA)', value: 'SPECIAL-RA' },
+                            { name: 'Directors (DIRECTOR-ALL)', value: 'DIRECTOR-ALL' },
+                            { name: 'Marketing Director (DIRECTOR-MD)', value: 'DIRECTOR-MD' },
+                            { name: 'Operations Director (DIRECTOR-OD)', value: 'DIRECTOR-OD' },
+                            { name: 'Engineering and Technology Director (DIRECTOR-ED)', value: 'DIRECTOR-ED' },
+                            { name: 'Advisors Team (ADVISOR-ALL)', value: 'ADVISOR-ALL' },
+                            { name: 'Group Advisors (ADVISOR-GA)', value: 'ADVISOR-GA' },
+                            { name: 'Community Administrator (ADVISOR-CA)', value: 'ADVISOR-CA' },
+                            { name: 'Group Holder (ADVISOR-GH)', value: 'ADVISOR-GH' }
+                        )))
         .addSubcommand(subcommand =>
             subcommand
                 .setName('logs')
