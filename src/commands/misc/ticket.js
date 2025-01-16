@@ -57,7 +57,7 @@ module.exports = {
                             { name: 'Game Developers (DEV-DEV)', value: 'DEV-DEV' },
                             { name: 'Bot Developers (DEV-BOT)', value: 'DEV-BOT' },
                             { name: 'Web Developers (DEV-WEB)', value: 'DEV-WEB' },
-                            { name: 'Senior Managment (SENIOR-ALL)', value: 'SENIOR-ALL' },
+                            { name: 'Senior Management (SENIOR-ALL)', value: 'SENIOR-ALL' },
                             { name: 'Social Media Admins (SENIOR-SA)', value: 'SENIOR-SA' },
                             { name: 'Operations Managers (SENIOR-OM)', value: 'SENIOR-OM' },
                             { name: 'Railway Advisors (SPECIAL-RA)', value: 'SPECIAL-RA' },
