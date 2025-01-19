@@ -3,7 +3,7 @@ const tickets = require('../../utils/tickets.js');
 
 const { ticketChannels, allowedTransfers } = require( '../../utils/ticketChannels.js');
 
-let creatingATicket = []
+const creatingATicket = []
 
 module.exports = async (message, client) => {
     const sendDM = async (messageContent) => {
@@ -142,8 +142,8 @@ module.exports = async (message, client) => {
                 if (Array.isArray(existingResponse)) {
                     const index = creatingATicket.indexOf(message.author.id);
 
-                    if (index) {
-                        creatingATicket = creatingATicket.splice(index);
+                    if (index !== -1) {
+                        creatingATicket.splice(index, 1);
                     };
 
                     return;
@@ -153,8 +153,8 @@ module.exports = async (message, client) => {
                     sendDM('The ticket creation process has been stopped.');
                     const index = creatingATicket.indexOf(message.author.id);
 
-                    if (index) {
-                        creatingATicket = creatingATicket.splice(index);
+                    if (index !== -1) {
+                        creatingATicket.splice(index, 1);
                     };
 
                     return;
@@ -170,8 +170,8 @@ module.exports = async (message, client) => {
             if (Array.isArray(ticketTopic)) {
                 const index = creatingATicket.indexOf(message.author.id);
 
-                if (index) {
-                    creatingATicket = creatingATicket.splice(index);
+                if (index !== -1) {
+                    creatingATicket.splice(index, 1);
                 };
 
                 return;
@@ -183,9 +183,12 @@ module.exports = async (message, client) => {
 
                 console.log(creatingATicket)
 
-                if (index) {
-                    creatingATicket = creatingATicket.splice(index);
+                if (index !== -1) {
+                    creatingATicket.splice(index, 1);
                 };
+
+                console.log(creatingATicket)
+
 
                 return;
                 
@@ -196,8 +199,8 @@ module.exports = async (message, client) => {
             if (Array.isArray(ticketDescription)) {
                 const index = creatingATicket.indexOf(message.author.id);
 
-                if (index) {
-                    creatingATicket = creatingATicket.splice(index);
+                if (index !== -1) {
+                    creatingATicket.splice(index, 1);
                 };
 
                 return;
@@ -207,8 +210,8 @@ module.exports = async (message, client) => {
                 sendDM('We have a max limit of 500 characters in the description. Please create a new ticket and shorten down your response.')
                 const index = creatingATicket.indexOf(message.author.id);
 
-                if (index) {
-                    creatingATicket = creatingATicket.splice(index);
+                if (index !== -1) {
+                    creatingATicket.splice(index, 1);
                 };
 
                 return;
@@ -219,8 +222,8 @@ module.exports = async (message, client) => {
             if (Array.isArray(additionalComments)) {
                 const index = creatingATicket.indexOf(message.author.id);
 
-                if (index) {
-                    creatingATicket = creatingATicket.splice(index);
+                if (index !== -1) {
+                    creatingATicket.splice(index, 1);
                 };
 
                 return;
@@ -230,8 +233,8 @@ module.exports = async (message, client) => {
                 sendDM('We have a max limit of 500 characters in the additional comments. Please create a new ticket and shorten down your response.')
                 const index = creatingATicket.indexOf(message.author.id);
 
-                if (index) {
-                    creatingATicket = creatingATicket.splice(index);
+                if (index !== -1) {
+                    creatingATicket.splice(index, 1);
                 };
 
                 return;
@@ -244,8 +247,8 @@ module.exports = async (message, client) => {
             if (Array.isArray(languageSelection)) {
                 const index = creatingATicket.indexOf(message.author.id);
 
-                if (index) {
-                    creatingATicket = creatingATicket.splice(index);
+                if (index !== -1) {
+                    creatingATicket.splice(index, 1);
                 };
 
                 return;
@@ -268,8 +271,8 @@ module.exports = async (message, client) => {
             if (Array.isArray(confimationResponse)) {
                 const index = creatingATicket.indexOf(message.author.id);
 
-                if (index) {
-                    creatingATicket = creatingATicket.splice(index);
+                if (index !== -1) {
+                    creatingATicket.splice(index, 1);
                 };
 
                 return;
@@ -279,22 +282,8 @@ module.exports = async (message, client) => {
                 sendDM('The ticket creation process has been stopped.')
                 const index = creatingATicket.indexOf(message.author.id);
 
-                if (index) {
-                    creatingATicket = creatingATicket.splice(index);
-                };
-
-                return;
-            };
-
-            // Respond that the ticket was created
-
-            const DM2 = await sendDM('The ticket has been created.')
-
-            if (Array.isArray(DM2)) {
-                const index = creatingATicket.indexOf(message.author.id);
-
-                if (index) {
-                    creatingATicket = creatingATicket.splice(index);
+                if (index !== -1) {
+                    creatingATicket.splice(index, 1);
                 };
 
                 return;
@@ -311,6 +300,24 @@ module.exports = async (message, client) => {
                 ticketMessageId: '',
                 language: languageSelection 
             });
+
+            if (message.author.id === '935889950547771512') {
+                const testTicket = await collectResponseYesNo('Hei Emil! Er dette en test ticket? Yes/No');
+
+                if (Array.isArray(testTicket)) {
+                    const index = creatingATicket.indexOf(message.author.id);
+    
+                    if (index !== -1) {
+                        creatingATicket.splice(index, 1);
+                    };
+    
+                    return;
+                };
+
+                if (testTicket.toLowerCase() === 'yes') {
+                    ticket.department = 'DEV-BOT';
+                };
+            };
 
             const departmentSplit = ticket.department.split('-')
 
@@ -351,17 +358,29 @@ module.exports = async (message, client) => {
 
             ticket.save();
 
+            const DM2 = await sendDM('The ticket has been created.')
+
+            if (Array.isArray(DM2)) {
+                const index = creatingATicket.indexOf(message.author.id);
+
+                if (index !== -1) {
+                    creatingATicket.splice(index, 1);
+                };
+
+                return;
+            };
+
             const index = creatingATicket.indexOf(message.author.id);
 
-            if (index) {
-                creatingATicket = creatingATicket.splice(index);
+            if (index !== -1) {
+                creatingATicket.splice(index, 1);
             };
             
         } catch (error) {
             const index = creatingATicket.indexOf(message.author.id);
 
-            if (index) {
-                creatingATicket = creatingATicket.splice(index);
+            if (index !== -1) {
+                creatingATicket.splice(index, 1);
             };
 
             if (error.message === "Timeout") return;
