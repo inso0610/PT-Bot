@@ -181,11 +181,14 @@ module.exports = async (message, client) => {
                 sendDM('We have a max limit of 100 characters in the topic. Please create a new ticket and shorten down your response.')
                 const index = creatingATicket.indexOf(message.author.id);
 
+                console.log(creatingATicket)
+
                 if (index) {
                     creatingATicket.splice(index);
                 };
 
                 return;
+                console.log(creatingATicket)
             };
 
             const ticketDescription = await collectResponse('Please reply with a more detailed description of your ticket. (Images or videos need to be added as a link) (Maximum 500 characters)');
