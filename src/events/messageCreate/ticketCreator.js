@@ -177,7 +177,7 @@ module.exports = async (message, client) => {
                 return;
             };
 
-            if (ticketDescription.length > 100) {
+            if (ticketTopic.length > 100) {
                 sendDM('We have a max limit of 100 characters in the topic. Please create a new ticket and shorten down your response.')
                 const index = creatingATicket.indexOf(message.author.id);
 
