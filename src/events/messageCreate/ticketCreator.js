@@ -3,7 +3,7 @@ const tickets = require('../../utils/tickets.js');
 
 const { ticketChannels, allowedTransfers } = require( '../../utils/ticketChannels.js');
 
-const creatingATicket = []
+let creatingATicket = []
 
 module.exports = async (message, client) => {
     const sendDM = async (messageContent) => {
@@ -143,7 +143,7 @@ module.exports = async (message, client) => {
                     const index = creatingATicket.indexOf(message.author.id);
 
                     if (index) {
-                        creatingATicket.splice(index);
+                        creatingATicket = creatingATicket.splice(index);
                     };
 
                     return;
@@ -154,7 +154,7 @@ module.exports = async (message, client) => {
                     const index = creatingATicket.indexOf(message.author.id);
 
                     if (index) {
-                        creatingATicket.splice(index);
+                        creatingATicket = creatingATicket.splice(index);
                     };
 
                     return;
@@ -171,7 +171,7 @@ module.exports = async (message, client) => {
                 const index = creatingATicket.indexOf(message.author.id);
 
                 if (index) {
-                    creatingATicket.splice(index);
+                    creatingATicket = creatingATicket.splice(index);
                 };
 
                 return;
@@ -184,11 +184,11 @@ module.exports = async (message, client) => {
                 console.log(creatingATicket)
 
                 if (index) {
-                    creatingATicket.splice(index);
+                    creatingATicket = creatingATicket.splice(index);
                 };
 
                 return;
-                console.log(creatingATicket)
+                
             };
 
             const ticketDescription = await collectResponse('Please reply with a more detailed description of your ticket. (Images or videos need to be added as a link) (Maximum 500 characters)');
@@ -197,7 +197,7 @@ module.exports = async (message, client) => {
                 const index = creatingATicket.indexOf(message.author.id);
 
                 if (index) {
-                    creatingATicket.splice(index);
+                    creatingATicket = creatingATicket.splice(index);
                 };
 
                 return;
@@ -208,7 +208,7 @@ module.exports = async (message, client) => {
                 const index = creatingATicket.indexOf(message.author.id);
 
                 if (index) {
-                    creatingATicket.splice(index);
+                    creatingATicket = creatingATicket.splice(index);
                 };
 
                 return;
@@ -220,7 +220,7 @@ module.exports = async (message, client) => {
                 const index = creatingATicket.indexOf(message.author.id);
 
                 if (index) {
-                    creatingATicket.splice(index);
+                    creatingATicket = creatingATicket.splice(index);
                 };
 
                 return;
@@ -231,7 +231,7 @@ module.exports = async (message, client) => {
                 const index = creatingATicket.indexOf(message.author.id);
 
                 if (index) {
-                    creatingATicket.splice(index);
+                    creatingATicket = creatingATicket.splice(index);
                 };
 
                 return;
@@ -245,7 +245,7 @@ module.exports = async (message, client) => {
                 const index = creatingATicket.indexOf(message.author.id);
 
                 if (index) {
-                    creatingATicket.splice(index);
+                    creatingATicket = creatingATicket.splice(index);
                 };
 
                 return;
@@ -269,7 +269,7 @@ module.exports = async (message, client) => {
                 const index = creatingATicket.indexOf(message.author.id);
 
                 if (index) {
-                    creatingATicket.splice(index);
+                    creatingATicket = creatingATicket.splice(index);
                 };
 
                 return;
@@ -280,7 +280,7 @@ module.exports = async (message, client) => {
                 const index = creatingATicket.indexOf(message.author.id);
 
                 if (index) {
-                    creatingATicket.splice(index);
+                    creatingATicket = creatingATicket.splice(index);
                 };
 
                 return;
@@ -294,7 +294,7 @@ module.exports = async (message, client) => {
                 const index = creatingATicket.indexOf(message.author.id);
 
                 if (index) {
-                    creatingATicket.splice(index);
+                    creatingATicket = creatingATicket.splice(index);
                 };
 
                 return;
@@ -354,14 +354,14 @@ module.exports = async (message, client) => {
             const index = creatingATicket.indexOf(message.author.id);
 
             if (index) {
-                creatingATicket.splice(index);
+                creatingATicket = creatingATicket.splice(index);
             };
             
         } catch (error) {
             const index = creatingATicket.indexOf(message.author.id);
 
             if (index) {
-                creatingATicket.splice(index);
+                creatingATicket = creatingATicket.splice(index);
             };
 
             if (error.message === "Timeout") return;
