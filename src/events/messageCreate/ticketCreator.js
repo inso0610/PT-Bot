@@ -165,7 +165,7 @@ module.exports = async (message, client) => {
 
             creatingATicket.push(message.author.id);
 
-            const ticketTopic = await collectResponse('What is the topic of your ticket? (Images or videos need to be added as a link)');
+            const ticketTopic = await collectResponse('What is the topic of your ticket? (Images or videos need to be added as a link) (Maximum 100 characters)');
 
             if (Array.isArray(ticketTopic)) {
                 const index = creatingATicket.indexOf(message.author.id);
@@ -177,7 +177,18 @@ module.exports = async (message, client) => {
                 return;
             };
 
-            const ticketDescription = await collectResponse('Please reply with a more detailed description of your ticket. (Images or videos need to be added as a link)');
+            if (ticketDescription.length > 100) {
+                sendDM('We have a max limit of 100 characters in the topic. Please create a new ticket and shorten down your response.')
+                const index = creatingATicket.indexOf(message.author.id);
+
+                if (index) {
+                    creatingATicket.splice(index);
+                };
+
+                return;
+            };
+
+            const ticketDescription = await collectResponse('Please reply with a more detailed description of your ticket. (Images or videos need to be added as a link) (Maximum 500 characters)');
 
             if (Array.isArray(ticketDescription)) {
                 const index = creatingATicket.indexOf(message.author.id);
@@ -189,9 +200,31 @@ module.exports = async (message, client) => {
                 return;
             };
 
-            const additionalComments = await collectResponse('Do you have any additional comments? (Images or videos need to be added as a link)');
+            if (ticketDescription.length > 500) {
+                sendDM('We have a max limit of 500 characters in the description. Please create a new ticket and shorten down your response.')
+                const index = creatingATicket.indexOf(message.author.id);
+
+                if (index) {
+                    creatingATicket.splice(index);
+                };
+
+                return;
+            };
+
+            const additionalComments = await collectResponse('Do you have any additional comments? (Images or videos need to be added as a link) (Maximum 500 characters)');
 
             if (Array.isArray(additionalComments)) {
+                const index = creatingATicket.indexOf(message.author.id);
+
+                if (index) {
+                    creatingATicket.splice(index);
+                };
+
+                return;
+            };
+
+            if (additionalComments.length > 500) {
+                sendDM('We have a max limit of 500 characters in the additional comments. Please create a new ticket and shorten down your response.')
                 const index = creatingATicket.indexOf(message.author.id);
 
                 if (index) {

@@ -52,6 +52,11 @@ module.exports = async (message, client) => {
         };
     
         const content = message.content.replace(/\[.*?\]/, '');
+
+        if (content.length > 500) {
+            sendDM('This response goes over our 500 character limit. Please shorten down your response or send it as multiple messages.')
+            return;
+        }
     
         if (ticket.claimedId === '0') {
             sendDM('This ticket isn\'t claimed currently. Please wait to respond before it has been claimed.')
