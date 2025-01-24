@@ -27,7 +27,7 @@ module.exports = async (client) => {
     };
 
     async function updateMessage() {
-        const d = new Date();
+        /*const d = new Date();
 
         let hour = d.getUTCHours().toString();
     
@@ -41,7 +41,7 @@ module.exports = async (client) => {
         if (minute.length == 1) {
             const old = minute;
             minute = `0${old}`
-        };
+        };*/
 
         const operationsApplications = await applications.find({ department: 'Operations' }).exec();
 
@@ -85,7 +85,8 @@ module.exports = async (client) => {
                 value: `${statusIcons[application.status]} (${application.status})`,
                 inline: false
             })))
-            .setFooter({ text: `This message updates every minute. Last update: ${hour}:${minute} UTC` });
+            .setFooter({ text: 'This message updates every minute. Last update' })
+            .setTimestamp(Date.now())
 
         message.edit({
             content: '# Applications',
