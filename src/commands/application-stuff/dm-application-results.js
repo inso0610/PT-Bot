@@ -12,8 +12,8 @@ function passFail(application, result) {
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('dm-results')
-    .setDescription('Sends a DM with your latest application results.'),
+    .setName('feedback')
+    .setDescription('Sends a DM with your latest application feedback.'),
 
     run: async ({ interaction, client, handler }) => {
 
