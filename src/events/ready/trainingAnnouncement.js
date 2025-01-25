@@ -50,7 +50,7 @@ module.exports = async (client) => {
         message = await trainingChannel.send({
             content: 'Loading training message...'
         });
-        trainingChannel.send('<@935889950547771512> Had to make a new training message!');
+        trainingChannel.send('<@&1304849124528754729> Had to make a new training message!');
     };
 
     const linkButton = new ButtonBuilder()

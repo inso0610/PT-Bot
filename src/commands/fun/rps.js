@@ -18,7 +18,6 @@ module.exports = {
     run: ({ interaction, client, handler }) => {
         const selection = interaction.options.getString('selection');
         const botSelection = Math.floor((Math.random() * 3) + 1); 
-        // const botSelection = 3;   
         let gameEmbed
         
         try {

@@ -23,7 +23,7 @@ module.exports = async (client) => {
 
     if (!message) {
         message = await channel.send({ content: '# Applications' });
-        channel.send('<@935889950547771512> Had to make a new application message!');
+        channel.send('<@&1304849124528754729> Had to make a new application message!');
     };
 
     async function updateMessage() {
