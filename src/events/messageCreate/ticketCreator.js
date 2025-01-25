@@ -333,7 +333,7 @@ module.exports = async (message, client) => {
                 };
 
                 if (testTicket.toLowerCase() === 'yes') {
-                    ticket.department = 'COMMUNITY-TEM';
+                    ticket.department = 'COMMUNITY-TRAINING';
                 };
             };
 
