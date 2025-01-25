@@ -14,8 +14,6 @@ module.exports = {
             .then((response) => response.json())
             .then((data) => console.log(data));*/
 
-        const logChannel = client.channels.cache.get('1213594805012013076');
-
         await interaction.deferReply({
             content: 'Wait...',
             ephemeral: true
@@ -68,8 +66,6 @@ module.exports = {
                         embeds: [updateEmbed],
                         ephemeral: true
                     });
-
-                    logChannel.send({embeds: [updateEmbed]});
                 
                 } catch (error) {
                     interaction.editReply({
