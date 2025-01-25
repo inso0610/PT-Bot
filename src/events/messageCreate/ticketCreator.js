@@ -319,6 +319,24 @@ module.exports = async (message, client) => {
                 };
             };
 
+            if (message.author.id === '312986921804759051') {
+                const testTicket = await collectResponseYesNo('Hei Erlend! Er dette en trening ticket? Yes/No');
+
+                if (Array.isArray(testTicket)) {
+                    const index = creatingATicket.indexOf(message.author.id);
+    
+                    if (index !== -1) {
+                        creatingATicket.splice(index, 1);
+                    };
+    
+                    return;
+                };
+
+                if (testTicket.toLowerCase() === 'yes') {
+                    ticket.department = 'COMMUNITY-TEM';
+                };
+            };
+
             const departmentSplit = ticket.department.split('-')
 
             const category = ticketChannels[departmentSplit[0]]

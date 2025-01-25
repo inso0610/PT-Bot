@@ -1,6 +1,3 @@
-//Departments: OPS-<ALL,DM,CM,PM,SM>, COMMUNITY-ALL (Standard), DEV-<ALL,AT,DEV,BOT,AR,WEB>, MARKETING-<ALL,SOCIAL>, SENIOR-<ALL,SA,OM>
-//SPECIAL-RA, DIRECTOR-<ALL,MD,OD,ED>, ADVISORS-<ALL,GA,CA,GH>
-
 const tickets = require('./tickets.js');
 
 const ticketChannels = {
@@ -17,7 +14,8 @@ const ticketChannels = {
     COMMUNITY: {
         channel: '1304843841810993214',
         pings: {
-            ALL: '1302284945451913308'
+            ALL: '1302284945451913308',
+            TRAINING: '1142479698635526304'
         }
     },
     DEV: {

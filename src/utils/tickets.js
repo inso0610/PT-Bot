@@ -16,8 +16,7 @@ const ticketSchema = new Schema({
     },
     department: {
         type: String,
-        default: 'COMMUNITY-ALL' //Departments: OPS-<ALL,DM,CM,PM,SM>, COMMUNITY-ALL (Standard), DEV-<ALL,AR,DEV,BOT,WEB>, MARKETING-<ALL,SOCIAL>, SENIOR-<ALL,SA,OM>
-        //SPECIAL-RA, DIRECTOR-<ALL,MD,OD,ED>, ADVISOR-<ALL,GA,CA,GH>
+        default: 'COMMUNITY-ALL'
     },
     topic: {
         type: String,
