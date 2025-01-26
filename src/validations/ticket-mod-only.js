@@ -8,7 +8,7 @@ module.exports = async ({ interaction, commandObj }) => {
                 ephemeral: true
             });
             return true;
-        }
+        };
         
         const member = await guild.members.fetch(interaction.user.id);
 
