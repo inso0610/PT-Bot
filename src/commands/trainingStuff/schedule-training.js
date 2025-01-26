@@ -227,7 +227,7 @@ module.exports = {
                 embeds: [trainingEmbed]
             });
 
-            const message = trainingChannel.send({
+            const message = await trainingChannel.send({
                 content: '<@&1140220447535923200>',
                 embeds: [publicEmbed],
                 components: [row]
