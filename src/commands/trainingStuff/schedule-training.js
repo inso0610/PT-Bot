@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const model = require('../../utils/trainings.js')
 
 function getRobloxId(id) {
@@ -199,8 +199,17 @@ module.exports = {
                 });
             };
 
+            const linkButton = new ButtonBuilder()
+	            .setLabel('Read the training guides before attending')
+                .setURL("https://guides.polartracks.no/start")
+	            .setStyle(ButtonStyle.Link);
+
+            const row = new ActionRowBuilder()
+                .addComponents(linkButton);
+
             const publicEmbed = new EmbedBuilder()
             .setTitle(`New ${trainingTypeCMD} training!`)
+            .setDescription('React to this message if you are planning to attend.')
             .addFields(
                 { name: 'Host:', value: rblxName },
                 { name: 'Start:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
@@ -211,10 +220,13 @@ module.exports = {
                 embeds: [trainingEmbed]
             });
 
-            trainingChannel.send({
+            const message = trainingChannel.send({
                 content: '<@&1140220447535923200>',
-                embeds: [publicEmbed]
+                embeds: [publicEmbed],
+                components: [row]
             });
+
+            message.react('✅')
     
             interaction.editReply({
                 content: 'The training has been scheduled.',
