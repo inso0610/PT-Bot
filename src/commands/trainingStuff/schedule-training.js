@@ -1,5 +1,12 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
-const model = require('../../utils/trainings.js')
+const model = require('../../utils/trainings.js');
+
+const guides = {
+    Driver: 'https://guides.polartracks.no/driver-guides',
+    Conductor: 'https://guides.polartracks.no/conductor-guides',
+    Dispatcher: 'https://guides.polartracks.no/dispatcher-guides',
+    Signaller: 'https://guides.polartracks.no/signaller-guides'
+}
 
 function getRobloxId(id) {
     const functionResult = fetch(`https://api.blox.link/v4/public/guilds/1089282844657987587/discord-to-roblox/${id.toString()}`, { method: "GET", headers: { "Authorization": "66ef19b6-b0f6-41f4-b883-63d833484ac6" } })
@@ -200,8 +207,8 @@ module.exports = {
             };
 
             const linkButton = new ButtonBuilder()
-	            .setLabel('Read the training guides before attending')
-                .setURL("https://guides.polartracks.no/start")
+	            .setLabel('You should read the training guide before attending')
+                .setURL(guides[trainingTypeCMD])
 	            .setStyle(ButtonStyle.Link);
 
             const row = new ActionRowBuilder()
