@@ -1,5 +1,7 @@
 const { EmbedBuilder, ChannelType } = require('discord.js');
 
+const notificationCommands = ['message']
+
 module.exports = async (interaction, client) => {
     const channel = client.channels.cache.get('1333159918278021190');
 
@@ -21,9 +23,16 @@ module.exports = async (interaction, client) => {
             )
             .setTimestamp(Date.now());
 
-        channel.send({
-            embeds: [embed]
-        });
+        if (notificationCommands.includes(interaction.commandName)) {
+            channel.send({
+                content: '<@935889950547771512>',
+                embeds: [embed]
+            });
+        } else {
+            channel.send({
+                embeds: [embed]
+            });
+        }
     } else if (interaction.isButton()) {
         const isDM = interaction.channel.type === ChannelType.DM;
 
