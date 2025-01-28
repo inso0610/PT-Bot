@@ -63,7 +63,7 @@ module.exports = {
 
             const senderName = interaction.member.nickname ?? interaction.user.username;
 
-            const message = await reciever.send(`Hello! You have recieved a message from ${role} ${senderName}.\n\`\`\`${text}\`\`\`\nIf you want to respond to this message please create a ticket by pinging me.`).catch(e => {
+            const message = await reciever.send(`Hello! You have recieved a message from ${role} ${senderName} in Polar Tracks.\n\`\`\`${text}\`\`\`\nIf you want to respond to this message please create a ticket by pinging me.`).catch(e => {
                 console.warn(e);
                 interaction.reply({
                     content: 'I could not message the user.',
@@ -79,7 +79,7 @@ module.exports = {
                 });
             }
         } else {
-            const message = await reciever.send(`Hello! You have recieved a message from the ${team} team.\n\`\`\`${text}\`\`\`\nIf you want to respond to this message please create a ticket by pinging me.`).catch(e => {
+            const message = await reciever.send(`Hello! You have recieved a message from the Polar Tracks ${team} team.\n\`\`\`${text}\`\`\`\nIf you want to respond to this message please create a ticket by pinging me.`).catch(e => {
                 console.warn(e);
                 interaction.reply({
                     content: 'I could not message the user.',
