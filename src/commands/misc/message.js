@@ -38,13 +38,13 @@ module.exports = {
         const text = interaction.options.getString('text');
         const showSender = interaction.options.getBoolean('show-sender');
 
-        if (team === 'Directors' && !interaction.member.roles.cache.has('1140260309915938866')) {
+        if (team === 'Director' && !interaction.member.roles.cache.has('1140260309915938866')) {
             interaction.reply({
                 content: "You can't send a message as a Director.",
                 ephemeral: true
             });
             return;
-        } else if (team === 'Group Advisors' && !interaction.member.roles.cache.has('1089284396282032178')) {
+        } else if (team === 'Group Advisor' && !interaction.member.roles.cache.has('1089284396282032178')) {
             interaction.reply({
                 content: "You can't send a message as a Group Advisor.",
                 ephemeral: true
@@ -61,7 +61,9 @@ module.exports = {
 
             const role = teamRoles[team];
 
-            const message = await reciever.send(`Hello! You have recieved a message from ${role} ${interaction.member.nickname}.\n\`\`\`${text}\`\`\`\nIf you want to respond to this message please create a ticket by pinging me.`).catch(e => {
+            const senderName = interaction.member.nickname ?? interaction.user.username;
+
+            const message = await reciever.send(`Hello! You have recieved a message from ${role} ${senderName}.\n\`\`\`${text}\`\`\`\nIf you want to respond to this message please create a ticket by pinging me.`).catch(e => {
                 console.warn(e);
                 interaction.reply({
                     content: 'I could not message the user.',
