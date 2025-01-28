@@ -1,6 +1,6 @@
 const { EmbedBuilder, ChannelType } = require('discord.js');
 
-const notificationCommands = ['message']
+const notificationCommands = ['message', 'reset-all-activity', 'add-application']
 
 module.exports = async (interaction, client) => {
     const channel = client.channels.cache.get('1333159918278021190');
@@ -25,7 +25,7 @@ module.exports = async (interaction, client) => {
 
         if (notificationCommands.includes(interaction.commandName)) {
             channel.send({
-                content: '<@935889950547771512>',
+                content: '<@935889950547771512> <@312986921804759051>',
                 embeds: [embed]
             });
         } else {
