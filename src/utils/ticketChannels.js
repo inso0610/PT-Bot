@@ -134,6 +134,3 @@ async function closeTicket(id, interaction, client) {
 };
 
 module.exports = { ticketChannels, allowedTransfers, closeTicket };
-
-//Departments: OPS-<ALL,DM,CM,PM,SM>, COMMUNITY-ALL (Standard), DEV-<ALL,AT,DEV,BOT>, MARKETING-<ALL,SOCIAL,WEB>, SENIOR-<ALL,SA,OM,DEV>
-//SPECIAL-RA, DIRECTOR-<ALL,MD,OD,ED>, ADVISOR-<ALL,GA,CA,GH>
