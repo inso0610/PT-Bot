@@ -30,6 +30,10 @@ const status = [
 module.exports = (client) => {
     console.log(`${client.user.tag} is online.`);
 
+    const channel = client.channels.cache.get('1333159918278021190');
+
+    channel.send('<@935889950547771512> Bot restarted!')
+
     setInterval(() => {
         let random = Math.floor(Math.random() * status.length);
         client.user.setActivity(status[random]);
