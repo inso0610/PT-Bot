@@ -3,7 +3,7 @@ const { Types } = require('mongoose');
 
 const tickets = require('../../utils/tickets.js');
 
-const { ticketChannels, allowedTransfers, closeTicket } = require( '../../utils/ticketChannels.js');
+const { ticketChannels, closeTicket } = require( '../../utils/ticketChannels.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -45,6 +45,7 @@ module.exports = {
                         .setRequired(true)
                         .addChoices(
                             { name: 'Community Team (COMMUNITY-ALL)', value: 'COMMUNITY-ALL' },
+                            { name: 'Training Tickets (COMMUNITY-TRAINING)', value: 'COMMUNITY-TRAINING' },
                             { name: 'Operations Team (OPS-ALL)', value: 'OPS-ALL' },
                             { name: 'Driver Managers (OPS-DM)', value: 'OPS-DM' },
                             { name: 'Conductor Managers (OPS-CM)', value: 'OPS-CM' },
@@ -66,7 +67,6 @@ module.exports = {
                             { name: 'Operations Director (DIRECTOR-OD)', value: 'DIRECTOR-OD' },
                             { name: 'Engineering and Technology Director (DIRECTOR-ED)', value: 'DIRECTOR-ED' },
                             { name: 'Advisors Team (ADVISOR-ALL)', value: 'ADVISOR-ALL' },
-                            { name: 'Group Advisors (ADVISOR-GA)', value: 'ADVISOR-GA' },
                             { name: 'Community Administrator (ADVISOR-CA)', value: 'ADVISOR-CA' },
                             { name: 'Group Holder (ADVISOR-GH)', value: 'ADVISOR-GH' }
                         )))
@@ -457,13 +457,6 @@ module.exports = {
             try {
                 const ticketIdString = interaction.options.getString('id');
                 const newCategory = interaction.options.getString('new-category');
-    
-                if (!allowedTransfers.includes(newCategory)) {
-                    return interaction.editReply({
-                        content: 'The new category is not valid.',
-                        ephemeral: true
-                    });
-                };
     
                 let ticketId;
                 if (Types.ObjectId.isValid(ticketIdString)) {

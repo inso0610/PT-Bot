@@ -2,7 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('
 const { Types } = require('mongoose');
 const tickets = require('../../utils/tickets.js');
 
-const { ticketChannels, allowedTransfers } = require( '../../utils/ticketChannels.js');
+const { ticketChannels } = require( '../../utils/ticketChannels.js');
 
 module.exports = async (message, client) => {
     try {

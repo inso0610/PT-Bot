@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const tickets = require('../../utils/tickets.js');
 
-const { ticketChannels, allowedTransfers } = require( '../../utils/ticketChannels.js');
+const { ticketChannels } = require( '../../utils/ticketChannels.js');
 
 const creatingATicket = []
 

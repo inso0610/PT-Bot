@@ -3,7 +3,7 @@ const model = require('../../utils/trainings.js')
 
 const tickets = require('../../utils/tickets.js');
 
-const { ticketChannels, allowedTransfers, closeTicket } = require( '../../utils/ticketChannels.js');
+const { ticketChannels, closeTicket } = require( '../../utils/ticketChannels.js');
 
 function getRobloxId(id) {
     const functionResult = fetch(`https://api.blox.link/v4/public/guilds/1089282844657987587/discord-to-roblox/${id.toString()}`, { method: "GET", headers: { "Authorization": "66ef19b6-b0f6-41f4-b883-63d833484ac6" } })

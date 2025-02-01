@@ -69,9 +69,6 @@ const ticketChannels = {
     }
 };
 
-const allowedTransfers = ['OPS-ALL', 'OPS-DM', 'OPS-CM', 'OPS-PM', 'OPS-SM', 'COMMUNITY-ALL', 'DEV-ALL', 'DEV-AR', 'DEV-DEV', 'DEV-BOT', 'DEV-WEB', 'MARKETING-ALL', 'MARKETING-SOCIAL', 'SENIOR-ALL', 'SENIOR-SA', 'SENIOR-OM', 'SENIOR-DEV', 'SPECIAL-RA', 'DIRECTOR-ALL', 'DIRECTOR-MD', 'DIRECTOR-OD', 'DIRECTOR-ED', 'ADVISOR-ALL', 'ADVISOR-GA',
-    'ADVISOR-CA', 'ADVISOR-GH'];
-
 async function closeTicket(id, interaction, client) {
     const ticket = await tickets.findByIdAndDelete(id).exec();
 
@@ -133,4 +130,4 @@ async function closeTicket(id, interaction, client) {
     });
 };
 
-module.exports = { ticketChannels, allowedTransfers, closeTicket };
+module.exports = { ticketChannels, closeTicket };
