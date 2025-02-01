@@ -301,7 +301,7 @@ module.exports = async (message, client) => {
                 language: languageSelection 
             });
 
-            if (message.author.id === '935889950547771512') {
+            if (message.author.id === '935889950547771512') { // Emil Bot Developer
                 const testTicket = await collectResponseYesNo('Hei Emil! Er dette en test ticket? Yes/No');
 
                 if (Array.isArray(testTicket)) {
@@ -319,7 +319,7 @@ module.exports = async (message, client) => {
                 };
             };
 
-            if (message.author.id === '312986921804759051') {
+            if (message.author.id === '312986921804759051') { // Erlend Community Administator
                 const testTicket = await collectResponseYesNo('Hei Erlend! Er dette en trening ticket? Yes/No');
 
                 if (Array.isArray(testTicket)) {
