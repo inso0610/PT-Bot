@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const model = require('../../utils/trainings.js');
+const { isValidDateFormat, isValidTimeFormat } = require( '../../utils/dateTimeUtils.js');
 
 const guides = {
     Driver: 'https://guides.polartracks.no/driver-guides',
@@ -128,6 +129,20 @@ module.exports = {
             const scheduledDateCMD = interaction.options.getString('date');
             const scheduledStartCMD = interaction.options.getString('time');
             const additionalInfoCMD = interaction.options.getString('additional-info') ?? 'No additional information.';
+
+            if (!isValidDateFormat(scheduledDateCMD)) {
+                return interaction.editReply({
+                    content: 'Incorrect date format! Please use this format: dd/mm/yyyy',
+                    ephemeral: true
+                });
+            };
+    
+            if (!isValidTimeFormat(scheduledStartCMD)) {
+                return interaction.editReply({
+                    content: 'Incorrect time format! Please use this format: hh:mm',
+                    ephemeral: true
+                });
+            };
 
             const trainingChannel = client.channels.cache.get('1337095950027456603');
             

@@ -1,6 +1,8 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const trainings = require('../../utils/trainings.js');
 
+const { isValidDateFormat, isValidTimeFormat } = require( '../../utils/dateTimeUtils.js');
+
 function updateTeamup(newStartDate, type, id, host) {
     const endDate = new Date(newStartDate);
     endDate.setMinutes(newStartDate.getMinutes() + 60);
@@ -62,6 +64,20 @@ module.exports = {
         const idCMD = interaction.options.getString('id')
         const updatedDateCMD = interaction.options.getString('date');
         const updatedStartCMD = interaction.options.getString('time');
+
+        if (!isValidDateFormat(updatedDateCMD)) {
+            return interaction.reply({
+                content: 'Incorrect date format! Please use this format: dd/mm/yyyy',
+                ephemeral: true
+            });
+        };
+
+        if (!isValidTimeFormat(updatedStartCMD)) {
+            return interaction.reply({
+                content: 'Incorrect time format! Please use this format: hh:mm',
+                ephemeral: true
+            });
+        };
 
         await interaction.deferReply({
             ephemeral: true
