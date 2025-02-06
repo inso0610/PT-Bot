@@ -5,7 +5,8 @@ const activityRequirements = require('../../utils/activityRequirement.js');
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('get-my-activity')
-    .setDescription('Get your activity'),
+    .setDescription('Get your activity')
+    .setDMPermission(false),
 
     run: async ({ interaction, client, handler }) => {
         await interaction.deferReply({

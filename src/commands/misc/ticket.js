@@ -9,6 +9,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('ticket')
         .setDescription('Commands for tickets')
+        .setDMPermission(false)
         .addSubcommand(subcommand =>
             subcommand
                 .setName('reply')

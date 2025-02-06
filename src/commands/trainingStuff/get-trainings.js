@@ -4,7 +4,8 @@ const trainings = require('../../utils/trainings.js');
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('get-trainings')
-    .setDescription('Get your trainings'),
+    .setDescription('Get your trainings')
+    .setDMPermission(false),
     run: async ({ interaction, client, handler }) => {
 
         interaction.reply({

@@ -5,6 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('add-application')
     .setDescription('Add a new application to the application system. (Bot dev only)')
+    .setDMPermission(false)
     .addStringOption((option) => 
         option
             .setName('role')

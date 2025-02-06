@@ -39,18 +39,17 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('edit-training-time')
     .setDescription('Edit the date and time of the training.')
+    .setDMPermission(false)
     .addStringOption((option) => 
         option
             .setName('id')
             .setDescription('What is the ID of the training?')
             .setRequired(true))
-
     .addStringOption((option) => 
         option
             .setName('date')
             .setDescription('Format: dd/mm/yyyy. Use UTC time!')
             .setRequired(true))
-
     .addStringOption((option) => 
         option
             .setName('time')

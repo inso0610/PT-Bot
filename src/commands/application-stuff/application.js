@@ -5,6 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('application')
         .setDescription('Commands for applications')
+        .setDMPermission(false)
         .addSubcommand(subcommand =>
             subcommand
                 .setName('update-state')

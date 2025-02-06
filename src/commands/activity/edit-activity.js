@@ -5,6 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('edit-activity')
     .setDescription('Edit\'s the activity of a manager')
+    .setDMPermission(false)
     .addStringOption((option) => 
         option
             .setName('type')

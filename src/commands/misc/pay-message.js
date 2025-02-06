@@ -24,6 +24,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('pay-message')
     .setDescription('Gives you your Discord User id.')
+    .setDMPermission(false)
     .addUserOption((option) => 
         option
             .setName('user')

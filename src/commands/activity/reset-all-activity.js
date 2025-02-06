@@ -5,7 +5,8 @@ const activityRequirements = require('../../utils/activityRequirement.js');
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('reset-all-activity')
-    .setDescription('Reset all activity for every manager'),
+    .setDescription('Reset all activity for every manager')
+    .setDMPermission(false),
 
     run: async ({ interaction, client, handler }) => {
         interaction.reply({

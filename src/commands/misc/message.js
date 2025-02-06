@@ -6,6 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('message')
     .setDescription('Sends a message to someone using the PT Bot')
+    .setDMPermission(false)
     .addUserOption((option) =>
         option
             .setName('reciever')

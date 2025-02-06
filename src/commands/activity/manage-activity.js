@@ -23,6 +23,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('manage-activity')
     .setDescription('Manage a managers activity')
+    .setDMPermission(false)
     .addStringOption((option) => 
         option
             .setName('function')

@@ -6,6 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('start-training')
     .setDescription('Start a training')
+    .setDMPermission(false)
     .addStringOption((option) => 
         option
             .setName('id')

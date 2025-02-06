@@ -5,7 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('edit-count')
     .setDescription('Edit the count')
-    
+    .setDMPermission(false)
     .addNumberOption((option) => 
         option
             .setName('new-count')

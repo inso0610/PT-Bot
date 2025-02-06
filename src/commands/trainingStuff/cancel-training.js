@@ -21,6 +21,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('cancel-training')
     .setDescription('Cancel a training')
+    .setDMPermission(false)
     .addStringOption((option) => 
         option
             .setName('id')
