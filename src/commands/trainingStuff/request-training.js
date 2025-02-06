@@ -54,7 +54,7 @@ module.exports = {
                 content: 'Incorrect time format! Please use this format: hh:mm',
                 ephemeral: true
             });
-        }
+        };
 
         function createButtonRow() {
             const confirmButton = new ButtonBuilder()
