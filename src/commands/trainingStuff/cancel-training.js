@@ -34,7 +34,7 @@ module.exports = {
         });
 
         try {
-            const trainingChannel = client.channels.cache.get('1246904420495523925');
+            const trainingChannel = client.channels.cache.get('1337095950027456603');
             
             const idCMD = interaction.options.getString('id');
 

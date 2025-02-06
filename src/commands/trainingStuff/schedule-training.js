@@ -129,7 +129,7 @@ module.exports = {
             const scheduledStartCMD = interaction.options.getString('time');
             const additionalInfoCMD = interaction.options.getString('additional-info') ?? 'No additional information.';
 
-            const trainingChannel = client.channels.cache.get('1246904420495523925');
+            const trainingChannel = client.channels.cache.get('1337095950027456603');
             
             const userInfo = await getRobloxId(id);
             if (!Array.isArray(userInfo)) {
