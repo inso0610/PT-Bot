@@ -76,7 +76,7 @@ module.exports = (client) => {
                 .setDescription(`Activity for <@${value.discordId}>`)
                 .addFields(
                     { name: 'Shifts:', value: value.shifts.toString() },
-                    { name: 'Trainings:', value: value.trainings.toString().toString() },
+                    { name: 'Trainings:', value: value.trainings.toString() },
                     { name: 'Events:', value: value.events.toString() }
                 );
 
