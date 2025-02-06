@@ -41,7 +41,20 @@ const trainingSchema = new Schema({
     teamupId: {
         type: String,
         required: true
-    }
+    },
+    coHosts: { //Not implemented yet
+        type: Object,
+        default: {}
+    },
 });
+
+/* coHosts object example
+{
+    ['123456789']: { Discord id is the key
+        "RobloxId": "123456789",
+        "RobloxUsername": "ExampleUsername"
+    }
+}
+*/
 
 module.exports = mongoose.model('trainings', trainingSchema);
