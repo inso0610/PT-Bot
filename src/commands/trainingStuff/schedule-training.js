@@ -118,7 +118,7 @@ module.exports = {
             .setRequired(false)),
 
     run: async ({ interaction, client, handler }) => {
-        interaction.deferReply({
+        await interaction.deferReply({
             ephemeral: true
         });
 
