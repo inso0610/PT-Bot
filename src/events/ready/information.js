@@ -31,10 +31,10 @@ module.exports = async (client) => {
 		.setLabel('Roadmaps')
 		.setStyle(ButtonStyle.Primary);*/
 
-    const roadMapButton = new ButtonBuilder()
+    /*const roadMapButton = new ButtonBuilder()
         .setURL('https://sharing.clickup.com/9012433031/b/6-901205295987-2/board')
         .setLabel('Development roadmap')
-        .setStyle(ButtonStyle.Link);
+        .setStyle(ButtonStyle.Link);*/
 
     const socialMediaButton = new ButtonBuilder()
         .setCustomId('socialMediaInfo')
@@ -60,7 +60,7 @@ module.exports = async (client) => {
     // Action Row
 
     const actionRow = new ActionRowBuilder()
-        .addComponents(roadMapButton, socialMediaButton, opManualsButton, contactButton, routesButton);
+        .addComponents(socialMediaButton, opManualsButton, contactButton, routesButton);
 
     // Message
 
