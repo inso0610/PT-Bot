@@ -1,6 +1,6 @@
 const counting = require('../../utils/counting.js');
 const countingBlacklist = require('../../utils/countingBlacklist.js');
-const { evaluate } = require('mathjs'); // Import math.js for math evaluation
+const { evaluate } = require('mathjs');
 
 function sleep(ms) {
     return new Promise((resolve) => {
@@ -25,7 +25,12 @@ module.exports = async (message) => {
 
     if (blacklisted) {
         await message.delete().catch(e => console.warn(e));
-        message.author.send(`Your latest attempt to count was blocked because you are blacklisted from the counting channel for the following reason: ${blacklisted.reason}. This is ${blacklisted.permanent ? 'permanent' : `until <t:${Math.floor(blacklisted.expiration.getTime() / 1000)}:F>`}. You can appeal this blacklist by creating a ticket.`);
+        message.author.send(`Your latest attempt to count was blocked because you are blacklisted from the counting channel for the following 
+            reason: ${blacklisted.reason}. 
+            This is ${blacklisted.permanent ? 'permanent' : `until <t:${Math.floor(blacklisted.expiration.getTime() / 1000)}:F>`}. 
+            You can appeal this blacklist by creating a ticket.`).catch(e => {
+                console.warn(e);
+            });
         return;
     };
 

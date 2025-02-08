@@ -1,8 +1,8 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const tickets = require('../../utils/tickets.js');
+const ticketBlacklist = require('../../utils/ticketBlacklist.js');
 
 const { ticketChannels } = require( '../../utils/ticketChannels.js');
-
 const creatingATicket = []
 
 module.exports = async (message, client) => {
@@ -98,6 +98,15 @@ module.exports = async (message, client) => {
     };
 
     if (message.mentions.has(client.user) && message.content === '<@1152626581022445599>') {
+        // Check if blacklisted
+        const blacklisted = await ticketBlacklist.findOne({userId: message.author.id}).exec();
+        if (blacklisted) {
+            const blacklistDM = await sendDM(`You are blacklisted from creating tickets for the following reason: ${blacklisted.reason}. This is ${blacklisted.permanent ? 'permanent' : `until <t:${Math.floor(blacklisted.expiration.getTime() / 1000)}:F>. Contact a member of staff if you believe this is a mistake.`}.`);
+            if (Array.isArray(blacklistDM)) {
+                return;
+            };
+        };
+
         const WelcomeEmbed = new EmbedBuilder()
             .setTitle('Welcome to our ticket system!')
             .setDescription('Let\'s start creating your ticket.');
