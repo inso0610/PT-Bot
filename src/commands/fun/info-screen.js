@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const wait = require('node:timers/promises').setTimeout;
 
-const images = '././utils/images';
+const images = './src/utils/images';
 //const stationCodes = require('../../utils/trainings.js');
 
 module.exports = {

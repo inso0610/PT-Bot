@@ -25,7 +25,7 @@ module.exports = async (message) => {
 
     if (blacklisted) {
         await message.delete().catch(e => console.warn(e));
-        message.author.send(`Your latest attempt to count was blocked because you are blacklisted from the counting channel for the following reason: ${blacklisted.reason}. This is ${blacklisted.permanent ? 'permanent' : `until ${blacklisted.expiration.toISOString()}`}.`);
+        message.author.send(`Your latest attempt to count was blocked because you are blacklisted from the counting channel for the following reason: ${blacklisted.reason}. This is ${blacklisted.permanent ? 'permanent' : `until <t:${Math.floor(blacklisted.expiration.getTime() / 1000)}:F>`}. You can appeal this blacklist by creating a ticket.`);
         return;
     };
 

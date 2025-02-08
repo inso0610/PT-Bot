@@ -13,7 +13,7 @@ module.exports = {
             .setDescription('Add a user to the counting blacklist')
             .addUserOption(option => option.setName('user').setDescription('Who do you want to blacklist?').setRequired(true))
             .addStringOption(option => option.setName('reason').setDescription('What is the reason for blacklisting this user?').setRequired(true))
-            .addStringOption(option => option.setName('hours').setDescription("How long should this blacklist last?").setRequired(false)))
+            .addNumberOption(option => option.setName('hours').setDescription("How long should this blacklist last?").setRequired(false)))
     .addSubcommand(subcommand =>
         subcommand
             .setName('remove')
@@ -61,7 +61,8 @@ module.exports = {
                     });
                 });
             } else {
-                user.send(`You have been blacklisted from the counting channel for the following reason: ${reason}. This will expire at ${expiration.toISOString()}.`).catch(e => {
+                user.send(`You have been blacklisted from the counting channel for the following reason: ${reason}. This will expire at <t:${Math.floor(expiration.getTime() / 1000
+                )}:F>.`).catch(e => {
                     console.warn(e);
                     interaction.followUp({
                         content: 'User has been blacklisted, but I was unable to send them a DM.',
