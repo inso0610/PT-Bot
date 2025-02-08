@@ -61,8 +61,7 @@ module.exports = {
                     });
                 });
             } else {
-                user.send(`You have been blacklisted from the counting channel for the following reason: ${reason}. This will expire at <t:${Math.floor(expiration.getTime() / 1000
-                )}:F>.`).catch(e => {
+                user.send(`You have been blacklisted from the counting channel for the following reason: ${reason}. This will expire at <t:${Math.floor(expiration.getTime() / 1000)}:F>. You can appeal this blacklist by creating a ticket.`).catch(e => {
                     console.warn(e);
                     interaction.followUp({
                         content: 'User has been blacklisted, but I was unable to send them a DM.',

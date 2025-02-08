@@ -4,6 +4,7 @@ const { Types } = require('mongoose');
 const tickets = require('../../utils/tickets.js');
 
 const { ticketChannels, closeTicket } = require( '../../utils/ticketChannels.js');
+const ticketBlacklist = require('../../utils/ticketBlacklist.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -89,7 +90,14 @@ module.exports = {
             subcommand
                 .setName('close')
                 .setDescription('Closes a ticket.')
-                .addStringOption(option => option.setName('id').setDescription('What is the ID of the ticket?').setRequired(true))),
+                .addStringOption(option => option.setName('id').setDescription('What is the ID of the ticket?').setRequired(true)))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('blacklist')
+                .setDescription('Blacklist someone from creating tickets.')
+                .addUserOption(option => option.setName('user').setDescription('Who do you want to blacklist from the ticket system?').setRequired(true))
+                .addStringOption(option => option.setName('reason').setDescription('What is the reason for blacklisting this user?').setRequired(true))
+                .addNumberOption(option => option.setName('hours').setDescription("How long should this blacklist last?").setRequired(false))),
     run: async ({ interaction, client, handler }) => {
         const sendDM = async (messageContent, edit) => {
             if (!edit) {
@@ -848,6 +856,72 @@ module.exports = {
                 });
                 console.warn(error);
             }
+        } else if (subcommand === 'blacklist') {
+            try {
+                const user = interaction.options.getUser('user');
+                const reason = interaction.options.getString('reason');
+                const hours = interaction.options.getNumber('hours');
+    
+                const blacklisted = await ticketBlacklist.findOne({ creatorId: user.id }).exec();
+    
+                if (blacklisted) {
+                    return interaction.reply({
+                        content: 'This user is already blacklisted.',
+                        ephemeral: true
+                    });
+                };
+
+                let expiration;
+                let permanent = false;
+
+                if (hours) {
+                    expiration = new Date(Date.now() + hours * 60 * 60 * 1000);
+                } else {
+                    permanent = true;
+                    expiration = new Date(Date.now());
+                }
+    
+                const newBlacklist = new ticketBlacklist({
+                    discordId: user.id,
+                    reason: reason,
+                    addedBy: interaction.user.id,
+                    expiration: expiration,
+                    permanent: permanent
+                });
+    
+                await newBlacklist.save();
+    
+                interaction.reply({
+                    content: `User <@${user.id}> has been blacklisted for reason: ${reason}.`,
+                    ephemeral: true
+                });
+    
+                if (permanent) {
+                    user.send(`You have been blacklisted from the ticket system for the following reason: ${reason}. This is permanent, contact a member of staff if you want to appeal this.`).catch(e => {
+                        console.warn(e);
+                        interaction.followUp({
+                            content: 'User has been blacklisted, but I was unable to send them a DM.',
+                            ephemeral: true
+                        });
+                    });
+                } else {
+                    user.send(`You have been blacklisted from the ticket system for the following reason: ${reason}. This will expire at <t:${Math.floor(expiration.getTime() / 1000)}:F>. You can contact a member of staff if you want to appeal this.`).catch(e => {
+                        console.warn(e);
+                        interaction.followUp({
+                            content: 'User has been blacklisted, but I was unable to send them a DM.',
+                            ephemeral: true
+                        });
+                    });
+                };            
+            } catch (error) {
+                interaction.reply({
+                    content: 'An unexpected error occurred.',
+                    ephemeral: true
+                }).catch( fe => {
+                    console.warn(fe);
+                });
+                console.warn(error);
+            };
         };
     },
     ticketModOnly: true,
