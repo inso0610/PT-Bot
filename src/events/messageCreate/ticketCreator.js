@@ -105,6 +105,7 @@ module.exports = async (message, client) => {
             if (Array.isArray(blacklistDM)) {
                 return;
             };
+            return;
         };
 
         const WelcomeEmbed = new EmbedBuilder()
