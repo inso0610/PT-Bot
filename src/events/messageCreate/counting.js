@@ -1,74 +1,63 @@
 const counting = require('../../utils/counting.js');
+const { evaluate } = require('mathjs'); // Import math.js for math evaluation
 
 function sleep(ms) {
     return new Promise((resolve) => {
-      setTimeout(resolve, ms);
+        setTimeout(resolve, ms);
     });
-};
+}
 
 module.exports = async (message) => {
     if (message.author.bot) {
         return;
-    };
+    }
 
-    const channelId = message.channelId.toString()
+    const channelId = message.channelId.toString();
 
     if (channelId !== '1285519874138837002') {
         return;
-    };
+    }
 
-    //console.log(message.channelId)
+    const text = message.content.trim();
 
-    const text = message.content;
-
-    const loweredText = text.toLowerCase()
-
-    if (loweredText.includes('0x') === true && message.author.id !== '935889950547771512' ) {
-        const botReply = await message.channel.send(`<@${message.author.id}> only numbers are allowed here!`);
-
-        await message.delete().catch(e=>{console.warn(e)});
-
-        await sleep(3000)
-
-        botReply.delete().catch(e=>{console.warn(e)});
-
+    // Prevent hexadecimal (0x format)
+    if (text.toLowerCase().includes('0x') && message.author.id !== '935889950547771512') {
+        const botReply = await message.channel.send(`<@${message.author.id}> only numbers and math expressions are allowed here!`);
+        await message.delete().catch(e => console.warn(e));
+        await sleep(3000);
+        botReply.delete().catch(e => console.warn(e));
         return;
-    };
+    }
 
-    const numberInText = Number(text);
+    let numberInText;
 
-    //console.log(numberInText)
-
-    if (numberInText !== numberInText) {
-        if (message.author.id === '935889950547771512') {
-            return;
-        };
-
-        //console.log('MessageDeleted');
-
-        const botReply = await message.channel.send(`<@${message.author.id}> only numbers are allowed here!`);
-
-        await message.delete().catch(e=>{console.warn(e)});
-
-        await sleep(3000)
-
-        botReply.delete().catch(e=>{console.warn(e)});
-
+    try {
+        // Evaluate the math expression safely
+        numberInText = evaluate(text);
+    } catch (error) {
+        // If evaluation fails, reject input
+        const botReply = await message.channel.send(`<@${message.author.id}> invalid mathematical expression!`);
+        await message.delete().catch(e => console.warn(e));
+        await sleep(3000);
+        botReply.delete().catch(e => console.warn(e));
         return;
-    };
+    }
 
-    if (numberInText < 1) {
-        if (message.author.id === '935889950547771512') {
-            return;
-        };
+    // Ensure the result is a valid number
+    if (isNaN(numberInText) || !isFinite(numberInText)) {
+        const botReply = await message.channel.send(`<@${message.author.id}> only valid numbers and expressions are allowed!`);
+        await message.delete().catch(e => console.warn(e));
+        await sleep(3000);
+        botReply.delete().catch(e => console.warn(e));
+        return;
+    }
 
-        const botReply = await message.channel.send(`<@${message.author.id}> only numbers above 0 are allowed here!`);
-        
-        await message.delete().catch(e=>{console.warn(e)});; 
-        
-        await sleep(3000)
-
-        botReply.delete().catch(e=>{console.warn(e)});
+    // Ensure number is an integer and above 0
+    if (!Number.isInteger(numberInText) || numberInText < 1) {
+        const botReply = await message.channel.send(`<@${message.author.id}> only whole numbers above 0 are allowed!`);
+        await message.delete().catch(e => console.warn(e));
+        await sleep(3000);
+        botReply.delete().catch(e => console.warn(e));
         return;
     }
 
@@ -80,14 +69,13 @@ module.exports = async (message) => {
             nextNumber: 1,
             lastNumberSenderId: '0'
         });
-    };
+    }
 
     if (numberInText === nextNumber.nextNumber && message.author.id !== nextNumber.lastNumberSenderId) {
         nextNumber.nextNumber = numberInText + 1;
         nextNumber.lastNumberSenderId = message.author.id;
-        
-        await sleep(1000)
 
+        await sleep(1000);
         message.react('✅');
     } else if (message.author.id === nextNumber.lastNumberSenderId) {
         message.channel.send(`<@${message.author.id}> tried to count twice!\nThe count has been restarted.\n**The next number is 1.**`);
@@ -99,7 +87,7 @@ module.exports = async (message) => {
 
         nextNumber.nextNumber = 1;
         nextNumber.lastNumberSenderId = '0';
-    };
+    }
 
     await nextNumber.save();
 };
