@@ -1,4 +1,3 @@
-const { boolean } = require('mathjs');
 const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
 
@@ -25,4 +24,4 @@ const countingBlacklist = new Schema({
     }
 });
 
-module.exports = mongoose.model('countingBlacklist', countingBlacklist, 'countingBlacklist');
+module.exports = mongoose.model('counting-blacklist', countingBlacklist, 'counting-blacklist');
