@@ -562,77 +562,85 @@ module.exports = {
                 console.warn(error);
             };
         } else if (subcommand === "logs") {
-            interaction.deferReply({
-                ephemeral: true
-            });
+            interaction.deferReply({ ephemeral: true });
 
             try {
                 const ticketIdString = interaction.options.getString('id');
     
                 let ticketId;
                 if (Types.ObjectId.isValid(ticketIdString)) {
-                    ticketId = new Types.ObjectId(ticketIdString);
+                   ticketId = new Types.ObjectId(ticketIdString);
                 } else {
                     return interaction.editReply({
-                        content: 'This ticket id is not valid.',
+                        content: 'This ticket ID is not valid.',
                         ephemeral: true
-                    });
+                   });
                 };
-    
+
                 const guild = interaction.client.guilds.cache.get('1089282844657987587');
-    
+
                 if (!guild) {
-                    interaction.editReply({
+                    return interaction.editReply({
                         content: 'Could not fetch guild.',
                         ephemeral: true
                     });
-                    return;
                 };
-    
+
                 const member = await guild.members.fetch(interaction.user.id);
-    
+
                 if (!member) {
-                    interaction.editReply({
+                    return interaction.editReply({
                         content: 'Could not fetch member.',
                         ephemeral: true
                     });
-    
-                    return;
                 };
-    
+
                 let ticket;
-    
                 if (member.roles.cache.has('1089284396282032178')) {
-                    ticket = await tickets.findById(ticketIdString)
+                    ticket = await tickets.findById(ticketIdString);
                 } else {
                     ticket = await tickets.findOne({ claimedId: interaction.user.id, _id: ticketId }).exec();
                 };
-    
+
                 if (!ticket) {
                     return interaction.editReply({
                         content: 'This ticket does not exist.',
                         ephemeral: true
                     });
                 };
-    
-                const DM1 = await sendDM(`**Logs for ticket \`${String(ticket._id)}\`:**`, true);
-    
-                if (Array.isArray(DM1)) {
-                    return;
-                };
-    
+
                 const logs = ticket.log;
-    
-                for (const property in logs) {
-                    const DM2 = await sendDM(logs[property], true);
-    
-                    if (Array.isArray(DM2)) {
-                        break;
-                    };
+                if (!logs || Object.keys(logs).length === 0) {
+                    return interaction.editReply({
+                        content: 'No logs found for this ticket.',
+                        ephemeral: true
+                    });
                 };
-    
+
+                let logMessage = `**Logs for ticket \`${String(ticket._id)}\`:**\n\n`;
+                const messages = [];
+
+                for (const property in logs) {
+                    const logEntry = logs[property] + '\n';
+
+                    if ((logMessage + logEntry).length > 2000) {
+                        messages.push(logMessage);
+                        logMessage = '';
+                    };
+                    logMessage += logEntry;
+                };
+
+                if (logMessage.length > 0) {
+                    messages.push(logMessage);
+                }
+
+                for (const msg of messages) {
+                    const DM = await sendDM(msg, true);
+                    if (Array.isArray(DM)) break;
+                }
+
                 interaction.editReply({
-                    content: 'The logs have been sent in your DMs',
+                    content: 'The logs have been sent in your DMs.',
                     ephemeral: true
                 });
             } catch (error) {
