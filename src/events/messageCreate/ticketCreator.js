@@ -101,7 +101,7 @@ module.exports = async (message, client) => {
         // Check if blacklisted
         const blacklisted = await ticketBlacklist.findOne({discordId: message.author.id}).exec();
         if (blacklisted) {
-            const blacklistDM = await sendDM(`You are blacklisted from creating tickets for the following reason: ${blacklisted.reason}. This is ${blacklisted.permanent ? 'permanent' : `until <t:${Math.floor(blacklisted.expiration.getTime() / 1000)}:F>. Contact a member of staff if you believe this is a mistake.`}.`);
+            const blacklistDM = await sendDM(`You are blacklisted from creating tickets for the following reason: ${blacklisted.reason}. This is ${blacklisted.permanent ? 'permanent' : `until <t:${Math.floor(blacklisted.expiration.getTime() / 1000)}:F>. Contact a member of staff if you believe this is a mistake`}.`);
             if (Array.isArray(blacklistDM)) {
                 return;
             };

@@ -867,7 +867,7 @@ module.exports = {
                 const reason = interaction.options.getString('reason');
                 const hours = interaction.options.getNumber('hours');
     
-                const blacklisted = await ticketBlacklist.findOne({ creatorId: user.id }).exec();
+                const blacklisted = await ticketBlacklist.findOne({ discordId: user.id }).exec();
     
                 if (blacklisted) {
                     return interaction.reply({
@@ -943,6 +943,14 @@ module.exports = {
                 interaction.reply({
                     content: `User <@${user.id}> has been removed from the blacklist.`,
                     ephemeral: true
+                });
+
+                user.send(`You have been removed from the ticket blacklist.`).catch(e => {
+                    console.warn(e);
+                    interaction.followUp({
+                        content: 'User has been removed from the blacklist, but I was unable to send them a DM.',
+                        ephemeral: true
+                    });
                 });
             } catch (error) {
                 interaction.reply({
