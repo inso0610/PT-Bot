@@ -95,7 +95,7 @@ module.exports = {
             value.save();
         };
     },
-    cdOnly: true,
+    gaOnly: true,
 
     options: {
         devOnly: false,

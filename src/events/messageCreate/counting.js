@@ -1,4 +1,5 @@
 const counting = require('../../utils/counting.js');
+const countingBlacklist = require('../../utils/countingBlacklist.js');
 const { evaluate } = require('mathjs'); // Import math.js for math evaluation
 
 function sleep(ms) {
@@ -17,6 +18,16 @@ module.exports = async (message) => {
     if (channelId !== '1285519874138837002') {
         return;
     }
+
+    // Check if the user is blacklisted
+
+    const blacklisted = await countingBlacklist.findOne({ discordId: message.author.id }).exec();
+
+    if (blacklisted) {
+        await message.delete().catch(e => console.warn(e));
+        message.author.send(`Your latest attempt to count was blocked because you are blacklisted from the counting channel for the following reason: ${blacklisted.reason}. This is ${blacklisted.permanent ? 'permanent' : `until ${blacklisted.expiration.toISOString()}`}.`);
+        return;
+    };
 
     const text = message.content.trim();
 

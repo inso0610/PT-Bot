@@ -52,7 +52,7 @@ module.exports = {
             console.warn(error);
         }
     },
-    cdOnly: true,
+    gaOnly: true,
 
     options: {
         devOnly: false,
