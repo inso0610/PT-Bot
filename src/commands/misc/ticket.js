@@ -725,9 +725,7 @@ module.exports = {
                 console.warn(error);
             };
         } else if (subcommand === "notes") {
-            interaction.deferReply({
-                ephemeral: true
-            });
+            interaction.deferReply({ ephemeral: true });
 
             try {
                 const ticketIdString = interaction.options.getString('id');
@@ -737,76 +735,86 @@ module.exports = {
                     ticketId = new Types.ObjectId(ticketIdString);
                 } else {
                     return interaction.editReply({
-                        content: 'This ticket id is not valid.',
+                        content: 'This ticket ID is not valid.',
                         ephemeral: true
                     });
-                };
-    
+                }
+
                 const guild = interaction.client.guilds.cache.get('1089282844657987587');
-    
+
                 if (!guild) {
-                    interaction.editReply({
+                    return interaction.editReply({
                         content: 'Could not fetch guild.',
                         ephemeral: true
                     });
-                    return;
-                };
-    
+                }
+
                 const member = await guild.members.fetch(interaction.user.id);
-    
+
                 if (!member) {
-                    interaction.editReply({
+                    return interaction.editReply({
                         content: 'Could not fetch member.',
                         ephemeral: true
                     });
-    
-                    return;
-                };
-    
+                }
+
                 let ticket;
-    
                 if (member.roles.cache.has('1089284396282032178')) {
-                    ticket = await tickets.findById(ticketIdString)
+                    ticket = await tickets.findById(ticketIdString);
                 } else {
                     ticket = await tickets.findOne({ claimedId: interaction.user.id, _id: ticketId }).exec();
-                };
-    
+                }
+
                 if (!ticket) {
                     return interaction.editReply({
                         content: 'This ticket does not exist.',
                         ephemeral: true
                     });
-                };
-    
-                const DM1 = await sendDM(`**Notes for ticket \`${String(ticket._id)}\`:**`, true);
-    
-                if (Array.isArray(DM1)) {
-                    return;
-                };
-    
+                }
+
                 const notes = ticket.notes;
-    
+                if (!notes || Object.keys(notes).length === 0) {
+                    return interaction.editReply({
+                        content: 'No notes found for this ticket.',
+                        ephemeral: true
+                    });
+                }
+
+                let notesMessage = `**Notes for ticket \`${String(ticket._id)}\`:**\n\n`;
+                const messages = [];
+
                 for (const property in notes) {
-                    const DM2 = await sendDM(notes[property], true);
-    
-                    if (Array.isArray(DM2)) {
-                        break;
-                    };
-                };
-    
+                    const noteEntry = notes[property] + '\n';
+        
+                if ((notesMessage + noteEntry).length > 2000) {
+                        messages.push(notesMessage);
+                        notesMessage = '';
+                    }
+                    notesMessage += noteEntry;
+                }
+
+                if (notesMessage.length > 0) {
+                    messages.push(notesMessage);
+                }
+
+                for (const msg of messages) {
+                    const DM = await sendDM(msg, true);
+                    if (Array.isArray(DM)) break;
+                }
+            
                 interaction.editReply({
-                    content: 'The notes have been sent in your DMs',
+                    content: 'The notes have been sent in your DMs.',
                     ephemeral: true
                 });
             } catch (error) {
                 interaction.editReply({
                     content: 'An unexpected error occurred.',
                     ephemeral: true
-                }).catch( fe => {
+                }).catch(fe => {
                     console.warn(fe);
                 });
                 console.warn(error);
-            };
+            }
         } else if (subcommand === 'close') {
             try {
                 const ticketIdString = interaction.options.getString('id');

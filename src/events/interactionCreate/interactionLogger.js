@@ -11,15 +11,17 @@ module.exports = async (interaction, client) => {
         let subcommand = null;
         let options = 'No options provided';
 
+        const truncate = (text, length = 1000) => text.length > length ? text.substring(0, length - 3) + '...' : text;
+
         if (interaction.options.getSubcommand(false)) {
             subcommand = interaction.options.getSubcommand();
             options = interaction.options.data
                 .find(option => option.name === subcommand)?.options
-                ?.map(option => `${option.name}: ${option.value}`)
+                ?.map(option => `${option.name}: ${truncate(String(option.value), 1000)}`)
                 .join('\n') || 'No options provided';
         } else {
             options = interaction.options.data
-                .map(option => `${option.name}: ${option.value}`)
+                .map(option => `${option.name}: ${truncate(String(option.value), 1000)}`)
                 .join('\n') || 'No options provided';
         }
 
@@ -58,5 +60,5 @@ module.exports = async (interaction, client) => {
         channel.send({
             embeds: [embed]
         });
-    }
+    };
 };
