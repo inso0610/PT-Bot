@@ -575,7 +575,7 @@ module.exports = {
                 console.warn(error);
             };
         } else if (subcommand === "logs") {
-            interaction.deferReply({ ephemeral: true });
+            await interaction.deferReply({ ephemeral: true });
 
             try {
                 const ticketIdString = interaction.options.getString('id');
