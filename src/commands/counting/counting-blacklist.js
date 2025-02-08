@@ -72,7 +72,7 @@ module.exports = {
         } else if (subcommand === 'remove') {
             const user = interaction.options.getUser('user');
 
-            const blacklisted = await countingBlacklist.findOne({ discordId: user.id }).exec();
+            const blacklisted = await countingBlacklist.findOneAndDelete({ discordId: user.id }).exec();
 
             if (!blacklisted) {
                 interaction.reply({
@@ -81,8 +81,6 @@ module.exports = {
                 });
                 return;
             };
-
-            await blacklisted.delete();
 
             interaction.reply({
                 content: `User <@${user.id}> has been removed from the blacklist.`,
