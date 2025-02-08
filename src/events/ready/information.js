@@ -11,7 +11,8 @@ module.exports = async (client) => {
             {name: 'Play the game:', value: 'https://www.roblox.com/games/12894431123/Polar-Tracks-Railway'},
             {name: 'Invite your friends:', value: 'https://discord.gg/kANJmwn3G4'},
             {name: 'Join our Roblox group:', value: 'https://www.roblox.com/groups/15833094/Polar-Tracks'},
-            {name: 'Our website:', value: 'https://www.polartracks.no/'}
+            {name: 'Our website:', value: 'https://www.polartracks.no/'},
+            {name: 'Unable to use one of our services?', value: 'Please check our status page: https://status.polartracks.no/'}
         );
 
     const boostEmbed = new EmbedBuilder()
