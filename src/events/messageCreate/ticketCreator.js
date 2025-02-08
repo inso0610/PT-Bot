@@ -1,12 +1,16 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
+/*const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const tickets = require('../../utils/tickets.js');
 const ticketBlacklist = require('../../utils/ticketBlacklist.js');
 
 const { ticketChannels } = require( '../../utils/ticketChannels.js');
-const creatingATicket = []
+const creatingATicket = []*/
 
 module.exports = async (message, client) => {
-    const sendDM = async (messageContent) => {
+    if (message.mentions.has(client.user) && message.content === '<@1152626581022445599>') {
+        message.reply('If you want to create a ticket use the /create-ticket command.')
+    };
+
+    /*const sendDM = async (messageContent) => {
         //return message.author.dmChannel.send({ content: messageContent }).catch(e => {
         return message.author.send(messageContent).catch(e => {    
             message.reply({
@@ -417,5 +421,5 @@ module.exports = async (message, client) => {
 
             console.warn(`Ticket creator error: ${error}`);
         };
-    };
+    };*/
 };

@@ -73,4 +73,17 @@ module.exports = async (client) => {
     webhookClient.send({
         embeds: [boostEmbed]
     })*/
+
+    const createTicketButton = new ButtonBuilder()
+        .setCustomId('createTicket')
+        .setLabel('Create a ticket')
+        .setStyle(ButtonStyle.Success);
+
+    const ticketRow = new ActionRowBuilder()
+        .addComponents(createTicketButton);
+
+    /*await infoChannel.send({
+        content: '# Use this button to create a ticket if you need help with something.',
+        components: [ticketRow]
+    });*/
 };
