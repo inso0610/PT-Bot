@@ -97,7 +97,12 @@ module.exports = {
                 .setDescription('Blacklist someone from creating tickets.')
                 .addUserOption(option => option.setName('user').setDescription('Who do you want to blacklist from the ticket system?').setRequired(true))
                 .addStringOption(option => option.setName('reason').setDescription('What is the reason for blacklisting this user?').setRequired(true))
-                .addNumberOption(option => option.setName('hours').setDescription("How long should this blacklist last?").setRequired(false))),
+                .addNumberOption(option => option.setName('hours').setDescription("How long should this blacklist last?").setRequired(false)))
+                .addSubcommand(subcommand =>
+                    subcommand
+                        .setName('blacklist-remove')
+                        .setDescription('Remove someones blacklist from creating tickets.')
+                        .addUserOption(option => option.setName('user').setDescription('Whos blacklist do you want to remove?').setRequired(true))),
     run: async ({ interaction, client, handler }) => {
         const sendDM = async (messageContent, edit) => {
             if (!edit) {
@@ -913,6 +918,32 @@ module.exports = {
                         });
                     });
                 };            
+            } catch (error) {
+                interaction.reply({
+                    content: 'An unexpected error occurred.',
+                    ephemeral: true
+                }).catch( fe => {
+                    console.warn(fe);
+                });
+                console.warn(error);
+            };
+        } else if (subcommand === 'blacklist-remove') {
+            try {
+                const user = interaction.options.getUser('user');
+    
+                const blacklisted = await ticketBlacklist.findOneAndDelete({ discordId: user.id }).exec();
+    
+                if (!blacklisted) {
+                    return interaction.reply({
+                        content: `User <@${user.id}> is not blacklisted.`,
+                        ephemeral: true
+                    });
+                };
+    
+                interaction.reply({
+                    content: `User <@${user.id}> has been removed from the blacklist.`,
+                    ephemeral: true
+                });
             } catch (error) {
                 interaction.reply({
                     content: 'An unexpected error occurred.',
