@@ -108,8 +108,7 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setTitle(`Warnings for ${user.tag}`)
-                .setDescription(userWarnings.map(warning => `**${warning._id.toString()}** - ${warning.reason} (Warned by: ${warning.moderatorUsername})`).join('\n'))
-                .setTimestamp();
+                .setDescription(userWarnings.map(warning => `**${warning._id.toString()}** - ${warning.reason} (Warned by: ${warning.moderatorUsername})`).join('\n'));
 
             interaction.reply({ embeds: [embed], ephemeral: true });
         }

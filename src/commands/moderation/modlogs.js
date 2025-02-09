@@ -22,8 +22,7 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setTitle(`Moderation Logs for ${user.tag}`)
-            .setDescription(logs.map((log, index) => `**Log ${toString(log._id)}**\n**Action:** ${log.action}\n**Reason:** ${log.reason}\n**Moderator:** ${log.moderatorUsername}\n**Date:** ${log.doneAt}`).join('\n\n'))
-            .setTimestamp();
+            .setDescription(logs.map((log, index) => `**Log ${toString(log._id)}**\n**Action:** ${log.action}\n**Reason:** ${log.reason}\n**Moderator:** ${log.moderatorUsername}\n**Date:** ${log.doneAt}`).join('\n\n'));
 
         interaction.reply({ embeds: [embed], ephemeral: true });
     },
