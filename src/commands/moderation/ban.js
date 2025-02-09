@@ -102,10 +102,12 @@ module.exports = {
                 modlogId: banLog._id.toString(),
                 expiration
             });
+
+            await timeBan.save();
         };
 
         interaction.reply({
-            content: `User <@${user.id}> has been banned for reason: ${reason}.`,
+            content: `User <@${user.id}> has been banned for reason: ${reason}. ${message ? '' : 'Failed to message this user.'}`,
             ephemeral: true
         });
     },
