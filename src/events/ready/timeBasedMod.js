@@ -49,7 +49,7 @@ module.exports = (client) => {
                 const unbanLog = new modlogs({
                     discordId: bannedUser.discordId,
                     action: 'unban',
-                    reason: `Timeban expired (${timebanned.modlogId})`,
+                    reason: `Timeban expired (${bannedUser.modlogId})`,
                     moderatorId: client.user.id,
                     moderatorUsername: client.user.username
                 });
