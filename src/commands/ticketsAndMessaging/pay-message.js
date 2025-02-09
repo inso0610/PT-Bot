@@ -23,7 +23,7 @@ function getRobloxData(id) {
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('pay-message')
-    .setDescription('Gives you your Discord User id.')
+    .setDescription('Send a payment message to a user.')
     .setDMPermission(false)
     .addUserOption((option) => 
         option
