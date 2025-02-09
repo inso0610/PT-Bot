@@ -143,11 +143,14 @@ module.exports = async (client) => {
         .setStyle(ButtonStyle.Primary)
         .setEmoji('🪦');
 
-    const pingRoleRow = new ActionRowBuilder()
-        .addComponents(devPingButton, trainingPingButton, shiftPingButton, rfotdPingButton, eventPingButton, engagementPingButton, deadChatPingButton);
+    const pingRoleRow1 = new ActionRowBuilder()
+        .addComponents(devPingButton, trainingPingButton, shiftPingButton, rfotdPingButton, eventPingButton);
+
+    const pingRoleRow2 = new ActionRowBuilder()
+        .addComponents(engagementPingButton, deadChatPingButton);
     
     await pingRoleChannel.send({
         embeds: [pingRoleEmbed],
-        components: [pingRoleRow]
+        components: [pingRoleRow1, pingRoleRow2]
     });
 };
