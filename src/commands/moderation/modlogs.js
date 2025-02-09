@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const modlogs = require('../../utils/moderation/modlogs');
+const { string } = require('mathjs');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -21,7 +22,7 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setTitle(`Moderation Logs for ${user.tag}`)
-            .setDescription(logs.map((log, index) => `**Log #${index + 1}**\n**Action:** ${log.action}\n**Reason:** ${log.reason}\n**Moderator:** ${log.moderatorUsername}\n**Date:** ${log.doneAt}`).join('\n\n'))
+            .setDescription(logs.map((log, index) => `**Log ${toString(log._id)}**\n**Action:** ${log.action}\n**Reason:** ${log.reason}\n**Moderator:** ${log.moderatorUsername}\n**Date:** ${log.doneAt}`).join('\n\n'))
             .setTimestamp();
 
         interaction.reply({ embeds: [embed], ephemeral: true });
