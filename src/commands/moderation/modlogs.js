@@ -3,31 +3,26 @@ const modlogs = require('../../utils/moderation/modlogs');
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('modlogs')
-    .setDescription('Sends a list of moderation logs for a user')
-    .setDMPermission(false)
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
-    .addUserOption((option) =>
-        option
-            .setName('user')
-            .setDescription('Who do you want to kick?')
-            .setRequired(true)),
+        .setName('modlogs')
+        .setDescription('Sends a list of moderation logs for a user')
+        .setDMPermission(false)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
+        .addUserOption(option =>
+            option.setName('user').setDescription("Whose logs do you want to list?").setRequired(true)
+        ),
 
     run: async ({ interaction, client, handler }) => {
         const user = interaction.options.getUser('user');
-
         const logs = await modlogs.find({ discordId: user.id }).exec();
 
-        if (!logs || logs.length === 0) {
+        if (!logs.length) {
             return interaction.reply({ content: 'No moderation logs found for this user.', ephemeral: true });
         }
 
         const embed = new EmbedBuilder()
-            .setTitle(`Moderation logs for ${user.tag}`)
-
-        logs.forEach((log, index) => {
-            embed.addField(`Log #${index + 1}`, `**Action:** ${log.action}\n**Reason:** ${log.reason}\n**Moderator:** ${log.moderatorUsername}\n**Date:** ${log.doneAt}`);
-        });
+            .setTitle(`Moderation Logs for ${user.tag}`)
+            .setDescription(logs.map((log, index) => `**Log #${index + 1}**\n**Action:** ${log.action}\n**Reason:** ${log.reason}\n**Moderator:** ${log.moderatorUsername}\n**Date:** ${log.doneAt}`).join('\n\n'))
+            .setTimestamp();
 
         interaction.reply({ embeds: [embed], ephemeral: true });
     },
@@ -40,4 +35,4 @@ module.exports = {
         botPermissions: ['Administrator'],
         deleted: false,
     },
-}
+};
