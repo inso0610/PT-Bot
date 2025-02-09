@@ -7,7 +7,7 @@ module.exports = {
     .setName('ban')
     .setDescription('Ban someone in the Discord server')
     .setDMPermission(false)
-    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .addUserOption((option) =>
         option
             .setName('user')
