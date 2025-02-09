@@ -161,12 +161,12 @@ module.exports = {
     
                 if (!ticketCreator) {
                     return interaction.reply({
-                        content: 'Could not find the user.',
+                        content: 'Could not find the ticket creator.',
                         ephemeral: true
                     });
                 };
     
-                await ticketCreator.send(`Reply from <@${interaction.user.id}> for the ticket with the id \`${String(ticket._id)}\`:\n\`\`\`${replyMessage}\`\`\``).catch(e => {
+                await ticketCreator.send(`Reply from <@${interaction.user.id}> for the ticket with the id \`${String(ticket._id)}\`:\n\`\`\`${replyMessage}\`\`\`\nIf you want to reply to this message you must put this at the start of the reply: \`[${toString(ticket._id)}]\`.`).catch(e => {
                     console.warn(e);
                     return interaction.reply({
                         content: 'Something went wrong. Contact Emilsen.',
