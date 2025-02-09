@@ -89,7 +89,7 @@ module.exports = {
         } else if (subcommand === 'remove') {
             const warning = interaction.options.getString('warning');
 
-            const warningToRemove = await warnings.findByIdAndRemove(warning);
+            const warningToRemove = await warnings.findByIdAndRemove(warning).exec();
             if (!warningToRemove) {
                 return interaction.reply({ content: 'This warning does not exist.', ephemeral: true });
             }
