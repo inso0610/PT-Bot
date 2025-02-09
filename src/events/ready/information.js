@@ -2,6 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, WebhookClien
 
 module.exports = async (client) => {
     const infoChannel = client.channels.cache.get('1133076724016480516');
+    const pingRoleChannel = client.channels.cache.get('1136706480645603388');
     const webhookClient = new WebhookClient({ url: 'https://discord.com/api/webhooks/1251098359561977906/tdr6qJGYUsNfvWLvDrGeY_UU197Z5CBzZN9weGZG3eZYvrwlksd48wa6lJ86pHJ2wjrm' });
 
     const mainEmbed = new EmbedBuilder()
@@ -86,4 +87,67 @@ module.exports = async (client) => {
         content: '# Use this button to create a ticket if you need help with something.',
         components: [ticketRow]
     });*/
+
+    // Ping roles
+    const pingRoleEmbed = new EmbedBuilder()
+        .setTitle('Ping Roles')
+        .addFields(
+            {name: '👷‍♂️', value: 'Get pinged for development updates'},
+            {name: '🧑‍🎓', value: 'Get pinged for information regarding trainings'},
+            {name: '🚄', value: 'Get pinged for upcoming shifts'},
+            {name: 'ℹ️', value: 'Get pinged for <#1142210439065911386>'},
+            {name: '🎉', value: 'Get pinged for events'},
+            {name: '<:PolarTracks:1135893701403623594>', value: 'Get pinged for engagement announcements'},
+            {name: '🪦', value: 'Get pinged when <#1101035696334057483> has low activity and someone requests this ping.'}
+        )
+    
+    const devPingButton = new ButtonBuilder()
+        .setCustomId('reactionRole-1136706327993909350')
+        .setLabel('Dev Ping')
+        .setStyle(ButtonStyle.Primary)
+        .setEmoji('👷‍♂️');
+    
+    const trainingPingButton = new ButtonBuilder()
+        .setCustomId('reactionRole-1140220447535923200')
+        .setLabel('Training Ping')
+        .setStyle(ButtonStyle.Primary)
+        .setEmoji('🧑‍🎓');
+    
+    const shiftPingButton = new ButtonBuilder()
+        .setCustomId('reactionRole-1140248514568405044')
+        .setLabel('Shift Ping')
+        .setStyle(ButtonStyle.Primary)
+        .setEmoji('🚄');
+
+    const rfotdPingButton = new ButtonBuilder()
+        .setCustomId('reactionRole-1142391663910735883')
+        .setLabel('RFOTD Ping')
+        .setStyle(ButtonStyle.Primary)
+        .setEmoji('ℹ️');
+    
+    const eventPingButton = new ButtonBuilder()
+        .setCustomId('reactionRole-1149802530507862056')
+        .setLabel('Event Ping')
+        .setStyle(ButtonStyle.Primary)
+        .setEmoji('🎉');
+
+    const engagementPingButton = new ButtonBuilder()
+        .setCustomId('reactionRole-1135893701403623594')
+        .setLabel('Engagement Ping')
+        .setStyle(ButtonStyle.Primary)
+        .setEmoji('<:PolarTracks:1135893701403623594>');
+
+    const deadChatPingButton = new ButtonBuilder()
+        .setCustomId('reactionRole-1308429122975957132')
+        .setLabel('Dead chat revive ping')
+        .setStyle(ButtonStyle.Primary)
+        .setEmoji('🪦');
+
+    const pingRoleRow = new ActionRowBuilder()
+        .addComponents(devPingButton, trainingPingButton, shiftPingButton, rfotdPingButton, eventPingButton, engagementPingButton, deadChatPingButton);
+    
+    await pingRoleChannel.send({
+        embeds: [pingRoleEmbed],
+        components: [pingRoleRow]
+    });
 };
