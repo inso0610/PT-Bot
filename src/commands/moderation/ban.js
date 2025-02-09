@@ -78,11 +78,11 @@ module.exports = {
         // Ban the user
         if (deleteMessages) {
             await user.ban({ deleteMessageSeconds: 60 * 60 * 24 * 7, reason: reason }).catch(() => {
-                return interaction.editReply({ content: 'I couldn\'t ban this user! You can ban manually.', ephemeral: true });
+                interaction.editReply({ content: 'I couldn\'t ban this user! You can ban manually.', ephemeral: true });
             });
         } else {
             await user.ban({ reason: reason }).catch(() => {
-                return interaction.editReply({ content: 'I couldn\'t ban this user! You can ban manually.', ephemeral: true });
+                interaction.editReply({ content: 'I couldn\'t ban this user! You can ban manually.', ephemeral: true });
             });
         };
 
