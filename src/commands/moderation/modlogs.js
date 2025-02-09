@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const modlogs = require('../../utils/moderation/modlogs');
-const { string } = require('mathjs');
 
 module.exports = {
     data: new SlashCommandBuilder()
