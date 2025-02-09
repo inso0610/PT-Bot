@@ -6,7 +6,7 @@ module.exports = {
     .setName('modlogs')
     .setDescription('Sends a list of moderation logs for a user')
     .setDMPermission(false)
-    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .addUserOption((option) =>
         option
             .setName('user')
