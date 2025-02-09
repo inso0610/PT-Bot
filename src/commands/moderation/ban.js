@@ -31,6 +31,8 @@ module.exports = {
             .setRequired(false)),
 
     run: async ({ interaction, client, handler }) => {
+        await interaction.deferReply({ ephemeral: true });
+        
         const commandUser = interaction.options.getUser('user');
         const reason = interaction.options.getString('reason');
         const deleteMessages = interaction.options.getBoolean('delete-messages') || false;
@@ -40,24 +42,24 @@ module.exports = {
         const user = interaction.guild.members.cache.get(commandUser.id);
 
         if (!moderator || !user) {
-            return interaction.reply({ content: 'An error occurred while fetching user data.', ephemeral: true });
+            return interaction.editReply({ content: 'An error occurred while fetching user data.', ephemeral: true });
         }
 
         if (user.id === interaction.user.id) {
-            return interaction.reply({ content: 'You can\'t ban yourself!', ephemeral: true });
+            return interaction.editReply({ content: 'You can\'t ban yourself!', ephemeral: true });
         }
 
         if (user.id === client.user.id) {
-            return interaction.reply({ content: 'You can\'t ban me!', ephemeral: true });
+            return interaction.editReply({ content: 'You can\'t ban me!', ephemeral: true });
         }
 
         if (!user.bannable) {
-            return interaction.reply({ content: 'I can\'t ban this user!', ephemeral: true });
+            return interaction.editReply({ content: 'I can\'t ban this user!', ephemeral: true });
         }
 
         // Compare the highest roles
         if (moderator.roles.highest.comparePositionTo(user.roles.highest) <= 0) {
-            return interaction.reply({ 
+            return interaction.editReply({ 
                 content: 'You can\'t ban this user because they have a higher or equal role than you!', 
                 ephemeral: true 
             });
@@ -77,11 +79,11 @@ module.exports = {
         // Ban the user
         if (deleteMessages) {
             await user.ban({ deleteMessageSeconds: 60 * 60 * 24 * 7, reason: reason }).catch(() => {
-                return interaction.reply({ content: 'I couldn\'t ban this user! You can ban manually.', ephemeral: true });
+                return interaction.editReply({ content: 'I couldn\'t ban this user! You can ban manually.', ephemeral: true });
             });
         } else {
             await user.ban({ reason: reason }).catch(() => {
-                return interaction.reply({ content: 'I couldn\'t ban this user! You can ban manually.', ephemeral: true });
+                return interaction.editReply({ content: 'I couldn\'t ban this user! You can ban manually.', ephemeral: true });
             });
         };
 
@@ -106,7 +108,7 @@ module.exports = {
             await timeBan.save();
         };
 
-        interaction.reply({
+        interaction.editReply({
             content: `User <@${user.id}> has been banned for reason: ${reason}. ${message ? '' : 'Failed to message this user.'}`,
             ephemeral: true
         });

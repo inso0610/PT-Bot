@@ -25,6 +25,8 @@ module.exports = {
             .setRequired(false)),
 
     run: async ({ interaction, client, handler }) => {
+        await interaction.deferReply({ ephemeral: true });
+
         const commandUser = interaction.options.getUser('user');
         const reason = interaction.options.getString('reason');
         const warn = interaction.options.getBoolean('warn') || false;
@@ -33,24 +35,24 @@ module.exports = {
         const user = interaction.guild.members.cache.get(commandUser.id);
 
         if (!moderator || !user) {
-            return interaction.reply({ content: 'An error occurred while fetching user data.', ephemeral: true });
+            return interaction.editReply({ content: 'An error occurred while fetching user data.', ephemeral: true });
         }
 
         if (user.id === interaction.user.id) {
-            return interaction.reply({ content: 'You can\'t kick yourself!', ephemeral: true });
+            return interaction.editReply({ content: 'You can\'t kick yourself!', ephemeral: true });
         }
 
         if (user.id === client.user.id) {
-            return interaction.reply({ content: 'You can\'t kick me!', ephemeral: true });
+            return interaction.editReply({ content: 'You can\'t kick me!', ephemeral: true });
         }
 
         if (!user.kickable) {
-            return interaction.reply({ content: 'I can\'t kick this user!', ephemeral: true });
+            return interaction.editReply({ content: 'I can\'t kick this user!', ephemeral: true });
         }
         
         // Compare the highest roles
         if (moderator.roles.highest.comparePositionTo(user.roles.highest) <= 0) {
-            return interaction.reply({ 
+            return interaction.editReply({ 
                 content: 'You can\'t kick this user because they have a higher or equal role than you!', 
                 ephemeral: true 
             });
@@ -63,7 +65,7 @@ module.exports = {
 
         // Kick the user
         await user.kick(reason).catch(() => {
-            return interaction.reply({ content: 'I couldn\'t kick this user!', ephemeral: true });
+            return interaction.editReply({ content: 'I couldn\'t kick this user!', ephemeral: true });
         });
 
         // Log the action
@@ -100,7 +102,7 @@ module.exports = {
             warnLog.save();
         };
 
-        return interaction.reply({ content: `User <@${user.id}> has been kicked. ${message ? '' : 'Failed to message this user.'}`, ephemeral: true });
+        return interaction.editReply({ content: `User <@${user.id}> has been kicked. ${message ? '' : 'Failed to message this user.'}`, ephemeral: true });
     },
     modOnly: true,
 

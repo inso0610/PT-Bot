@@ -12,18 +12,20 @@ module.exports = {
         ),
 
     run: async ({ interaction, client, handler }) => {
+        await interaction.deferReply({ ephemeral: true });
+
         const user = interaction.options.getUser('user');
         const logs = await modlogs.find({ discordId: user.id }).exec();
 
         if (!logs.length) {
-            return interaction.reply({ content: 'No moderation logs found for this user.', ephemeral: true });
+            return interaction.editReply({ content: 'No moderation logs found for this user.', ephemeral: true });
         }
 
         const embed = new EmbedBuilder()
             .setTitle(`Moderation Logs for ${user.tag}`)
             .setDescription(logs.map((log, index) => `**Log ${log._id.toString()}**\n**Action:** ${log.action}\n**Reason:** ${log.reason}\n**Moderator:** ${log.moderatorUsername}\n**Date:** ${log.doneAt}`).join('\n\n'));
 
-        interaction.reply({ embeds: [embed], ephemeral: true });
+        interaction.editReply({ embeds: [embed], ephemeral: true });
     },
     modOnly: true,
 
