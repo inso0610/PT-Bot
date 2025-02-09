@@ -39,6 +39,8 @@ module.exports = (client) => {
             expiration: { $lt: Date.now() }
         }).exec();
 
+        const guild = client.guilds.cache.get('1089282844657987587');
+
         for (const bannedUser of timebanned) {
             if (bannedUser.expiration < Date.now()) {
                 await bannedUser.deleteOne();
@@ -47,9 +49,13 @@ module.exports = (client) => {
                 const unbanLog = new modlogs({
                     discordId: bannedUser.discordId,
                     action: 'unban',
-                    reason: 'Timeban expired',
+                    reason: `Timeban expired (${timebanned.modlogId})`,
                     moderatorId: client.user.id,
                     moderatorUsername: client.user.username
+                });
+
+                guild.members.unban(bannedUser.discordId, { reason: `Timeban expired (${timebanned.modlogId})` }).catch(e => {
+                    console.warn(e);
                 });
 
                 unbanLog.save();
