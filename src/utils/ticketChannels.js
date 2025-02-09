@@ -80,6 +80,15 @@ async function createTicket(interaction, client) {
         ephemeral: true
     });
 
+    const createTicketButton = new ButtonBuilder()
+        .setCustomId('createTicket')
+        .setLabel('Create a ticket')
+        .setStyle(ButtonStyle.Success);
+
+    const ticketRow = new ActionRowBuilder()
+        .addComponents(createTicketButton);
+
+
     const sendDM = async (messageContent) => {
         //return interaction.user.dmChannel.send({ content: messageContent }).catch(e => {
         return interaction.user.send(messageContent).catch(e => {
@@ -265,7 +274,10 @@ async function createTicket(interaction, client) {
         };
 
         if (ticketTopic.length > 100) {
-            sendDM('We have a max limit of 100 characters in the topic. Please create a new ticket and shorten down your response.')
+            sendDM({
+                content: 'We have a max limit of 100 characters in the topic. Please create a new ticket and shorten down your response.',
+                components: [ticketRow]
+            });
             const index = creatingATicket.indexOf(interaction.user.id);
 
             console.log(creatingATicket)
@@ -294,7 +306,10 @@ async function createTicket(interaction, client) {
         };
 
         if (ticketDescription.length > 500) {
-            sendDM('We have a max limit of 500 characters in the description. Please create a new ticket and shorten down your response.')
+            sendDM({
+                content: 'We have a max limit of 500 characters in the topic. Please create a new ticket and shorten down your response.',
+                components: [ticketRow]
+            });
             const index = creatingATicket.indexOf(interaction.user.id);
 
             if (index !== -1) {
@@ -317,7 +332,10 @@ async function createTicket(interaction, client) {
         };
 
         if (additionalComments.length > 500) {
-            sendDM('We have a max limit of 500 characters in the additional comments. Please create a new ticket and shorten down your response.')
+            sendDM({
+                content: 'We have a max limit of 500 characters in the topic. Please create a new ticket and shorten down your response.',
+                components: [ticketRow]
+            });
             const index = creatingATicket.indexOf(interaction.user.id);
 
             if (index !== -1) {
@@ -375,8 +393,6 @@ async function createTicket(interaction, client) {
 
             return;
         };
-
-        // Send message in EM ticket channel
 
         const ticket = new tickets({
             creatorId: interaction.user.id,
