@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('discord.js');
-const counting = require('../../utils/counting.js');
 const countingBlacklist = require('../../utils/countingBlacklist.js');
 
 module.exports = {
