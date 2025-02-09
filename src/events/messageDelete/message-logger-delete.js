@@ -18,7 +18,7 @@ module.exports = (message) => {
             return;
         } else if (message.webhookId){
             return;
-        } else{
+        } else {
 
             const deletedMessage = new EmbedBuilder()
             .setTitle(`Deleted message from: ${message.author.username}`)

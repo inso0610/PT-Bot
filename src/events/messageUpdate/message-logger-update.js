@@ -18,20 +18,20 @@ module.exports = (oldMessage, newMessage) => {
             return;
         } else if (newMessage.webhookId){
             return;
-        } else{
+        } else {
 
             const info = new EmbedBuilder()
                 .setTitle(`${newMessage.author.username} Edited their message`)
                 .addFields(
-                    { name: 'Kanal:', value: `<#${newMessage.channel.id}>` }
+                    { name: 'Channel:', value: `<#${newMessage.channel.id}>` }
                 );
-            const gammelMelding = new EmbedBuilder().setTitle('Old message:').setDescription(oldMessage.content);
-            const nyMelding = new EmbedBuilder().setTitle('New message:').setDescription(newMessage.content);
+            const oldMessageEmbed = new EmbedBuilder().setTitle('Old message:').setDescription(oldMessage.content);
+            const newMessageEmbed = new EmbedBuilder().setTitle('New message:').setDescription(newMessage.content);
 
             webhookClient.send({
                 username: (`${newMessage.author.username} (${newMessage.author.id})`),
                 avatarURL: newMessage.author.avatarURL(),
-                embeds: [info, gammelMelding, nyMelding]
+                embeds: [info, oldMessageEmbed, newMessageEmbed]
             }).catch(e => {
                 console.warn(`Error in message-logger-update: ${e}`)
                 return;
