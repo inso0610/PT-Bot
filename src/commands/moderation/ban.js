@@ -1,5 +1,4 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const warnings = require('../../utils/moderation/warnings');
 const modlogs = require('../../utils/moderation/modlogs');
 const timebans = require('../../utils/moderation/timebans');
 
