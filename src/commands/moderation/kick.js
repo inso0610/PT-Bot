@@ -57,7 +57,7 @@ module.exports = {
         }
 
         // Message the user
-        const message = await user.send(`You have been kicked from the Polar Tracks Discord server for the following reason: ${reason}.\nYou can rejoin the server here: https://discord.gg/m7gxUKm2z6.${warn ? '\n⚠️ A warning was also applied.' : ''}`).catch(() => {
+        const message = await user.send(`You have been kicked from the Polar Tracks Discord server for the following reason: ${reason}.\nYou can rejoin the server here: https://discord.gg/m7gxUKm2z6.${warn ? '\n**⚠️ A warning was also applied.**' : ''}`).catch(() => {
             return false;
         });
 
