@@ -71,7 +71,7 @@ module.exports = {
         };
 
         // Message the user
-        const message = await user.send(`You have been banned from the Polar Tracks Discord server for the following reason: ${reason}.\n${duration ? `This ban will last until <t:${expiration.getTime() / 1000}:F>.` : 'This ban is permanent.'}\nYou can appeal the ban here: https://appeals.polartracks.no/`).catch(() => {
+        const message = await user.send(`You have been banned from the Polar Tracks Discord server for the following reason: ${reason}.\n${duration ? `This ban will last until <t:${Math.floor(expiration.getTime() / 1000)}:F>.` : 'This ban is permanent.'}\nYou can appeal the ban here: https://appeals.polartracks.no/`).catch(() => {
             return false;
         });
 
