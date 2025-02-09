@@ -515,12 +515,6 @@ async function closeTicket(id, interaction, client) {
         return;
     };
 
-    ticket.claimedId = '-1';
-
-    ticket.log.push(`<@${interaction.user.id}> closed this ticket.`);
-
-    ticket.save();
-
     const departmentSplit = ticket.department.split('-')
 
     const category = ticketChannels[departmentSplit[0]]
@@ -569,6 +563,12 @@ async function closeTicket(id, interaction, client) {
         content: 'The ticket was closed.',
         ephemeral: true
     });
+
+    ticket.claimedId = '-1';
+
+    ticket.log.push(`<@${interaction.user.id}> closed this ticket.`);
+
+    ticket.save();
 };
 
 module.exports = { ticketChannels, closeTicket, createTicket };
