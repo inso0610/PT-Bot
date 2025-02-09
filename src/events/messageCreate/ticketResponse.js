@@ -123,6 +123,14 @@ module.exports = async (message, client) => {
                 embeds: [ticketEmbed],
                 components: [row]
             });
+
+            return;
+        });
+
+        message.reply({
+            content: 'Your response has been sent.'
+        }).catch(e2 => {
+            console.warn(e2);
         });
     } catch (error) {
         message.reply({
