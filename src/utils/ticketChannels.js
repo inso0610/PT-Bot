@@ -497,15 +497,29 @@ async function createTicket(interaction, client) {
 };
 
 async function closeTicket(id, interaction, client) {
-    const ticket = await tickets.findByIdAndDelete(id).exec();
+    const ticket = await tickets.findById(id).exec();
 
     if (!ticket) {
+        interaction.reply({
+            content: 'This ticket does not exist.',
+            ephemeral: true
+        });
+        return;
+    };
+
+    if (ticket.claimedId === '-1') {
         interaction.reply({
             content: 'This ticket is already closed.',
             ephemeral: true
         });
         return;
     };
+
+    ticket.claimedId = '-1';
+
+    ticket.log.push(`<@${interaction.user.id}> closed this ticket.`);
+
+    ticket.save();
 
     const departmentSplit = ticket.department.split('-')
 

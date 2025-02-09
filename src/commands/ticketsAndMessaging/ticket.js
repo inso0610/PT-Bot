@@ -206,7 +206,7 @@ module.exports = {
                             ephemeral: true
                         });
                     });
-                    ticket.log.push(`<@${interaction.user.id}> sent a closure prompt.`);;
+                    ticket.log.push(`<@${interaction.user.id}> sent a closure prompt.`);
                 };
                 
                 ticket.save();
