@@ -624,5 +624,24 @@ module.exports = async (interaction, client) => {
         });
     } else if (interaction.customId === 'createTicket') {
         createTicket(interaction, client)
-    };
+    } else if (interaction.customId.includes('reactionRole')) {
+        const roleId = interaction.customId.split('-')[1];
+        const role = interaction.guild.roles.cache.get(roleId);
+        const member = interaction.member;
+    
+        if (member && role) {
+            if (member.roles.cache.has(roleId)) {
+                // Remove role if the user already has it (toggle behavior)
+                await member.roles.remove(role);
+                await interaction.reply({ content: `Removed role <@&${roleId}>!`, ephemeral: true });
+            } else {
+                // Add role if the user doesn’t have it
+                await member.roles.add(role);
+                await interaction.reply({ content: `Added role <@&${roleId}>!`, ephemeral: true });
+            }
+        } else {
+            await interaction.reply({ content: "Role not found or an error occurred.", ephemeral: true });
+        }
+    }
+    
 };
