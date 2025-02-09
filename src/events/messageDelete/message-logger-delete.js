@@ -18,6 +18,8 @@ module.exports = (message) => {
             return;
         } else if (message.webhookId){
             return;
+        } else if (!message.author){
+            return;
         } else {
 
             const deletedMessage = new EmbedBuilder()

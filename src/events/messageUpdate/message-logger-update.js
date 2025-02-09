@@ -16,6 +16,8 @@ module.exports = (oldMessage, newMessage) => {
             return;
         } else if (ignoredChannels.includes(newMessage.channel.id)) {
             return;
+        } else if (!message.author){
+            return;
         } else if (newMessage.webhookId){
             return;
         } else {
