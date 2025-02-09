@@ -5,7 +5,7 @@ const modlogs = require('../../utils/moderation/modlogs');
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('warn')
-    .setDescription('Warn a user.')
+    .setDescription('Commands related to warnings.')
     .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
 
