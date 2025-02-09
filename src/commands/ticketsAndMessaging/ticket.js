@@ -182,7 +182,7 @@ module.exports = {
                         .setDescription('Do you want to close this ticket?')
                         .setFooter({
                             text: String(ticket._id)
-                    });
+                        });
     
                     const yesButton = new ButtonBuilder()
                         .setCustomId('closeTicket-Yes')
