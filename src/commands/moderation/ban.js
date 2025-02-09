@@ -75,21 +75,25 @@ module.exports = {
             return false;
         });
 
+        let finishedBan = true;
+
         // Ban the user
         if (deleteMessages) {
             await user.ban({ deleteMessageSeconds: 60 * 60 * 24 * 7, reason: reason }).catch(() => {
                 interaction.editReply({ content: 'I couldn\'t ban this user! You can ban manually.', ephemeral: true });
+                finishedBan = false;
             });
         } else {
             await user.ban({ reason: reason }).catch(() => {
                 interaction.editReply({ content: 'I couldn\'t ban this user! You can ban manually.', ephemeral: true });
+                finishedBan = false;
             });
         };
 
         // Log the action
         const banLog = new modlogs({
             discordId: user.id,
-            action: `ban${duration ? ` (temp, ${duration} days)` : ''}`,
+            action: `ban${duration ? ` (temp, ${duration} day(s))` : ''}`,
             reason,
             moderatorId: interaction.user.id,
             moderatorUsername: interaction.user.username
@@ -106,11 +110,13 @@ module.exports = {
 
             await timeBan.save();
         };
-
-        interaction.editReply({
-            content: `User <@${user.id}> has been banned for reason: ${reason}. ${message ? '' : 'Failed to message this user.'}`,
-            ephemeral: true
-        });
+        
+        if (finishedBan) {
+            interaction.editReply({
+                content: `User <@${user.id}> has been banned for reason: ${reason}. ${message ? '' : 'Failed to message this user.'}`,
+                ephemeral: true
+            });
+        }
     },
     modOnly: true,
 
