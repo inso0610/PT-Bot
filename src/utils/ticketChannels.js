@@ -82,7 +82,7 @@ async function createTicket(interaction, client) {
 
     const createTicketButton = new ButtonBuilder()
         .setCustomId('createTicket')
-        .setLabel('Create a ticket')
+        .setLabel('Create a new ticket')
         .setStyle(ButtonStyle.Success);
 
     const ticketRow = new ActionRowBuilder()
