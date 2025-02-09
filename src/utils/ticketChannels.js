@@ -121,7 +121,10 @@ async function createTicket(interaction, client) {
             collector.on('collect', i => resolve(i.content));
             collector.on('end', (_, reason) => {
                 if (reason === 'time') {
-                    interaction.user.send("You took too long to respond. Please try again.");
+                    interaction.user.send({
+                        content:"You took too long to respond. Please try again.",
+                        components: [ticketRow]
+                    }).catch();
 
                     reject(new Error("Timeout"));
                 }
@@ -146,9 +149,13 @@ async function createTicket(interaction, client) {
             collector.on('collect', i => resolve(i.content));
             collector.on('end', (_, reason) => {
                 if (reason === 'time') {
-                    interaction.user.send("You took too long to respond. Please try again.");
+                    interaction.user.send({
+                        content:"You took too long to respond. Please try again.",
+                        components: [ticketRow]
+                    }).catch();
+
                     reject(new Error("Timeout"));
-                }
+                };
             });
         });
     };
@@ -170,9 +177,13 @@ async function createTicket(interaction, client) {
             collector.on('collect', i => resolve(i.content));
             collector.on('end', (_, reason) => {
                 if (reason === 'time') {
-                    interaction.user.send("You took too long to respond. Please try again.");
+                    interaction.user.send({
+                        content:"You took too long to respond. Please try again.",
+                        components: [ticketRow]
+                    }).catch();
+
                     reject(new Error("Timeout"));
-                }
+                };
             });
         });
     };
@@ -521,7 +532,10 @@ async function createTicket(interaction, client) {
 
         if (error.message === "Timeout") return;
 
-        await interaction.user.send('Something failed in the ticket creation system.').catch();
+        await interaction.user.send({
+            content: 'Something failed in the ticket creation system.',
+            components: [ticketRow]
+        }).catch();
 
         console.warn(`Ticket creator error: ${error}`);
     };

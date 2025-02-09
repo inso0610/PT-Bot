@@ -562,7 +562,7 @@ module.exports = async (interaction, client) => {
             embeds: [claimedTicketMessage, ticketCommands]
         }).catch(e => {
             interaction.reply({
-                content: `I could not send you the ticket information. Do \`/ticket info ${String(ticket._id)}\` to send it manually.`,
+                content: `I could not send you the ticket information, but the ticket was claimed. Do \`/ticket info id:${String(ticket._id)}\` to send it manually.`,
                 ephemeral: true
             });
 
