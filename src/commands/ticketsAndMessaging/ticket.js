@@ -700,15 +700,15 @@ module.exports = {
                 const ticketCommands = new EmbedBuilder()
                     .setTitle('Ticket commands')
                     .addFields(
-                        { name: `\`/ticket reply ${String(ticket._id)} (message) (prompt)\``, value: 'Send a reply to the creator of the ticket. If you want to prompt the person to close the ticket set prompt to true.'},
-                        { name: `\`/ticket note ${String(ticket._id)} (message) (important)\``, value: 'Add a note to the ticket. If you set important to true it will be set as the important note.'},
-                        { name: `\`/ticket questions ${String(ticket._id)}\``, value: 'Sends the questions sent by the ticket creator.'},
-                        { name: `\`/ticket unassign ${String(ticket._id)}\``, value: 'Unassigns you and makes the ticket claimable for someone else.'},
-                        { name: `\`/ticket transfer ${String(ticket._id)} (new category)\``, value: 'Transfers the ticket to a new department.'},
-                        { name: `\`/ticket logs ${String(ticket._id)}\``, value: 'Sends the ticket logs.'},
-                        { name: `\`/ticket info ${String(ticket._id)}\``, value: 'Send the ticket information.'},
-                        { name: `\`/ticket notes ${String(ticket._id)}\``, value: 'Sends all ticket notes.'},
-                        { name: `\`/ticket close ${String(ticket._id)}\``, value: 'Closes the ticket.'}
+                        { name: `\`/ticket reply id:${String(ticket._id)}\``, value: 'Send a reply to the creator of the ticket. If you want to prompt the person to close the ticket set prompt to true.'},
+                        { name: `\`/ticket note id:${String(ticket._id)}\``, value: 'Add a note to the ticket. If you set important to true it will be set as the important note.'},
+                        { name: `\`/ticket questions id:${String(ticket._id)}\``, value: 'Sends the questions sent by the ticket creator.'},
+                        { name: `\`/ticket unassign id:${String(ticket._id)}\``, value: 'Unassigns you and makes the ticket claimable for someone else.'},
+                        { name: `\`/ticket transfer id:${String(ticket._id)}\``, value: 'Transfers the ticket to a new department.'},
+                        { name: `\`/ticket logs id:${String(ticket._id)}\``, value: 'Sends the ticket logs.'},
+                        { name: `\`/ticket info id:${String(ticket._id)}\``, value: 'Send the ticket information.'},
+                        { name: `\`/ticket notes id:${String(ticket._id)}\``, value: 'Sends all ticket notes.'},
+                        { name: `\`/ticket close id:${String(ticket._id)}\``, value: 'Closes the ticket.'}
                     );
     
                 interaction.user.send({

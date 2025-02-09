@@ -212,8 +212,15 @@ async function createTicket(interaction, client) {
         };
 
         // If the user already has a ticket ask if the person wants to create a new one
-        const exitingTicket = await tickets.findOne({ creatorId: interaction.user.id }).exec();
-        const allExisting = await tickets.find({ creatorId: interaction.user.id }).exec();
+        const exitingTicket = await tickets.findOne({ 
+            creatorId: interaction.user.id, 
+            claimedId: { $ne: '-1' } 
+        }).exec();
+        
+        const allExisting = await tickets.find({ 
+            creatorId: interaction.user.id, 
+            claimedId: { $ne: '-1' } 
+        }).exec();
 
         if (exitingTicket) {
             if (allExisting.length > 1) {
@@ -404,39 +411,47 @@ async function createTicket(interaction, client) {
             language: languageSelection
         });
 
-        if (interaction.user.id === '935889950547771512') { // Emil Bot Developer
-            const testTicket = await collectResponseYesNo('Hei Emil! Er dette en test ticket? Yes/No');
+        const guild = interaction.client.guilds.cache.get('1089282844657987587');
 
-            if (Array.isArray(testTicket)) {
-                const index = creatingATicket.indexOf(interaction.user.id);
+        if (guild) {
+            const member = await guild.members.fetch(interaction.user.id);
 
-                if (index !== -1) {
-                    creatingATicket.splice(index, 1);
+            if (member) {
+                if (member.roles.cache.has('1304849124528754729')) { // Bot Developer
+                    const testTicket = await collectResponseYesNo('Hello bot dev! Is this a test ticket? Yes/No');
+        
+                    if (Array.isArray(testTicket)) {
+                        const index = creatingATicket.indexOf(interaction.user.id);
+        
+                        if (index !== -1) {
+                            creatingATicket.splice(index, 1);
+                        };
+        
+                        return;
+                    };
+        
+                    if (testTicket.toLowerCase() === 'yes') {
+                        ticket.department = 'DEV-BOT';
+                    };
                 };
-
-                return;
-            };
-
-            if (testTicket.toLowerCase() === 'yes') {
-                ticket.department = 'DEV-BOT';
-            };
-        };
-
-        if (interaction.user.id === '312986921804759051') { // Erlend Community Administator
-            const testTicket = await collectResponseYesNo('Hei Erlend! Er dette en trening ticket? Yes/No');
-
-            if (Array.isArray(testTicket)) {
-                const index = creatingATicket.indexOf(interaction.user.id);
-
-                if (index !== -1) {
-                    creatingATicket.splice(index, 1);
+        
+                if (member.roles.cache.has('1294321619149262942')) { // Community Administator
+                    const testTicket = await collectResponseYesNo('Hello Community Admin! Is this a training ticket? Yes/No');
+        
+                    if (Array.isArray(testTicket)) {
+                        const index = creatingATicket.indexOf(interaction.user.id);
+        
+                        if (index !== -1) {
+                            creatingATicket.splice(index, 1);
+                        };
+        
+                        return;
+                    };
+        
+                    if (testTicket.toLowerCase() === 'yes') {
+                        ticket.department = 'COMMUNITY-TRAINING';
+                    };
                 };
-
-                return;
-            };
-
-            if (testTicket.toLowerCase() === 'yes') {
-                ticket.department = 'COMMUNITY-TRAINING';
             };
         };
 
