@@ -132,7 +132,7 @@ module.exports = async (client) => {
         .setEmoji('🎉');
 
     const engagementPingButton = new ButtonBuilder()
-        .setCustomId('reactionRole-1135893701403623594')
+        .setCustomId('reactionRole-1172284324868014080')
         .setLabel('Engagement Ping')
         .setStyle(ButtonStyle.Primary)
         .setEmoji('<:PolarTracks:1135893701403623594>');
@@ -149,8 +149,8 @@ module.exports = async (client) => {
     const pingRoleRow2 = new ActionRowBuilder()
         .addComponents(engagementPingButton, deadChatPingButton);
     
-    await pingRoleChannel.send({
+    /*await pingRoleChannel.send({
         embeds: [pingRoleEmbed],
         components: [pingRoleRow1, pingRoleRow2]
-    });
+    });*/
 };
