@@ -1,6 +1,4 @@
-const { SlashCommandBuilder, } = require('discord.js');
-
-
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -39,6 +37,14 @@ module.exports = {
         const text = interaction.options.getString('text');
         const showSender = interaction.options.getBoolean('show-sender');
 
+        const createTicketButton = new ButtonBuilder()
+            .setCustomId('createTicket')
+            .setLabel('Create a ticket')
+            .setStyle(ButtonStyle.Success);
+
+        const ticketRow = new ActionRowBuilder()
+            .addComponents(createTicketButton);
+
         if (team === 'Director' && !interaction.member.roles.cache.has('1140260309915938866')) {
             interaction.reply({
                 content: "You can't send a message as a Director.",
@@ -64,7 +70,10 @@ module.exports = {
 
             const senderName = interaction.member.nickname ?? interaction.user.username;
 
-            const message = await reciever.send(`Hello! You have recieved a message from ${role} ${senderName} in Polar Tracks.\n\`\`\`${text}\`\`\`\nIf you want to respond to this message please create a ticket by pinging me.`).catch(e => {
+            const message = await reciever.send({
+                content: `Hello! You have recieved a message from ${role} ${senderName} in Polar Tracks.\n\`\`\`${text}\`\`\`\nIf you want to respond to this message please create a ticket by clicking the button below.`,
+                components: [ticketRow]
+            }).catch(e => {
                 console.warn(e);
                 interaction.reply({
                     content: 'I could not message the user.',
@@ -80,7 +89,10 @@ module.exports = {
                 });
             }
         } else {
-            const message = await reciever.send(`Hello! You have recieved a message from the Polar Tracks ${team} team.\n\`\`\`${text}\`\`\`\nIf you want to respond to this message please create a ticket by pinging me.`).catch(e => {
+            const message = await reciever.send({
+                content: `Hello! You have recieved a message from the Polar Tracks ${team} team.\n\`\`\`${text}\`\`\`\nIf you want to respond to this message please create a ticket by clicking the button below.`,
+                components: [ticketRow]
+            }).catch(e => {
                 console.warn(e);
                 interaction.reply({
                     content: 'I could not message the user.',
