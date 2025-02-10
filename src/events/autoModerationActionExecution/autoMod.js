@@ -191,7 +191,7 @@ module.exports = async (execution, client) => {
         });
 
         // Kick the user
-        await execution.user.kick(run.reason).catch(() => {
+        await execution.member.kick(run.reason).catch(() => {
             console.warn(e);
         });
 
@@ -242,11 +242,11 @@ module.exports = async (execution, client) => {
 
         // Ban the user
         if (run.deleteMessages) {
-            await execution.user.ban({ deleteMessageSeconds: 60 * 60 * 24 * 7, reason: run.reason }).catch(() => {
+            await execution.member.ban({ deleteMessageSeconds: 60 * 60 * 24 * 7, reason: run.reason }).catch(() => {
                 console.warn(e);
             });
         } else {
-            await execution.user.ban({ reason: run.reason }).catch(() => {
+            await execution.member.ban({ reason: run.reason }).catch(() => {
                 console.warn(e);
             });
         };
@@ -281,7 +281,7 @@ module.exports = async (execution, client) => {
     const alertSystemMessage = await client.channels.cache.get('1188153939758166129').messages.fetch(execution.alertSystemMessageId);
 
     alertSystemMessage.reply({
-        content: `Action executed for <@${execution.user.id}>: ${run.action}${run.duration ? `(${run.duration}) ` : ''}${run.deleteMessages ? '(with message deletion) ' : ''}${run.appeals ? '(appealable) ' : ''} ${run.warn ? '(with warning) ' : ''}`
+        content: `Action executed for <@${execution.user.id}>: ${run.action} ${run.duration ? `(${run.duration}) ` : ''}${run.deleteMessages ? '(with message deletion) ' : ''}${run.appeals ? '(appealable) ' : ''}${run.warn ? '(with warning) ' : ''}`
     });
 };
 
