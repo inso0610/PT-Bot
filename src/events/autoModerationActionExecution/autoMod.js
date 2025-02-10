@@ -58,7 +58,7 @@ const idActions = {
             },
             3: {
                 action: 'ban',
-                duration: 3, // 3 hours
+                duration: 24, // 24 hours
                 reason: 'Spamming',
                 appeals: true,
                 deleteMessages: false,
