@@ -5,8 +5,17 @@ const timebans = require('../../utils/moderation/timebans.js');
 const executions = {
     ['1188153868144611348']: {
 
+    },
+    ['1188154126798962689']: {
+
+    },
+    ['1188154211687485460']: {
+
+    },
+    ['1272249082512937010']: {
+
     }
-}
+};
 
 const idActions = {
     ['1188153868144611348']: {
@@ -172,23 +181,23 @@ module.exports = async (execution, client) => {
             warnLog.save();
         };
 
-        if (action.duration > 10800000) {
+        if (run.duration > 10800000) {
             delete executions[execution.ruleId][execution.user.id];
         };
     } else if (run.action === 'kick') {
         // Message the user
-        await run.user.send(`You have been kicked from the Polar Tracks Discord server for the following reason: ${run.reason}.\nYou can rejoin the server here: https://discord.gg/m7gxUKm2z6.${run.warn ? '\n**⚠️ A warning was also applied.**' : ''}`).catch(() => {
+        await execution.user.send(`You have been kicked from the Polar Tracks Discord server for the following reason: ${run.reason}.\nYou can rejoin the server here: https://discord.gg/m7gxUKm2z6.${run.warn ? '\n**⚠️ A warning was also applied.**' : ''}`).catch(() => {
             console.warn(e);
         });
 
         // Kick the user
-        await run.user.kick(run.reason).catch(() => {
+        await execution.user.kick(run.reason).catch(() => {
             console.warn(e);
         });
 
         // Log the action using mongodb
         const modlog = new modlogs({
-            discordId: run.user.id,
+            discordId: execution.user.id,
             action: 'kick',
             reason: `Automod kick (${execution.ruleId}): ` + run.reason,
             moderatorId: client.user.id,
@@ -200,7 +209,7 @@ module.exports = async (execution, client) => {
         // Warn the user
         if (run.warn) {
             const warning = new warnings({
-                discordId: run.user.id,
+                discordId: execution.user.id,
                 reason: `Automod warning (${execution.ruleId}): ` + run.reason,
                 moderatorId: client.user.id,
                 moderatorUsername: client.user.username
@@ -209,7 +218,7 @@ module.exports = async (execution, client) => {
             warning.save();
 
             const warnLog = new modlogs({
-                discordId: run.user.id,
+                discordId: execution.user.id,
                 action: 'warn',
                 reason: `This warning was applied together with a kick (${modlog._id.toString()}): ` + run.reason,
                 moderatorId: client.user.id,
@@ -227,24 +236,24 @@ module.exports = async (execution, client) => {
         };
 
         // Message the user
-        await run.user.send(`You have been banned from the Polar Tracks Discord server for the following reason: ${run.reason}.\n${run.duration ? `This ban will last until <t:${Math.floor(expiration.getTime() / 1000)}:F>.` : 'This ban is permanent.'}\n${run.appeals ? 'You can appeal the ban here: https://appeals.polartracks.no/' : 'This ban is not appealable.'}`).catch(() => {
+        await execution.user.send(`You have been banned from the Polar Tracks Discord server for the following reason: ${run.reason}.\n${run.duration ? `This ban will last until <t:${Math.floor(expiration.getTime() / 1000)}:F>.` : 'This ban is permanent.'}\n${run.appeals ? 'You can appeal the ban here: https://appeals.polartracks.no/' : 'This ban is not appealable.'}`).catch(() => {
             console.warn(e);
         });
 
         // Ban the user
         if (run.deleteMessages) {
-            await run.user.ban({ deleteMessageSeconds: 60 * 60 * 24 * 7, reason: run.reason }).catch(() => {
+            await execution.user.ban({ deleteMessageSeconds: 60 * 60 * 24 * 7, reason: run.reason }).catch(() => {
                 console.warn(e);
             });
         } else {
-            await run.user.ban({ reason: run.reason }).catch(() => {
+            await execution.user.ban({ reason: run.reason }).catch(() => {
                 console.warn(e);
             });
         };
 
         // Log the action using mongodb temp ban logged in hours
         const modlog = new modlogs({
-            discordId: run.user.id,
+            discordId: execution.user.id,
             action: `ban${run.duration ? ` (temp, ${run.duration} hour(s))` : ''} ${run.deleteMessages ? '(with message deletion)' : ''} ${run.appeals ? '(appealable)' : ''}`,
             reason: `Automod ban (${execution.ruleId}): ` + run.reason,
             moderatorId: client.user.id,
@@ -255,7 +264,7 @@ module.exports = async (execution, client) => {
 
         if (run.duration) {
             const timeBan = new timebans({
-                discordId: run.user.id,
+                discordId: execution.user.id,
                 modlogId: modlog._id.toString(),
                 expiration
             });
