@@ -134,7 +134,7 @@ module.exports = async (execution, client) => {
         warnLog.save();
 
         // Message the user
-        execution.user.send(`You have been warned in the Polar Tracks Discord server for the following reason: ${run.reason}`).catch(() => {
+        execution.user.send(`**⚠️You have been warned in the Polar Tracks Discord server.**\nReason: \`${run.reason}.\``).catch(() => {
             console.warn(e);
         });
 
@@ -144,7 +144,7 @@ module.exports = async (execution, client) => {
         });
 
         // Message the user
-        execution.user.send(`You have been given a timeout in the Polar Tracks Discord server for the following reason: ${run.reason}.${run.warn ? '\n**⚠️ A warning was also applied.**' : ''}`).catch(() => {
+        execution.user.send(`**⚠️You have been given a timeout in the Polar Tracks Discord server.**\nReason: \`${run.reason}\`.\n${run.warn ? '\n**A warning was also applied.**' : ''}`).catch(() => {
             console.warn(e);
         });
 
@@ -186,7 +186,7 @@ module.exports = async (execution, client) => {
         };
     } else if (run.action === 'kick') {
         // Message the user
-        await execution.user.send(`You have been kicked from the Polar Tracks Discord server for the following reason: ${run.reason}.\nYou can rejoin the server here: https://discord.gg/m7gxUKm2z6.${run.warn ? '\n**⚠️ A warning was also applied.**' : ''}`).catch(() => {
+        await execution.user.send(`**⚠️You have been kicked from the Polar Tracks Discord server.\nReason: ${run.reason}.\nYou can rejoin the server here: https://discord.gg/m7gxUKm2z6.${run.warn ? '\n**A warning was also applied.**' : ''}`).catch(() => {
             console.warn(e);
         });
 
@@ -236,7 +236,7 @@ module.exports = async (execution, client) => {
         };
 
         // Message the user
-        await execution.user.send(`You have been banned from the Polar Tracks Discord server for the following reason: ${run.reason}.\n${run.duration ? `This ban will last until <t:${Math.floor(expiration.getTime() / 1000)}:F>.` : 'This ban is permanent.'}\n${run.appeals ? 'You can appeal the ban here: https://appeals.polartracks.no/' : 'This ban is not appealable.'}`).catch(() => {
+        await execution.user.send(`**⚠️You have been banned from the Polar Tracks Discord server.**\nReason: ${run.reason}.\n${run.duration ? `This ban will last until <t:${Math.floor(expiration.getTime() / 1000)}:F>.` : 'This ban is permanent.'}\n${run.appeals ? 'You can appeal the ban here: https://appeals.polartracks.no/' : 'This ban is not appealable.'}`).catch(() => {
             console.warn(e);
         });
 
