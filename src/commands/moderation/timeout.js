@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const warnings = require('../../utils/moderation/warnings');
 const modlogs = require('../../utils/moderation/modlogs');
 
@@ -99,7 +99,7 @@ module.exports = {
             const warnLog = new modlogs({
                 discordId: user.id,
                 action: 'warn',
-                reason: 'This warning was applied together with a timeout: ' + reason,
+                reason: `This warning was applied together with a timeout (${timeoutLog._id.toString()}): ` + reason,
                 moderatorId: interaction.user.id,
                 moderatorUsername: interaction.user.username
             });

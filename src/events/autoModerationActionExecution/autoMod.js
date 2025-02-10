@@ -1,0 +1,240 @@
+const modlogs = require('../../utils/moderation/modlogs.js');
+const warnings = require('../../utils/moderation/warnings.js');
+const timebans = require('../../utils/moderation/timebans.js');
+
+const executions = {
+    ['1188153868144611348']: {
+
+    }
+}
+
+const idActions = {
+    ['1188153868144611348']: {
+        runs: {
+            1: {
+                action: 'verbal',
+                message: 'Please avoid pinging more than 5 members or roles at the same time.'
+            },
+            2: {
+                action: 'timeout',
+                duration: 60000, // 1 minute
+                reason: 'Pinging more than 5 members or roles at the same time',
+                warn: false
+            },
+            3: {
+                action: 'timeout',
+                duration: 3600000, // 1 hour
+                reason: 'Pinging more than 5 members or roles at the same time',
+                warn: true
+            },
+            4: {
+                action: 'timeout',
+                duration: 10800000, // 3 hour
+                reason: 'Pinging more than 5 members or roles at the same time',
+                warn: true
+            },
+        }
+    }
+}
+
+module.exports = async (execution, client) => {
+    if (execution.action.type !== 2) return;
+
+    if (!execution.ruleId in idActions) return;
+
+    if (!execution.ruleId in executions) return;
+
+    if (execution.user.id in executions[execution.ruleId]) {
+        executions[execution.ruleId][execution.user.id].executions += 1;
+        executions[execution.ruleId][execution.user.id].last = Date.now();
+    } else {
+        executions[execution.ruleId][execution.user.id] = {
+            executions: 1,
+            last: Date.now()
+        };
+    };
+
+    const run = idActions[execution.ruleId].runs[executions[execution.ruleId][execution.user.id].executions];
+
+    if (!run) return;
+
+    if (run.action === 'verbal') {
+        execution.user.send(run.message).catch(e => {  
+            console.warn(e);
+        });
+    } else if (run.action === 'warn') {
+        // Log the warning using mongodb
+        const warning = new warnings({
+            discordId: execution.user.id,
+            reason: `Automod warning (${execution.ruleId}): ` + run.reason,
+            moderatorId: client.user.id,
+            moderatorUsername: client.user.username
+        });
+
+        warning.save();
+
+        const warnLog = new modlogs({
+            discordId: execution.user.id,
+            action: 'warn',
+            reason: `Automod warning (${execution.ruleId}): ` + run.reason,
+            moderatorId: client.user.id,
+            moderatorUsername: client.user.username
+        });
+
+        warnLog.save();
+
+        // Message the user
+        execution.user.send(`You have been warned in the Polar Tracks Discord server for the following reason: ${run.reason}`).catch(() => {
+            console.warn(e);
+        });
+
+    } else if (run.action === 'timeout') {
+        execution.member.timeout(run.duration, run.reason).catch(e => {
+            console.warn(e);
+        });
+
+        // Message the user
+        execution.user.send(`You have been given a timeout in the Polar Tracks Discord server for the following reason: ${run.reason}.${run.warn ? '\n**⚠️ A warning was also applied.**' : ''}`).catch(() => {
+            console.warn(e);
+        });
+
+        // Log the action using mongodb
+        const modlog = new modlogs({
+            discordId: execution.user.id,
+            action: 'timeout',
+            reason: `Automod timeout (${execution.ruleId}): ` + run.reason,
+            moderatorId: client.user.id,
+            moderatorUsername: client.user.username
+        });
+
+        modlog.save();
+
+        // Warn the user
+        if (run.warn) {
+            const warning = new warnings({
+                discordId: execution.member.id,
+                reason: `Automod warning (${execution.ruleId}): ` + run.reason,
+                moderatorId: client.user.id,
+                moderatorUsername: client.user.username
+            });
+
+            warning.save();
+
+            const warnLog = new modlogs({
+                discordId: execution.member.id,
+                action: 'warn',
+                reason: `This warning was applied together with a timeout (${modlog._id.toString()}): ` + run.reason,
+                moderatorId: client.user.id,
+                moderatorUsername: client.user.username
+            });
+
+            warnLog.save();
+        };
+    } else if (run.action === 'kick') {
+        // Message the user
+        await run.user.send(`You have been kicked from the Polar Tracks Discord server for the following reason: ${run.reason}.\nYou can rejoin the server here: https://discord.gg/m7gxUKm2z6.${run.warn ? '\n**⚠️ A warning was also applied.**' : ''}`).catch(() => {
+            console.warn(e);
+        });
+
+        // Kick the user
+        await run.user.kick(run.reason).catch(() => {
+            console.warn(e);
+        });
+
+        // Log the action using mongodb
+        const modlog = new modlogs({
+            discordId: run.user.id,
+            action: 'kick',
+            reason: `Automod kick (${execution.ruleId}): ` + run.reason,
+            moderatorId: client.user.id,
+            moderatorUsername: client.user.username
+        });
+
+        modlog.save();
+
+        // Warn the user
+        if (run.warn) {
+            const warning = new warnings({
+                discordId: run.user.id,
+                reason: `Automod warning (${execution.ruleId}): ` + run.reason,
+                moderatorId: client.user.id,
+                moderatorUsername: client.user.username
+            });
+
+            warning.save();
+
+            const warnLog = new modlogs({
+                discordId: run.user.id,
+                action: 'warn',
+                reason: `This warning was applied together with a kick (${modlog._id.toString()}): ` + run.reason,
+                moderatorId: client.user.id,
+                moderatorUsername: client.user.username
+            });
+
+            warnLog.save();
+        };
+    } else if (run.action === 'ban') {
+        // calculate expiration date from hours
+        let expiration;
+
+        if (run.duration) {
+            expiration = new Date(Date.now() + run.duration * 60 * 60 * 1000);
+        };
+
+        // Message the user
+        await run.user.send(`You have been banned from the Polar Tracks Discord server for the following reason: ${run.reason}.\n${run.duration ? `This ban will last until <t:${Math.floor(expiration.getTime() / 1000)}:F>.` : 'This ban is permanent.'}\n${run.appeals ? 'You can appeal the ban here: https://appeals.polartracks.no/' : 'This ban is not appealable.'}`).catch(() => {
+            console.warn(e);
+        });
+
+        // Ban the user
+        if (run.deleteMessages) {
+            await run.user.ban({ deleteMessageSeconds: 60 * 60 * 24 * 7, reason: run.reason }).catch(() => {
+                console.warn(e);
+            });
+        } else {
+            await run.user.ban({ reason: run.reason }).catch(() => {
+                console.warn(e);
+            });
+        };
+
+        // Log the action using mongodb temp ban logged in hours
+        const modlog = new modlogs({
+            discordId: run.user.id,
+            action: `ban${run.duration ? ` (temp, ${run.duration} hour(s))` : ''} ${run.deleteMessages ? '(with message deletion)' : ''} ${run.appeals ? '(appealable)' : ''}`,
+            reason: `Automod ban (${execution.ruleId}): ` + run.reason,
+            moderatorId: client.user.id,
+            moderatorUsername: client.user.username
+        });
+        
+        modlog.save();
+
+        if (run.duration) {
+            const timeBan = new timebans({
+                discordId: run.user.id,
+                modlogId: modlog._id.toString(),
+                expiration
+            });
+
+            await timeBan.save();
+        };
+    } else {
+        return;
+    };
+
+    const alertSystemMessage = await client.channels.cache.get('1188153939758166129').messages.fetch(execution.alertSystemMessageId);
+
+    alertSystemMessage.reply({
+        content: `Action executed for <@${execution.user.id}>: ${run.action}${run.duration ? `(${run.duration}) ` : ''}${run.deleteMessages ? '(with message deletion) ' : ''}${run.appeals ? '(appealable) ' : ''} ${run.warn ? '(with warning) ' : ''}`
+    });
+};
+
+// Delete executions for people that last did something over three hours ago
+setInterval(() => {
+    for (const ruleId in executions) {
+        for (const userId in executions[ruleId]) {
+            if (Date.now() - executions[ruleId][userId].last > 10800000) {
+                delete executions[ruleId][userId];
+            };
+        };
+    };
+}, 60000);

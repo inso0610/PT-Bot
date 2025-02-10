@@ -10,7 +10,10 @@ const client = new Client({
         IntentsBitField.Flags.GuildMembers,
         IntentsBitField.Flags.GuildMessages,
         IntentsBitField.Flags.MessageContent,
-        IntentsBitField.Flags.DirectMessages
+        IntentsBitField.Flags.DirectMessages,
+        IntentsBitField.Flags.GuildModeration,
+        IntentsBitField.Flags.AutoModerationExecution,
+        IntentsBitField.Flags.AutoModerationConfiguration
     ],
     partials: [
         Partials.Channel
