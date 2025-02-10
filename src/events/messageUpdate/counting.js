@@ -23,7 +23,7 @@ module.exports = async (oldMessage, newMessage) => {
 
     let nextNumber = await counting.findById('66e9500b12c20d26f47cdd88').exec();
 
-    if (oldMessage === newMessage) {
+    if (oldMessage.content === newMessage.content) {
         return;
     };
 
