@@ -31,7 +31,8 @@ module.exports = (message) => {
             .setDescription(message.content)
             .addFields(
                 { name: 'Channel:', value: `<#${message.channel.id}>` }
-            );
+            )
+            .setFooter({text: `Author: ${message.author.id} | Message ID: ${message.id}`});
 
             webhookClient.send({
                 username: (`${message.author.username} (${message.author.id})`),
