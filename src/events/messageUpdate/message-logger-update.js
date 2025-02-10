@@ -25,7 +25,8 @@ module.exports = (oldMessage, newMessage) => {
             const info = new EmbedBuilder()
                 .setTitle(`${newMessage.author.username} Edited their message`)
                 .addFields(
-                    { name: 'Channel:', value: `<#${newMessage.channel.id}>` }
+                    { name: 'Channel:', value: `<#${newMessage.channel.id}>` },
+                    { name: 'Message Link:', value: `[Jump!](${newMessage.url})` }
                 );
             const oldMessageEmbed = new EmbedBuilder().setTitle('Old message:').setDescription(oldMessage.content);
             const newMessageEmbed = new EmbedBuilder().setTitle('New message:').setDescription(newMessage.content);

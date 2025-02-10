@@ -22,6 +22,10 @@ module.exports = (message) => {
             return;
         } else {
 
+            const attatchments = message.attachments.map(attachment => {
+                return attachment.url;
+            });
+
             const deletedMessage = new EmbedBuilder()
             .setTitle(`Deleted message from: ${message.author.username}`)
             .setDescription(message.content)
@@ -32,7 +36,8 @@ module.exports = (message) => {
             webhookClient.send({
                 username: (`${message.author.username} (${message.author.id})`),
                 avatarURL: message.author.avatarURL(),
-                embeds: [ deletedMessage ]
+                embeds: [ deletedMessage ],
+                files: attatchments
             }).catch(e => {
                 console.warn(`Error in message-logger-delete: ${e}`)
                 return;
