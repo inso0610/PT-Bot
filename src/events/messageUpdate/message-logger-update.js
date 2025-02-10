@@ -20,6 +20,8 @@ module.exports = (oldMessage, newMessage) => {
             return;
         } else if (newMessage.webhookId){
             return;
+        } else if (newMessage.content === oldMessage.content) {
+            return;
         } else {
 
             const info = new EmbedBuilder()
