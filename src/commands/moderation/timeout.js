@@ -69,7 +69,7 @@ module.exports = {
             return interaction.editReply({ content: 'I couldn\'t timeout this user!', ephemeral: true });
         });
 
-        const message = await user.send(`You have been given a timeout in the Polar Tracks Discord server for the following reason: ${reason}.${warn ? '\n**⚠️ A warning was also applied.**' : ''}`).catch(() => {
+        const message = await user.send(`**⚠️You have been given a timeout in the Polar Tracks Discord server.**\nReason: \`${reason}\`.\n${warn ? '\n**A warning was also applied.**' : ''}`).catch(() => {
             return false;
         });
 

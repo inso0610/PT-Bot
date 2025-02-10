@@ -254,7 +254,7 @@ module.exports = async (execution, client) => {
         // Log the action using mongodb temp ban logged in hours
         const modlog = new modlogs({
             discordId: execution.user.id,
-            action: `ban${run.duration ? ` (temp, ${run.duration} hour(s))` : ''} ${run.deleteMessages ? '(with message deletion)' : ''} ${run.appeals ? '(appealable)' : ''}`,
+            action: `ban ${run.duration ? ` (temp, ${run.duration} hour(s))` : ''}${run.deleteMessages ? ' (with message deletion)' : ''}${run.appeals ? ' (appealable)' : ''}`,
             reason: `Automod ban (${execution.ruleId}): ` + run.reason,
             moderatorId: client.user.id,
             moderatorUsername: client.user.username

@@ -81,7 +81,7 @@ module.exports = {
                 ephemeral: true
             });
 
-            warnedUser.send(`You have been warned in the Polar Tracks Discord server for the following reason: ${reason}.`).catch(e => {
+            warnedUser.send(`**⚠️You have been warned in the Polar Tracks Discord server.**\nReason: \`${reason}.\``).catch(e => {
                 console.warn(e);
                 interaction.followUp({
                     content: 'User has been warned, but I was unable to send them a DM.',

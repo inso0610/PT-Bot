@@ -77,7 +77,7 @@ module.exports = {
         };
 
         // Message the user
-        const message = await user.send(`You have been banned from the Polar Tracks Discord server for the following reason: ${reason}.\n${duration ? `This ban will last until <t:${Math.floor(expiration.getTime() / 1000)}:F>.` : 'This ban is permanent.'}\n${appeals ? 'You can appeal the ban here: https://appeals.polartracks.no/' : 'This ban is not appealable.'}`).catch(() => {
+        const message = await user.send(`**⚠️You have been banned from the Polar Tracks Discord server.**\nReason: ${reason}.\n${duration ? `This ban will last until <t:${Math.floor(expiration.getTime() / 1000)}:F>.` : 'This ban is permanent.'}\n${appeals ? 'You can appeal the ban here: https://appeals.polartracks.no/' : 'This ban is not appealable.'}`).catch(() => {
             return false;
         });
 
@@ -99,7 +99,7 @@ module.exports = {
         // Log the action
         const banLog = new modlogs({
             discordId: user.id,
-            action: `ban${duration ? ` (temp, ${duration} day(s))` : ''} ${deleteMessages ? '(with message deletion)' : ''} ${appeals ? '(appealable)' : ''}`,
+            action: `ban ${duration ? `(temp, ${duration} day(s)) ` : ''} ${deleteMessages ? ' (with message deletion) ' : ''} ${appeals ? '(appealable)' : ''}`,
             reason,
             moderatorId: interaction.user.id,
             moderatorUsername: interaction.user.username
