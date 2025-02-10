@@ -28,7 +28,7 @@ module.exports = (oldMessage, newMessage) => {
                     { name: 'Channel:', value: `<#${newMessage.channel.id}>` },
                     { name: 'Message Link:', value: `[Jump!](${newMessage.url})` }
                 )
-                .setFooter({text: `Author: ${message.author.id} | Message ID: ${message.id}`});
+                .setFooter({text: `Author: ${newMessage.author.id} | Message ID: ${newMessage.id}`});
             const oldMessageEmbed = new EmbedBuilder().setTitle('Old message:').setDescription(oldMessage.content);
             const newMessageEmbed = new EmbedBuilder().setTitle('New message:').setDescription(newMessage.content);
 
