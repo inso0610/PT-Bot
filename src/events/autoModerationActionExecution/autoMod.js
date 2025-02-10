@@ -34,8 +34,49 @@ const idActions = {
                 warn: true
             },
         }
+    },
+    ['1188154126798962689']: {
+        runs: {
+            1: {
+                action: 'verbal',
+                message: 'One of your messages was marked as spam by our automated system. Please avoid sending the same message multiple times.'
+            },
+            2: {
+                action: 'timeout',
+                duration: 300000, // 5 minutes
+                reason: 'Spamming',
+                warn: true
+            },
+            3: {
+                action: 'ban',
+                duration: 3, // 3 hours
+                reason: 'Spamming',
+                appeals: true,
+                deleteMessages: false,
+            }
+        }
+    },
+    ['1188154211687485460']: {
+        runs: {
+            1: {
+                action: 'ban', // Permanent ban
+                reason: 'One of your messages was marked as NSFW by our automated system. This ban was done automatically. Please contact server staff if you believe this was a mistake.',
+                appeals: true,
+                deleteMessages: false
+            }
+        }
+    },
+    ['1272249082512937010']: {
+        runs: {
+            1: {
+                action: 'timeout',
+                duration: 10800000, // 3 hours
+                reason: 'Please refrain from using racist language. This timeout was done automatically please create a ticket if this was a mistake.',
+                warn: false,
+            }
+        }
     }
-}
+};
 
 module.exports = async (execution, client) => {
     if (execution.action.type !== 2) return;
@@ -130,6 +171,10 @@ module.exports = async (execution, client) => {
 
             warnLog.save();
         };
+
+        if (action.duration > 10800000) {
+            delete executions[execution.ruleId][execution.user.id];
+        };
     } else if (run.action === 'kick') {
         // Message the user
         await run.user.send(`You have been kicked from the Polar Tracks Discord server for the following reason: ${run.reason}.\nYou can rejoin the server here: https://discord.gg/m7gxUKm2z6.${run.warn ? '\n**⚠️ A warning was also applied.**' : ''}`).catch(() => {
@@ -217,6 +262,9 @@ module.exports = async (execution, client) => {
 
             await timeBan.save();
         };
+
+        // Remove from executions
+        delete executions[execution.ruleId][execution.user.id];
     } else {
         return;
     };
