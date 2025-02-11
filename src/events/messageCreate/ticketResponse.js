@@ -16,7 +16,21 @@ module.exports = async (message, client) => {
 
         if (message.author.bot || message.guild) return;
 
-        const ticketIdString = message.content.match(/\[(.*?)\]/)?.[1];
+        let ticketIdString = null;
+
+        if (message.reference) {
+            const referencedMessage = await message.channel.messages.fetch(message.reference.messageId);
+            if (referencedMessage) {
+                const matches = referencedMessage.content.match(/\[(.*?)\]/g);
+                if (matches) {
+                    ticketIdString = matches[matches.length - 1].slice(1, -1);
+                }
+            } else {
+                ticketIdString = message.content.match(/\[(.*?)\]/)?.[1];
+            }
+        } else {
+            ticketIdString = message.content.match(/\[(.*?)\]/)?.[1];
+        }
         if (!Types.ObjectId.isValid(ticketIdString)) return;
         
         const ticketId = new Types.ObjectId(ticketIdString);
