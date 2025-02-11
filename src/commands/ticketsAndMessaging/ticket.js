@@ -166,7 +166,7 @@ module.exports = {
                     });
                 };
     
-                await ticketCreator.send(`Reply from <@${interaction.user.id}> for the ticket with the id \`${String(ticket._id)}\`:\n\`\`\`${replyMessage}\`\`\`\nIf you want to reply to this message you must put this at the start of the reply or you can just reply to this message: \`[${ticket._id.toString()}]\`.`).catch(e => {
+                await ticketCreator.send(`Reply from <@${interaction.user.id}> for the ticket with the id \`${String(ticket._id)}\`:\n\`\`\`${replyMessage}\`\`\`\nIf you want to reply to this ticket you can reply to this message or add this to the response: \`[${ticket._id.toString()}]\`.`).catch(e => {
                     console.warn(e);
                     return interaction.reply({
                         content: 'Something went wrong. Contact Emilsen.',
