@@ -34,9 +34,18 @@ module.exports = async (message, client) => {
             return;
         }
 
+        if (ticket.claimedId === '-1') {
+            sendDM("This ticket has been closed. You can't respond to a closed ticket.");
+            return;
+        };
+
+        const attatchments = message.attachments.map(attachment => {
+            return attachment.url;
+        });
+
         let logEntry = `<@${message.author.id}>: ${content}`;
         if (message.attachments.size > 0) {
-            const attachmentLinks = message.attachments.map(attachment => attachment.url).join('\n');
+            const attachmentLinks = attatchments.join('\n');
             logEntry += `\n**Attachments:**\n${attachmentLinks}`;
         }
         ticket.log.push(logEntry);
@@ -44,13 +53,12 @@ module.exports = async (message, client) => {
 
         const claimedUser = await client.users.fetch(ticket.claimedId);
         if (!claimedUser) {
-            message.reply({ content: 'Could not find the user.', ephemeral: true }).catch(console.warn);
+            message.reply({ content: 'Could not find the user.' }).catch(console.warn);
             return;
         }
 
-        const replyMessage = `Reply from <@${message.author.id}> for ticket ID \`${String(ticket._id)}\`:\n\
-\`${content}\``;
-        claimedUser.send({ content: replyMessage, files: [...message.attachments.values()] })
+        const replyMessage = `Reply from <@${message.author.id}> for ticket ID \`${String(ticket._id)}\`:\n\`\`\`${content}\`\`\``;
+        claimedUser.send({ content: replyMessage, files: attatchments })
             .catch(e => {
                 console.warn(e);
                 message.reply({
@@ -89,6 +97,6 @@ module.exports = async (message, client) => {
         message.reply({ content: 'Your response has been sent.' }).catch(console.warn);
     } catch (error) {
         console.warn(error);
-        message.reply({ content: 'An unexpected error occurred.', ephemeral: true }).catch(console.warn);
+        message.reply({ content: 'An unexpected error occurred.' }).catch(console.warn);
     }
 };
