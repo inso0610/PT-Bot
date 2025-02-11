@@ -100,6 +100,17 @@ module.exports = {
                 content: `Warning ${warning} has been removed from user <@${warningToRemove.discordId}>.`,
                 ephemeral: true
             });
+
+            // log the warning removal
+            const newModlog = new modlogs({
+                discordId: warningToRemove.discordId,
+                action: 'remove warn',
+                reason: 'Removed warning: ' + warningToRemove.reason,
+                moderatorId: interaction.user.id,
+                moderatorUsername: interaction.user.username
+            });
+
+            await newModlog.save();
         } else if (subcommand === 'list') {
             const user = interaction.options.getUser('user');
 
