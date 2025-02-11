@@ -61,7 +61,7 @@ const idActions = {
                 duration: 24, // 24 hours
                 reason: 'Spamming',
                 appeals: true,
-                deleteMessages: false,
+                deleteMessages: false
             }
         }
     },
