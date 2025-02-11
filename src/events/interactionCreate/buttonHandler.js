@@ -526,7 +526,7 @@ module.exports = async (interaction, client) => {
             return;
         };
 
-        ticketCreator.send(`Your ticket with the id: \`${String(ticket._id)}\` has been claimed by <@${interaction.user.id}>.\nTo reply to the ticket you have to add this anywhere in the message: [${String(ticket._id)}].`).catch(e => {
+        ticketCreator.send(`Your ticket with the id: \`${String(ticket._id)}\` has been claimed by <@${interaction.user.id}>.\nTo reply to this ticket you can reply to this message or add this to the message: [${String(ticket._id)}].`).catch(e => {
             console.warn(e)
             interaction.reply({
                 content: 'The ticket creator may not be able to see your replies, please contact Emilsen.',
