@@ -182,6 +182,7 @@ module.exports = async (interaction, client) => {
                 
             const publicEmbed = new EmbedBuilder()
                 .setTitle(`New ${trainingType} training!`)
+                .setDescription('React to this message if you are planning to attend.')
                 .addFields(
                     { name: 'Host:', value: rblxName },
                     { name: 'Start:', value: `<t:${timestamp.toString()}:F> (<t:${timestamp.toString()}:R>)` },
