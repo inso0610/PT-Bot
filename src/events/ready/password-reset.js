@@ -13,7 +13,7 @@ module.exports = async (client) => {
 
                 const user = await client.users.fetch(staffDocument.discordId);
 
-                user.send(`You have requested a password reset. Please use the following link to reset your password: https://pt-web-react.vercel.app/PasswordReset/${change.fullDocument.token}`).catch( e => {
+                user.send(`You have requested a password reset. Please use the following link to reset your password: https://www.polartracks.no/PasswordReset/${change.fullDocument.token}`).catch( e => {
                     console.warn(`Error sending password reset link to ${user.username}: ${e}`);
                 });
             };
