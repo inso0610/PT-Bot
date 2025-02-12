@@ -5,6 +5,13 @@ const tickets = require('../../utils/tickets.js');
 
 const { closeTicket, createTicket } = require( '../../utils/ticketChannels.js');
 
+const guides = {
+    Driver: 'https://guides.polartracks.no/driver-guides',
+    Conductor: 'https://guides.polartracks.no/conductor-guides',
+    Dispatcher: 'https://guides.polartracks.no/dispatcher-guides',
+    Signaller: 'https://guides.polartracks.no/signaller-guides'
+}
+
 function getRobloxId(id) {
     const functionResult = fetch(`https://api.blox.link/v4/public/guilds/1089282844657987587/discord-to-roblox/${id.toString()}`, { method: "GET", headers: { "Authorization": "66ef19b6-b0f6-41f4-b883-63d833484ac6" } })
 	    .then((response) => response.json())
@@ -179,7 +186,15 @@ module.exports = async (interaction, client) => {
                     { name: 'Additional Info:', value: 'No additional information.' }
                 )
                 .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.'});
-                
+
+            const linkButton = new ButtonBuilder()
+                .setLabel('You should read the training guide before attending')
+                .setURL(guides[trainingType])
+                .setStyle(ButtonStyle.Link);
+
+            const row = new ActionRowBuilder()
+                .addComponents(linkButton);
+
             const publicEmbed = new EmbedBuilder()
                 .setTitle(`New ${trainingType} training!`)
                 .setDescription('React to this message if you are planning to attend.')
@@ -195,7 +210,8 @@ module.exports = async (interaction, client) => {
     
             trainingChannel.send({
                 content: '<@&1140220447535923200>',
-                embeds: [publicEmbed]
+                embeds: [publicEmbed],
+                components: [row]
             });
         
             interaction.editReply({
