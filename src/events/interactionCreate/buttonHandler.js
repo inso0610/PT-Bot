@@ -208,11 +208,13 @@ module.exports = async (interaction, client) => {
                 embeds: [trainingEmbed]
             });
     
-            trainingChannel.send({
+            const publicMessage = await trainingChannel.send({
                 content: '<@&1140220447535923200>',
                 embeds: [publicEmbed],
                 components: [row]
             });
+
+            publicMessage.react('✅');
         
             interaction.editReply({
                 content: 'The training has been scheduled.',
