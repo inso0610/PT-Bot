@@ -1,4 +1,5 @@
 const counting = require('../../utils/counting.js');
+const countingBlacklist = require('../../utils/countingBlacklist.js');
 
 function sleep(ms) {
     return new Promise((resolve) => {
@@ -10,6 +11,13 @@ module.exports = async (oldMessage, newMessage) => {
     if (oldMessage.author.bot) {
         return;
     };
+
+    // Return if the user is blacklisted from counting
+    const blacklisted = await countingBlacklist.findOne({ discordId: oldMessage.author.id }).exec();
+    
+        if (blacklisted) {
+            return;
+        };
 
     const channelId = oldMessage.channelId.toString()
 

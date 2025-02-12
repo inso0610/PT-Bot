@@ -1,5 +1,5 @@
-require('dotenv').config();
 const { EmbedBuilder, WebhookClient } = require("discord.js");
+const countingBlacklist = require('../../utils/countingBlacklist.js');
 
 module.exports = (oldMessage, newMessage) => {
     const webhookClient = new WebhookClient({ id: '1338191419709591682', token: '_bGgIHOt6m5VFFqhahwKNj8b_9M8fkbMueVEfRWz9fY2GEwAMybKYjuKcEsXkEoJ_YJ0' }); 
