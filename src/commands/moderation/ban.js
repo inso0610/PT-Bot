@@ -23,12 +23,12 @@ module.exports = {
             .setName('delete-messages')
             .setDescription('Do you want to delete the user\'s messages? (default: false)')
             .setRequired(false))
-    .addNumberOption((option) =>
+    .addIntegerOption((option) =>
         option
             .setName('duration')
             .setDescription('How long do you want to ban this user? (in days) (default: permanent)')
             .setRequired(false))
-    .addNumberOption((option) =>
+    .addBooleanOption((option) =>
         option
             .setName('appeals')
             .setDescription('Is this ban appealable? (default: true)')
@@ -40,7 +40,7 @@ module.exports = {
         const commandUser = interaction.options.getUser('user');
         const reason = interaction.options.getString('reason');
         const deleteMessages = interaction.options.getBoolean('delete-messages') || false;
-        const duration = interaction.options.getNumber('duration');
+        const duration = interaction.options.getInteger('duration');
         const appeals = interaction.options.getBoolean('appeals') || true;
 
         const moderator = interaction.guild.members.cache.get(interaction.user.id);

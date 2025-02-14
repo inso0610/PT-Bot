@@ -12,7 +12,7 @@ module.exports = {
             .setDescription('Add a user to the counting blacklist')
             .addUserOption(option => option.setName('user').setDescription('Who do you want to blacklist?').setRequired(true))
             .addStringOption(option => option.setName('reason').setDescription('What is the reason for blacklisting this user?').setRequired(true))
-            .addNumberOption(option => option.setName('hours').setDescription("How long should this blacklist last?").setRequired(false)))
+            .addIntegerOption(option => option.setName('hours').setDescription("How long should this blacklist last?").setRequired(false)))
     .addSubcommand(subcommand =>
         subcommand
             .setName('remove')
@@ -24,7 +24,7 @@ module.exports = {
         if (subcommand === 'add') {
             const user = interaction.options.getUser('user');
             const reason = interaction.options.getString('reason');
-            const hours = interaction.options.getNumber('hours');
+            const hours = interaction.options.getInteger('hours');
 
             let expiration;
             let permanent = false;

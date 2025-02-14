@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { EmbedBuilder, WebhookClient } = require("discord.js");
 
-module.exports = (message) => {
+module.exports = async (message) => {
     const webhookClient = new WebhookClient({ id: '1338191419709591682', token: '_bGgIHOt6m5VFFqhahwKNj8b_9M8fkbMueVEfRWz9fY2GEwAMybKYjuKcEsXkEoJ_YJ0' }); 
     
     const ignoredCategories = ['1145464301965037588', '1133750227002736732', '1294325748043092071', 
@@ -20,7 +20,20 @@ module.exports = (message) => {
             return;
         } else if (!message.author){
             return;
+        } else if (!message.guild) {
+            return;
         } else {
+
+            const fetchedLogs = await message.guild.fetchAuditLogs({
+                limit: 1,
+                type: 'MESSAGE_DELETE',
+            });
+
+            const deletionLog = fetchedLogs.entries.first();
+
+            if (deletionLog.target.id === client.user.id) {
+                return;
+            };
 
             const attatchments = message.attachments.map(attachment => {
                 return attachment.url;

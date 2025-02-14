@@ -97,7 +97,7 @@ module.exports = {
                 .setDescription('Blacklist someone from creating tickets.')
                 .addUserOption(option => option.setName('user').setDescription('Who do you want to blacklist from the ticket system?').setRequired(true))
                 .addStringOption(option => option.setName('reason').setDescription('What is the reason for blacklisting this user?').setRequired(true))
-                .addNumberOption(option => option.setName('hours').setDescription("How long should this blacklist last?").setRequired(false)))
+                .addIntegerOption(option => option.setName('hours').setDescription("How long should this blacklist last?").setRequired(false)))
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('blacklist-remove')
@@ -865,7 +865,7 @@ module.exports = {
             try {
                 const user = interaction.options.getUser('user');
                 const reason = interaction.options.getString('reason');
-                const hours = interaction.options.getNumber('hours');
+                const hours = interaction.options.getInteger('hours');
     
                 const blacklisted = await ticketBlacklist.findOne({ discordId: user.id }).exec();
     

@@ -6,7 +6,7 @@ module.exports = {
     .setName('edit-count')
     .setDescription('Edit the count')
     .setDMPermission(false)
-    .addNumberOption((option) => 
+    .addIntegerOption((option) => 
         option
             .setName('new-count')
             .setDescription('What should the next number be?')
@@ -14,7 +14,7 @@ module.exports = {
 
     run: async ({ interaction, client, handler }) => {
         const countChannel = client.channels.cache.get('1285519874138837002');
-        const nextCount = interaction.options.getNumber('new-count')
+        const nextCount = interaction.options.getInteger('new-count')
 
         await interaction.deferReply({
             ephemeral: true

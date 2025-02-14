@@ -13,7 +13,7 @@ module.exports = {
             .setName('user')
             .setDescription('Who do you want to timeout?')
             .setRequired(true))
-    .addNumberOption((option) =>
+    .addIntegerOption((option) =>
         option
             .setName('duration')
             .setDescription('How long do you want to timeout this user? (in minutes)')
@@ -33,7 +33,7 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true });
         
         const commandUser = interaction.options.getUser('user');
-        const duration = interaction.options.getNumber('duration');
+        const duration = interaction.options.getInteger('duration');
         const reason = interaction.options.getString('reason');
         const warn = interaction.options.getBoolean('warn') || false;
 

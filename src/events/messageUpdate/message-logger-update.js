@@ -22,6 +22,8 @@ module.exports = (oldMessage, newMessage) => {
             return;
         } else if (newMessage.content === oldMessage.content) {
             return;
+        } else if (!message.guild) {
+            return;
         } else {
 
             const info = new EmbedBuilder()
