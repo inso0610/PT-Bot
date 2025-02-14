@@ -1,5 +1,6 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, WebhookClient } = require('discord.js');
 const countingBlacklist = require('../../utils/countingBlacklist.js');
+const webhookClient = new WebhookClient({ id: '1338191419709591682', token: '_bGgIHOt6m5VFFqhahwKNj8b_9M8fkbMueVEfRWz9fY2GEwAMybKYjuKcEsXkEoJ_YJ0' });
 
 module.exports = {
     data: new SlashCommandBuilder()

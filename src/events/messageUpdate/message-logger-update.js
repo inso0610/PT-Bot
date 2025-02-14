@@ -1,9 +1,7 @@
 const { EmbedBuilder, WebhookClient } = require("discord.js");
-const countingBlacklist = require('../../utils/countingBlacklist.js');
+const webhookClient = new WebhookClient({ id: '1338191419709591682', token: '_bGgIHOt6m5VFFqhahwKNj8b_9M8fkbMueVEfRWz9fY2GEwAMybKYjuKcEsXkEoJ_YJ0' }); 
 
-module.exports = (oldMessage, newMessage) => {
-    const webhookClient = new WebhookClient({ id: '1338191419709591682', token: '_bGgIHOt6m5VFFqhahwKNj8b_9M8fkbMueVEfRWz9fY2GEwAMybKYjuKcEsXkEoJ_YJ0' }); 
-    
+module.exports = (oldMessage, newMessage) => {    
     const ignoredCategories = ['1145464301965037588', '1133750227002736732', '1294325748043092071', 
         '1141398695951208559', '1096576167731023932', '1096576509063471124', '1096575749462425791',
         '1096575490078285967', '1304867108668309604']

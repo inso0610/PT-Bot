@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const warnings = require('../../utils/moderation/warnings');
-const modlogs = require('../../utils/moderation/modlogs');
+const webhookClient = new WebhookClient({ id: '1338191419709591682', token: '_bGgIHOt6m5VFFqhahwKNj8b_9M8fkbMueVEfRWz9fY2GEwAMybKYjuKcEsXkEoJ_YJ0' }); 
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -29,6 +28,21 @@ module.exports = {
 
             const messages = await channel.messages.fetch({ limit: amount });
             await channel.bulkDelete(messages, true).catch(() => {});
+
+            // Log deletion
+            const deletedMessage = new EmbedBuilder()
+            .setTitle(`Bulk delete by: ${interaction.user.username}`)
+            .setDescription(`Deleted ${amount} messages in <#${channel.id}>`);
+
+            webhookClient.send({
+                username: (`${interaction.user.username} (${interaction.user.id})`),
+                avatarURL: interaction.user.avatarURL(),
+                embeds: [ deletedMessage ]
+            }).catch(e => {
+                console.warn(`Error in purge: ${e}`)
+                return;
+            }); 
+
             return interaction.reply({ content: `Deleted ${amount} messages.`, ephemeral: true });
         }
     },
