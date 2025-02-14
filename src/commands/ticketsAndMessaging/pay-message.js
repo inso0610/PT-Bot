@@ -37,6 +37,7 @@ module.exports = {
             .setRequired(true)),
 
     run: async ({ interaction, client, handler }) => {
+        await interaction.deferReply({ ephemeral: true });
         const user = interaction.options.getUser('user');
         const amount = interaction.options.getString('amount');
 
@@ -44,7 +45,7 @@ module.exports = {
 
         if (!Array.isArray(userInfo)) {
             console.warn(userInfo)
-            interaction.reply({
+            interaction.editReply({
                 content: 'The command failed. Contact Emilsen.',
                 ephemeral: true
             });
@@ -69,14 +70,14 @@ module.exports = {
                 embeds: [ paymentEmbed ]
             }).catch( e=> {
                 console.log(e);
-                interaction.reply({
+                interaction.editReply({
                     content: 'The command failed. Contact Emilsen.',
                     ephemeral: true
                 });
                 return;
             })
 
-            interaction.reply({
+            interaction.editReply({
                 content: 'Message sent.',
                 embeds: [ paymentEmbed ],
                 ephemeral: true
