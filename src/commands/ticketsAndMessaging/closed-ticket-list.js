@@ -3,36 +3,42 @@ const tickets = require('../../utils/tickets.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('closed-tickets')
-    .setDescription('Sends a list of all closed tickets.')
-    .setDMPermission(false),
+        .setName('closed-tickets')
+        .setDescription('Lists all closed ticket IDs.')
+        .setDMPermission(false),
 
-    run: async ({ interaction, client, handler }) => {
-        const closedTickets = tickets.find({ claimedId: '-1'}).exec();
-        if (!closedTickets.length) return interaction.reply('There are no closed tickets.');
+    run: async ({ interaction }) => {
+        await interaction.deferReply({ ephemeral: true });
 
-        //Split into multiple if too long message
+        const closedTickets = await tickets.find({ claimedId: '-1' }).exec();
+        if (!closedTickets.length) {
+            return interaction.editReply({
+                content: 'There are no closed tickets.',
+            });
+        }
+
+        // Prepare message chunks
         const messages = [];
-        let message = '';
+        let message = 'Closed Ticket IDs:\n';
         closedTickets.forEach(ticket => {
-            if (message.length + ticket.toString().length > 2000) {
+            const ticketStr = `- ${ticket._id.toString()} - <@${ticket.creatorId}> - ${ticket.topic}\n`; // Formatting as a list
+            if (message.length + ticketStr.length > 2000) {
                 messages.push(message);
-                message = '';
+                message = 'Closed Ticket IDs (cont.):\n';
             }
-            message += ticket.toString() + '\n';
+            message += ticketStr;
         });
         messages.push(message);
 
-        interaction.reply({
-            content: '**Here is a list of all closed tickets:**',
-            ephemeral: true,
+        await interaction.editReply({
+            content: messages.shift(),
         });
 
-        messages.forEach(msg => interaction.followUp({
-            content: msg,
-            ephemeral: true,
-        }));
+        for (const msg of messages) {
+            await interaction.followUp({ content: msg, ephemeral: true });
+        }
     },
+
     gaOnly: true,
 
     options: {
