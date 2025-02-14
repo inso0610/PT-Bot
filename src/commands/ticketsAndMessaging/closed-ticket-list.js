@@ -8,7 +8,7 @@ module.exports = {
     .setDMPermission(false),
 
     run: async ({ interaction, client, handler }) => {
-        const closedTickets = tickets.find({ claimedId: -1}).exec();
+        const closedTickets = tickets.find({ claimedId: '-1'}).exec();
         if (!closedTickets.length) return interaction.reply('There are no closed tickets.');
 
         //Split into multiple if too long message
