@@ -50,6 +50,10 @@ module.exports = async (message) => {
         numberInText = evaluate(text);
     } catch (error) {
         // If evaluation fails, reject input
+        if (message.author.id === '935889950547771512') {
+            return;
+        }
+
         const botReply = await message.channel.send(`<@${message.author.id}> invalid mathematical expression!`);
         await message.delete().catch(e => console.warn(e));
         await sleep(3000);
@@ -59,6 +63,10 @@ module.exports = async (message) => {
 
     // Ensure the result is a valid number
     if (isNaN(numberInText) || !isFinite(numberInText)) {
+        if (message.author.id === '935889950547771512') {
+            return;
+        }
+
         const botReply = await message.channel.send(`<@${message.author.id}> only valid numbers and expressions are allowed!`);
         await message.delete().catch(e => console.warn(e));
         await sleep(3000);
@@ -68,6 +76,10 @@ module.exports = async (message) => {
 
     // Ensure number is an integer and above 0
     if (!Number.isInteger(numberInText) || numberInText < 1) {
+        if (message.author.id === '935889950547771512') {
+            return;
+        }
+
         const botReply = await message.channel.send(`<@${message.author.id}> only whole numbers above 0 are allowed!`);
         await message.delete().catch(e => console.warn(e));
         await sleep(3000);
