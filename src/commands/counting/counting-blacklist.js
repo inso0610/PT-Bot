@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, WebhookClient } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
 const countingBlacklist = require('../../utils/countingBlacklist.js');
 
 module.exports = {
