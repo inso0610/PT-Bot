@@ -24,7 +24,7 @@ module.exports = {
 
         if (subcommand === 'any') {
             if (amount > 1000) return interaction.reply({ content: 'You can only delete up to 1000 messages at once.', ephemeral: true });
-            if (amount < 1) return interaction.reply({ content: 'You need to delete at least 1 message.', ephemeral: true });
+            if (amount < 2) return interaction.reply({ content: 'You need to delete at least 2 messages.', ephemeral: true });
 
             const messages = await channel.messages.fetch({ limit: amount });
             await channel.bulkDelete(messages, true).catch(() => {});
