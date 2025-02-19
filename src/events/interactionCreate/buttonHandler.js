@@ -531,7 +531,7 @@ module.exports = async (interaction, client) => {
             components: []
         });
 
-        ticket.log.push(`<@${interaction.user.id}> claimed this ticket.`);
+        ticket.log.push(`<@${interaction.user.id}> - ${new Date(Date.now()).toUTCString()} claimed this ticket.`);
 
         ticket.save();
 
