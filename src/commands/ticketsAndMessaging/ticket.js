@@ -152,7 +152,7 @@ module.exports = {
     
                 if (!ticket) {
                     return interaction.reply({
-                        content: 'This ticket does not exist.',
+                        content: 'This ticket does not exist or you don\'t have access to it with this command.',
                         ephemeral: true
                     });
                 };
@@ -253,7 +253,7 @@ module.exports = {
     
                 if (!ticket) {
                     return interaction.reply({
-                        content: 'This ticket does not exist.',
+                        content: 'This ticket does not exist or you don\'t have access to it with this command.',
                         ephemeral: true
                     });
                 };
@@ -371,7 +371,7 @@ module.exports = {
     
                 if (!ticket) {
                     return interaction.reply({
-                        content: 'This ticket does not exist.',
+                        content: 'This ticket does not exist or you don\'t have access to it with this command.',
                         ephemeral: true
                     });
                 };
@@ -480,7 +480,7 @@ module.exports = {
     
                 if (!ticket) {
                     return interaction.editReply({
-                        content: 'This ticket does not exist.',
+                        content: 'This ticket does not exist or you don\'t have access to it with this command.',
                         ephemeral: true
                     });
                 };
@@ -612,7 +612,7 @@ module.exports = {
 
                 if (!ticket) {
                     return interaction.editReply({
-                        content: 'This ticket does not exist.',
+                        content: 'This ticket does not exist or you don\'t have access to it with this command.',
                         ephemeral: true
                     });
                 };
@@ -666,19 +666,42 @@ module.exports = {
     
                 let ticketId;
                 if (Types.ObjectId.isValid(ticketIdString)) {
-                    ticketId = new Types.ObjectId(ticketIdString);
+                   ticketId = new Types.ObjectId(ticketIdString);
                 } else {
-                    return interaction.reply({
-                        content: 'This ticket id is not valid.',
+                    return interaction.editReply({
+                        content: 'This ticket ID is not valid.',
+                        ephemeral: true
+                   });
+                };
+
+                const guild = interaction.client.guilds.cache.get('1089282844657987587');
+
+                if (!guild) {
+                    return interaction.editReply({
+                        content: 'Could not fetch guild.',
                         ephemeral: true
                     });
                 };
-    
-                const ticket = await tickets.findOne({ claimedId: interaction.user.id, _id: ticketId }).exec();
-    
+
+                const member = await guild.members.fetch(interaction.user.id);
+
+                if (!member) {
+                    return interaction.editReply({
+                        content: 'Could not fetch member.',
+                        ephemeral: true
+                    });
+                };
+
+                let ticket;
+                if (member.roles.cache.has('1089284396282032178')) {
+                    ticket = await tickets.findById(ticketIdString);
+                } else {
+                    ticket = await tickets.findOne({ claimedId: interaction.user.id, _id: ticketId }).exec();
+                };
+
                 if (!ticket) {
-                    return interaction.reply({
-                        content: 'This ticket does not exist.',
+                    return interaction.editReply({
+                        content: 'This ticket does not exist or you don\'t have access to it with this command.',
                         ephemeral: true
                     });
                 };
@@ -777,7 +800,7 @@ module.exports = {
 
                 if (!ticket) {
                     return interaction.editReply({
-                        content: 'This ticket does not exist.',
+                        content: 'This ticket does not exist or you don\'t have access to it with this command.',
                         ephemeral: true
                     });
                 }
@@ -831,19 +854,42 @@ module.exports = {
     
                 let ticketId;
                 if (Types.ObjectId.isValid(ticketIdString)) {
-                    ticketId = new Types.ObjectId(ticketIdString);
+                   ticketId = new Types.ObjectId(ticketIdString);
                 } else {
-                    return interaction.reply({
-                        content: 'This ticket id is not valid.',
+                    return interaction.editReply({
+                        content: 'This ticket ID is not valid.',
+                        ephemeral: true
+                   });
+                };
+
+                const guild = interaction.client.guilds.cache.get('1089282844657987587');
+
+                if (!guild) {
+                    return interaction.editReply({
+                        content: 'Could not fetch guild.',
                         ephemeral: true
                     });
                 };
-    
-                const ticket = await tickets.findOne({ claimedId: interaction.user.id, _id: ticketId }).exec();
-    
+
+                const member = await guild.members.fetch(interaction.user.id);
+
+                if (!member) {
+                    return interaction.editReply({
+                        content: 'Could not fetch member.',
+                        ephemeral: true
+                    });
+                };
+
+                let ticket;
+                if (member.roles.cache.has('1089284396282032178')) {
+                    ticket = await tickets.findById(ticketIdString);
+                } else {
+                    ticket = await tickets.findOne({ claimedId: interaction.user.id, _id: ticketId }).exec();
+                };
+
                 if (!ticket) {
-                    return interaction.reply({
-                        content: 'This ticket does not exist.',
+                    return interaction.editReply({
+                        content: 'This ticket does not exist or you don\'t have access to it with this command.',
                         ephemeral: true
                     });
                 };
