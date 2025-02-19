@@ -322,17 +322,7 @@ module.exports = {
             try {
                 const ticketIdString = interaction.options.getString('id');
     
-                let ticketId;
-                if (Types.ObjectId.isValid(ticketIdString)) {
-                    ticketId = new Types.ObjectId(ticketIdString);
-                } else {
-                    return interaction.reply({
-                        content: 'This ticket id is not valid.',
-                        ephemeral: true
-                    });
-                };
-    
-                const ticket = await tickets.findOne({ claimedId: interaction.user.id, _id: ticketId }).exec();
+                const ticket = await tickets.findById(ticketIdString).exec();
     
                 if (!ticket) {
                     return interaction.reply({
