@@ -26,9 +26,9 @@ module.exports = async (message) => {
 
         const deletionLog = fetchedLogs.entries.first();
 
-        if (deletionLog?.target?.id === message.client.user.id) {
+        if (deletionLog?.executor?.id === message.client.user.id) {
             return;
-        }
+        }        
 
         const attachments = message.attachments.map(attachment => attachment.url);
 
