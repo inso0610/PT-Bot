@@ -57,7 +57,7 @@ module.exports = async (message, client) => {
             return attachment.url;
         });
 
-        let logEntry = `<@${message.author.id}>: ${content}`;
+        let logEntry = `<@${message.author.id}> - ${new Date(Date.now()).toUTCString()}: ${content}`;
         if (message.attachments.size > 0) {
             const attachmentLinks = attatchments.join('\n');
             logEntry += `\n**Attachments:**\n${attachmentLinks}`;

@@ -173,8 +173,8 @@ module.exports = {
                         ephemeral: true
                     });
                 });
-    
-                ticket.log.push(`<@${interaction.user.id}>: ${replyMessage}`);
+
+                let logMessage= `<@${interaction.user.id}> - ${new Date(Date.now()).toUTCString()}: ${replyMessage}`;
     
                 if (sendPrompt) {
                     const promptEmbed = new EmbedBuilder()
@@ -206,8 +206,11 @@ module.exports = {
                             ephemeral: true
                         });
                     });
-                    ticket.log.push(`<@${interaction.user.id}> sent a closure prompt.`);
+
+                    logMessage += ' - Together with a closure prompt.';
                 };
+
+                ticket.log.push(logMessage);
                 
                 ticket.save();
     
@@ -256,8 +259,8 @@ module.exports = {
                 };
     
                 ticket.notes.push(noteMessage);
-    
-                ticket.log.push(`<@${interaction.user.id}> added a note: ${noteMessage}`);
+
+                let logMessage = `<@${interaction.user.id}> - ${new Date(Date.now()).toUTCString()} added a note: ${noteMessage}`;
     
                 if (isImportant) {
                     ticket.importantNote = noteMessage;
@@ -293,10 +296,12 @@ module.exports = {
                     ticketMessage.edit({
                         embeds: [ticketEmbed],
                     });
-    
-                    ticket.log.push(`<@${interaction.user.id}> set the important note: ${noteMessage}`);
+
+                    logMessage += ' and set it as the important note.';
                 };
-    
+                
+                ticket.log.push(logMessage);
+
                 ticket.save();
     
                 interaction.reply({
@@ -383,7 +388,7 @@ module.exports = {
     
                 ticket.claimedUser = '0';
     
-                ticket.log.push(`<@${interaction.user.id}> unclaimed this ticket.`);
+                ticket.log.push(`<@${interaction.user.id}> - ${new Date(Date.now()).toUTCString()} unclaimed this ticket.`);
     
                 ticket.save();
     
@@ -543,7 +548,7 @@ module.exports = {
     
                 ticket.ticketMessageId = ticketMessage.id;
     
-                ticket.log.push(`<@${interaction.user.id}> transfered this ticket: ${oldDepartment} -> ${newCategory}`);
+                ticket.log.push(`<@${interaction.user.id}> - ${new Date(Date.now()).toUTCString()} transfered this ticket: ${oldDepartment} -> ${newCategory}`);
     
                 ticket.save();
     
@@ -694,7 +699,8 @@ module.exports = {
                 .addFields(
                     { name: 'Department', value: ticket.department },
                     { name: 'Topic', value: ticket.topic },
-                    { name: 'Created by', value: ticket.creatorUsername }
+                    { name: 'Created by', value: ticket.creatorUsername },
+                    { name: 'Language', value: ticket.language }
                 );
     
                 const ticketCommands = new EmbedBuilder()
