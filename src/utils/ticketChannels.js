@@ -610,7 +610,7 @@ async function closeTicket(id, interaction, client) {
 
     ticket.claimedId = '-1';
 
-    ticket.log.push(`<@${interaction.user.id}> closed this ticket.`);
+    ticket.log.push(`<@${interaction.user.id}> - ${new Date(Date.now()).toUTCString()} closed this ticket.`);
 
     ticket.save();
 };
