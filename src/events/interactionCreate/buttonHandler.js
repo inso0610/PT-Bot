@@ -558,9 +558,11 @@ module.exports = async (interaction, client) => {
             .setTitle('Claimed ticket')
             .setDescription(`Ticket id: ${String(ticket._id)}`)
             .addFields(
+                { name: 'ID', value: String(ticket._id) },
                 { name: 'Department', value: ticket.department },
                 { name: 'Topic', value: ticket.topic },
-                { name: 'Created by', value: ticket.creatorUsername }
+                { name: 'Created by', value: ticket.creatorUsername },
+                { name: 'Language', value: ticket.language }
             );
 
         const ticketCommands = new EmbedBuilder()
