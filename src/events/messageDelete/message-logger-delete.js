@@ -21,7 +21,7 @@ module.exports = async (message) => {
 
         const fetchedLogs = await message.guild.fetchAuditLogs({
             limit: 1,
-            type: 72, // MESSAGE_DELETE action type
+            type: 'MESSAGE_DELETE', // MESSAGE_DELETE action type
         });
 
         const deletionLog = fetchedLogs.entries.first();
