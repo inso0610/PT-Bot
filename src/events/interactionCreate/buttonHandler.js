@@ -220,6 +220,17 @@ module.exports = async (interaction, client) => {
                 content: 'The training has been scheduled.',
                 ephemeral: true
             });
+
+            interaction.message.delete().catch(e => {
+                console.warn(e);
+            });
+
+            const thread = await client.channels.fetch(interaction.message.id).catch(e => {
+                console.warn(e);
+            });
+            thread.delete().catch(e => {
+                console.warn(e);
+            });
         } catch (error) {
             interaction.editReply({
                 content: 'The button failed. Schedule the training using /schedule-training.',
