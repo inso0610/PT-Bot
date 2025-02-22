@@ -15,6 +15,14 @@ module.exports = {
 
         const managerActivity = await activity.findOne( {discordId: interaction.user.id} ).exec();
 
+        if (!managerActivity) {
+            interaction.editReply({
+                content: 'You are not in the activity system',
+                ephemeral: true
+            });
+            return;
+        };
+
         let activityRequirement = {
             shifts: 0,
             trainings: 0,
