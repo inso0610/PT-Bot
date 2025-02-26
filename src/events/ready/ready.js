@@ -24,6 +24,10 @@ const status = [
     {
         name: 'Railroading with JM',
         type: ActivityType.Watching,
+    },
+    {
+        name: 'the trains go by',
+        type: ActivityType.Watching,
     }
 ];
 
