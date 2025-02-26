@@ -1,12 +1,6 @@
 const counting = require('../../utils/counting.js');
 const countingBlacklist = require('../../utils/countingBlacklist.js');
 
-function sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-};
-
 module.exports = async (oldMessage, newMessage) => {
     if (oldMessage.author.bot) {
         return;
