@@ -17,6 +17,8 @@ module.exports = (message) => {
             message.reply('^ <@&1149802530507862056>');
         } else if (channelId === '1140363643347816458'){ //shift-announcements
             message.reply('^ <@&1140248514568405044>');
-        };
+        } else if (channelId === '1142210439065911386') { // RFOTD
+            message.reply('^ <@&1142391663910735883>');
+        }
     };
 };
