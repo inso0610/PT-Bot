@@ -1,7 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const modlogs = require('../../utils/moderation/modlogs');
 const timebans = require('../../utils/moderation/timebans');
-const { communityOnly } = require('../counting/counting-blacklist');
 
 module.exports = {
     data: new SlashCommandBuilder()

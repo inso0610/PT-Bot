@@ -1,11 +1,11 @@
-const countingBlacklist = require('../../utils/countingBlacklist');
+//const countingBlacklist = require('../../utils/countingBlacklist');
 const ticketBlacklist = require('../../utils/ticketBlacklist');
 const timebans = require('../../utils/moderation/timebans');
 const modlogs = require('../../utils/moderation/modlogs');
 
 module.exports = (client) => {
     setInterval(async () => {
-        const countingBlacklisted = await countingBlacklist.find({
+        /*const countingBlacklisted = await countingBlacklist.find({
             expiration: { $lt: Date.now() },
             permanent: false
         }).exec();
@@ -18,7 +18,7 @@ module.exports = (client) => {
                     console.warn(e);
                 });
             };
-        };
+        };*/
 
         const ticketBlacklisted = await ticketBlacklist.find({
             expiration: { $lt: Date.now() },
