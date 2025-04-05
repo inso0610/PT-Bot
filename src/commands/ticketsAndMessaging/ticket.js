@@ -183,7 +183,6 @@ module.exports = {
 
                 // Show modal, then defer the reply
                 await interaction.showModal(replyModal);
-                await interaction.deferReply({ ephemeral: true });
 
                 const filter = (i) => {
                     return i.customId === 'replyTicket' && i.user.id === interaction.user.id;
