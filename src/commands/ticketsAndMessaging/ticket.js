@@ -107,14 +107,25 @@ module.exports = {
         const sendDM = async (messageContent, edit) => {
             if (!edit) {
                 return interaction.user.send(messageContent).catch(e => {
-                    interaction.reply({
-                        content: "I can't DM you, please check your DM settings!"
-                    }).catch(e2 => {
-                        console.warn(e2);
-                    });
-                    console.warn(e);
-
-                    return [e]
+                    if (interaction.replied) {
+                        interaction.followUp({
+                            content: "I can't DM you, please check your DM settings!"
+                        }).catch(e2 => {
+                            console.warn(e2);
+                        });
+                        console.warn(e);
+                        
+                        return [e]
+                    } else {
+                        interaction.reply({
+                            content: "I can't DM you, please check your DM settings!"
+                        }).catch(e2 => {
+                            console.warn(e2);
+                        });
+                        console.warn(e);
+    
+                        return [e]
+                    }
                 });
             } else {
                 return interaction.user.send(messageContent).catch(e => {
@@ -178,52 +189,34 @@ module.exports = {
                     .setMinLength(1);
 
                 const row = new ActionRowBuilder().addComponents(messageInput);
-
                 replyModal.addComponents(row);
 
                 // Show modal, then defer the reply
                 await interaction.showModal(replyModal);
 
-                const filter = (i) => {
-                    return i.customId === 'replyTicket' && i.user.id === interaction.user.id;
-                };
-
-                const replyMessage = await new Promise((resolve, reject) => {
-                    const collector = interaction.channel.createMessageComponentCollector({ filter, time: 5 * 60 * 1000, max: 1 });
-
-                    collector.on('collect', async (i) => {
-                        await i.deferUpdate();
-                        resolve(i.fields.getTextInputValue('replyMessage'));
-                    });
-
-                    collector.on('end', (collected, reason) => {
-                        if (reason === 'time') {
-                            reject(new Error('Modal timed out'));
-                        }
-                    });
+                // Wait for the modal submission
+                const modalInteraction = await interaction.awaitModalSubmit({
+                    time: 5 * 60 * 1000, // Timeout after 5 minutes
+                    filter: (i) => i.customId === 'replyTicket' && i.user.id === interaction.user.id
                 }).catch((error) => {
-                    if (error.message === 'Modal timed out') {
-                        interaction.editReply({
+                    if (error) {
+                        interaction.followUp({
                             content: 'The modal timed out. Please try again.',
                             ephemeral: true
                         });
-                    } else {
-                        interaction.editReply({
-                            content: 'An unexpected error occurred.',
-                            ephemeral: true
-                        }).catch(console.warn);
-                        console.warn(error);
                     }
                     return null;
                 });
 
-                if (!replyMessage) return;
+                if (!modalInteraction) return;
+
+                const replyMessage = modalInteraction.fields.getTextInputValue('replyMessage');
 
                 // Send the reply to the ticket creator
                 await ticketCreator.send(`Reply from <@${interaction.user.id}> for the ticket with the id \`${String(ticket._id)}\`:\n\`\`\`${replyMessage}\`\`\`\nIf you want to reply to this ticket you can reply to this message or add this to the response: \`[${ticket._id.toString()}]\`.`)
                     .catch(e => {
                         console.warn(e);
-                        return interaction.editReply({
+                        return interaction.followUp({
                             content: 'Something went wrong. Contact Emilsen.',
                             ephemeral: true
                         });
@@ -254,7 +247,7 @@ module.exports = {
                         components: [row]
                     }).catch(e => {
                         console.warn(e);
-                        return interaction.editReply({
+                        return interaction.followUp({
                             content: 'Something went wrong. Contact Emilsen.',
                             ephemeral: true
                         });
@@ -266,16 +259,10 @@ module.exports = {
                 ticket.log.push(logMessage);
                 await ticket.save();
 
-                const confirmDM = await sendDM(`You replied to <@${ticketCreator.id}> on the ticket with the id \`${String(ticket._id)}\`:\n\`\`\`${replyMessage}\`\`\``, false);
-
-                if (Array.isArray(confirmDM)) {
-                    return;
-                }
-
-                interaction.editReply({
-                    content: 'Reply sent.',
-                    ephemeral: true
+                modalInteraction.reply(`You replied to <@${ticketCreator.id}> on the ticket with the id \`${String(ticket._id)}\`:\n\`\`\`${replyMessage}\`\`\``).catch(e => {
+                    console.warn(e);
                 });
+
             } catch (error) {
                 if (interaction.replied || interaction.deferred) {
                     interaction.followUp({
@@ -283,7 +270,7 @@ module.exports = {
                         ephemeral: true
                     }).catch(console.warn);
                 } else {
-                    interaction.reply({
+                    interaction.followUp({
                         content: 'An unexpected error occurred.',
                         ephemeral: true
                     }).catch(console.warn);
