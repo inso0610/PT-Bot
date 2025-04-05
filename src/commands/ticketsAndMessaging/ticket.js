@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
 const { Types } = require('mongoose');
 
 const tickets = require('../../utils/tickets.js');
@@ -15,7 +15,7 @@ module.exports = {
                 .setName('reply')
                 .setDescription('Reply to a ticket')
                 .addStringOption(option => option.setName('id').setDescription('What is the ID of the ticket?').setRequired(true))
-                .addStringOption(option => option.setName('message').setDescription('What is the message you want to send?').setRequired(true))
+                //.addStringOption(option => option.setName('message').setDescription('What is the message you want to send?').setRequired(true))
                 .addBooleanOption(option => option.setName('close-prompt').setDescription('Do you want to prompt the closure of the ticket?').setRequired(true)))
         .addSubcommand(subcommand =>
             subcommand
@@ -134,15 +134,19 @@ module.exports = {
 
         if (subcommand === "reply") {
             try {
+                await interaction.deferReply({
+                    ephemeral: true
+                });
+
                 const ticketIdString = interaction.options.getString('id');
-                const replyMessage = interaction.options.getString('message');
+                //const replyMessage = interaction.options.getString('message');
                 const sendPrompt = interaction.options.getBoolean('close-prompt');
     
                 let ticketId;
                 if (Types.ObjectId.isValid(ticketIdString)) {
                     ticketId = new Types.ObjectId(ticketIdString);
                 } else {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: 'This ticket id is not valid.',
                         ephemeral: true
                     });
@@ -151,7 +155,7 @@ module.exports = {
                 const ticket = await tickets.findOne({ claimedId: interaction.user.id, _id: ticketId }).exec();
     
                 if (!ticket) {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: 'This ticket does not exist or you don\'t have access to it with this command.',
                         ephemeral: true
                     });
@@ -160,7 +164,7 @@ module.exports = {
                 const ticketCreator = await client.users.fetch(ticket.creatorId);
     
                 if (!ticketCreator) {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: 'Could not find the ticket creator.',
                         ephemeral: true
                     });
@@ -168,13 +172,80 @@ module.exports = {
     
                 await ticketCreator.send(`Reply from <@${interaction.user.id}> for the ticket with the id \`${String(ticket._id)}\`:\n\`\`\`${replyMessage}\`\`\`\nIf you want to reply to this ticket you can reply to this message or add this to the response: \`[${ticket._id.toString()}]\`.`).catch(e => {
                     console.warn(e);
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: 'Something went wrong. Contact Emilsen.',
                         ephemeral: true
                     });
                 });
 
-                let logMessage= `<@${interaction.user.id}> - ${new Date(Date.now()).toUTCString()}: ${replyMessage}`;
+                const replyModal = new ModalBuilder()
+                    .setCustomId('replyTicket')
+                    .setTitle('Reply to ticket (5 minutes)')
+                
+                const messageInput = new TextInputBuilder()
+                    .setCustomId('replyMessage')
+                    .setLabel('What is the message you want to send?')
+                    .setStyle(TextInputStyle.Paragraph)
+                    .setRequired(true)
+                    .setMaxLength(1500)
+                    .setMinLength(1);
+
+                const row = new ActionRowBuilder().addComponents(messageInput);
+
+                replyModal.addComponents(row);
+
+                await interaction.showModal(replyModal);
+
+                const filter = (i) => {
+                    return i.customId === 'replyTicket' && i.user.id === interaction.user.id;
+                };
+
+                // Function should return replyMessage, if the modal is closed or the time runs out, it should throw an error
+                function waitForModalResponse() {
+                    return new Promise((resolve, reject) => {
+                        const collector = interaction.channel.createMessageComponentCollector({ filter, time: 5 * 60 * 1000, max: 1 });
+                        
+                        collector.on('collect', async (i) => {
+                            if (i.customId === 'replyTicket') {
+                                await i.deferUpdate();
+                                const replyMessage = i.fields.getTextInputValue('replyMessage');
+                                resolve(replyMessage);
+                            }
+                        });
+
+                        collector.on('end', (collected, reason) => {
+                            if (reason === 'time') {
+                                reject(new Error('Modal timed out'));
+                            } else if (reason === 'limit') {
+                                // The user submitted the modal
+                                // Do nothing, the promise will resolve in the 'collect' event
+                            } else {
+                                reject(new Error('Collector ended unexpectedly'));
+                            }
+                        });
+
+                    });
+                };
+
+                const replyMessage = await waitForModalResponse().catch((error) => {
+                    if (error.message === 'Modal timed out') {
+                        interaction.editReply({
+                            content: 'The modal timed out. Please try again.',
+                            ephemeral: true
+                        });
+                    } else {
+                        interaction.editReply({
+                            content: 'An unexpected error occurred.',
+                            ephemeral: true
+                        }).catch( fe => {
+                            console.warn(fe);
+                        });
+                        console.warn(error);
+                    };
+                    return;
+                });
+
+                let logMessage = `<@${interaction.user.id}> - ${new Date(Date.now()).toUTCString()}: ${replyMessage}`;
     
                 if (sendPrompt) {
                     const promptEmbed = new EmbedBuilder()
@@ -201,7 +272,7 @@ module.exports = {
                         components: [row]
                     }).catch(e => {
                         console.warn(e);
-                        return interaction.reply({
+                        return interaction.editReply({
                             content: 'Something went wrong. Contact Emilsen.',
                             ephemeral: true
                         });
@@ -220,18 +291,25 @@ module.exports = {
                     return;
                 };
     
-                interaction.reply({
+                interaction.editReply({
                     content: 'Reply sent.',
                     ephemeral: true
                 });
             } catch (error) {
-                interaction.reply({
-                    content: 'An unexpected error occurred.',
-                    ephemeral: true
-                }).catch( fe => {
-                    console.warn(fe);
-                });
-                console.warn(error);
+                if (error.message === 'Modal timed out') {
+                    interaction.editReply({
+                        content: 'The modal timed out. Please try again.',
+                        ephemeral: true
+                    });
+                } else {
+                    interaction.editReply({
+                        content: 'An unexpected error occurred.',
+                        ephemeral: true
+                    }).catch( fe => {
+                        console.warn(fe);
+                    });
+                    console.warn(error);
+                };
             };
         } else if (subcommand === "note") {
             try {
