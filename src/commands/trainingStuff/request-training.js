@@ -26,6 +26,7 @@ module.exports = {
                 .setRequired(true)),
 
     run: async ({ interaction, client, handler }) => {
+        const timezone = interaction.options.getString('timezone');
         const date = interaction.options.getString('date');
         const time = interaction.options.getString('time');
 
@@ -36,7 +37,7 @@ module.exports = {
                 .setTitle(`${type} Training Request`)
                 .setFields(
                     { name: 'User:', value: `<@${interaction.member.id}>` },
-                    { name: 'Timezone:', value: interaction.options.getString('timezone') },
+                    { name: 'Timezone:', value: timezone },
                     { name: 'Date:', value: date },
                     { name: 'Time:', value: time }
                 );
@@ -52,6 +53,15 @@ module.exports = {
         if (!isValidTimeFormat(time)) {
             return interaction.reply({
                 content: 'Incorrect time format! Please use this format: hh:mm',
+                ephemeral: true
+            });
+        };
+
+        const timezones = Intl.supportedValuesOf('timeZone');
+
+        if (!timezones.includes(timezone)) {
+            return interaction.reply({
+                content: 'Incorrect timezone! Please use a valid timezone.',
                 ephemeral: true
             });
         };
@@ -186,17 +196,14 @@ module.exports = {
 
     autocomplete: async ({ interaction, client, handler }) => {
         const focusedValue = interaction.options.getFocused();
-        // Check if the focused option is 'timezone'
-        if (interaction.options.getName() === 'timezone') {
-            const timezones = Intl.supportedValuesOf('timeZone');
+        const timezones = Intl.supportedValuesOf('timeZone');
 
-            const filteredTimezones = timezones
-                .filter((timezone) => timezone.toLowerCase().includes(focusedValue.toLowerCase()))
-                .slice(0, 25) // Limit to 25 results
-                .map((timezone) => ({ name: timezone, value: timezone }));
+        const filteredTimezones = timezones
+            .filter((timezone) => timezone.toLowerCase().includes(focusedValue.toLowerCase()))
+            .slice(0, 25) // Limit to 25 results
+            .map((timezone) => ({ name: timezone, value: timezone }));
 
-            await interaction.respond(filteredTimezones);
-        };
+        await interaction.respond(filteredTimezones);
     },
 
     trainingReqBlacklist: true,

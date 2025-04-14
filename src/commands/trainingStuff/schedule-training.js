@@ -84,12 +84,6 @@ module.exports = {
         .setDMPermission(false)
         .addStringOption((option) =>
             option
-                .setName('timezone')
-                .setDescription('What timezone are you in? Example: Europe/Oslo')
-                .setRequired(true)
-                .setAutocomplete(true))
-        .addStringOption((option) =>
-            option
                 .setName('type')
                 .setDescription('What type of training are you hosting?')
                 .setRequired(true)
@@ -99,7 +93,12 @@ module.exports = {
                     { name: 'Dispatcher', value: 'Dispatcher' },
                     { name: 'Signaller', value: 'Signaller' }
                 ))
-
+        .addStringOption((option) =>
+            option
+                .setName('timezone')
+                .setDescription('What timezone are you in? Example: Europe/Oslo')
+                .setRequired(true)
+                .setAutocomplete(true))
         .addStringOption((option) =>
             option
                 .setName('date')
@@ -133,6 +132,7 @@ module.exports = {
             const hostCMD = interaction.options.getUser('host') ?? interaction.user;
             const id = hostCMD.id
             const trainingTypeCMD = interaction.options.getString('type');
+            const timezone = interaction.options.getString('timezone');
             const scheduledDateCMD = interaction.options.getString('date');
             const scheduledStartCMD = interaction.options.getString('time');
             const additionalInfoCMD = interaction.options.getString('additional-info') ?? 'No additional information.';
@@ -147,6 +147,15 @@ module.exports = {
             if (!isValidTimeFormat(scheduledStartCMD)) {
                 return interaction.editReply({
                     content: 'Incorrect time format! Please use this format: hh:mm',
+                    ephemeral: true
+                });
+            };
+
+            const timezones = Intl.supportedValuesOf('timeZone');
+
+            if (!timezones.includes(timezone)) {
+                return interaction.reply({
+                    content: 'Incorrect timezone! Please use a valid timezone.',
                     ephemeral: true
                 });
             };
@@ -174,7 +183,7 @@ module.exports = {
                 year: parseInt(splitDate[2]),
                 hour: parseInt(splitTime[0]),
                 minute: parseInt(splitTime[1])
-            }, { zone: interaction.options.getString('timezone') });
+            }, { zone: timezone });
 
             const dateCMD = localDate.setZone('UTC').toJSDate();
 
@@ -210,8 +219,9 @@ module.exports = {
                     { name: 'Host Roblox ID:', value: rblxId },
                     { name: 'Host Roblox Username:', value: rblxName },
                     { name: 'Training Type:', value: trainingTypeCMD },
-                    { name: 'Scheduled Date in UTC:', value: scheduledDateCMD },
-                    { name: 'Scheduled Start in UTC:', value: scheduledStartCMD },
+                    { name: 'Timezone:', value: timezone },
+                    { name: 'Scheduled Date in timezone:', value: scheduledDateCMD },
+                    { name: 'Scheduled Start in timezone:', value: scheduledStartCMD },
                     { name: 'Timestamp:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
                     { name: 'Additional Info:', value: additionalInfoCMD }
                 )
@@ -226,8 +236,9 @@ module.exports = {
                         { name: 'Host Roblox ID:', value: rblxId },
                         { name: 'Host Roblox Username:', value: rblxName },
                         { name: 'Training Type:', value: trainingTypeCMD },
-                        { name: 'Scheduled Date in UTC:', value: scheduledDateCMD },
-                        { name: 'Scheduled Start in UTC:', value: scheduledStartCMD },
+                        { name: 'Timezone:', value: timezone },
+                        { name: 'Scheduled Date in timezone:', value: scheduledDateCMD },
+                        { name: 'Scheduled Start in timezone:', value: scheduledStartCMD },
                         { name: 'Timestamp:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
                         { name: 'Additional Info:', value: additionalInfoCMD }
                     )
@@ -278,17 +289,14 @@ module.exports = {
 
     autocomplete: async ({ interaction, client, handler }) => {
         const focusedValue = interaction.options.getFocused();
-        // Check if the focused option is 'timezone'
-        if (interaction.options.getName() === 'timezone') {
-            const timezones = Intl.supportedValuesOf('timeZone');
+        const timezones = Intl.supportedValuesOf('timeZone');
 
-            const filteredTimezones = timezones
-                .filter((timezone) => timezone.toLowerCase().includes(focusedValue.toLowerCase()))
-                .slice(0, 25) // Limit to 25 results
-                .map((timezone) => ({ name: timezone, value: timezone }));
+        const filteredTimezones = timezones
+            .filter((timezone) => timezone.toLowerCase().includes(focusedValue.toLowerCase()))
+            .slice(0, 25) // Limit to 25 results
+            .map((timezone) => ({ name: timezone, value: timezone }));
 
-            await interaction.respond(filteredTimezones);
-        };
+        await interaction.respond(filteredTimezones);
     },
 
     opTeamOnly: true,

@@ -50,19 +50,26 @@ module.exports = {
                 .setRequired(true))
         .addStringOption((option) =>
             option
+                .setName('timezone')
+                .setDescription('What timezone are you in? Example: Europe/Oslo')
+                .setRequired(true)
+                .setAutocomplete(true))
+        .addStringOption((option) =>
+            option
                 .setName('date')
-                .setDescription('Format: dd/mm/yyyy. Use UTC time!')
+                .setDescription('Format: dd/mm/yyyy.')
                 .setRequired(true))
         .addStringOption((option) =>
             option
                 .setName('time')
-                .setDescription('Format: hh:mm. Use UTC time!')
+                .setDescription('Format: hh:mm.')
                 .setRequired(true)),
 
     run: async ({ interaction, client, handler }) => {
         const trainingChannel = client.channels.cache.get('1337095950027456603');
 
         const idCMD = interaction.options.getString('id')
+        const timezone = interaction.options.getString('timezone');
         const updatedDateCMD = interaction.options.getString('date');
         const updatedStartCMD = interaction.options.getString('time');
 
@@ -76,6 +83,15 @@ module.exports = {
         if (!isValidTimeFormat(updatedStartCMD)) {
             return interaction.reply({
                 content: 'Incorrect time format! Please use this format: hh:mm',
+                ephemeral: true
+            });
+        };
+
+        const timezones = Intl.supportedValuesOf('timeZone');
+
+        if (!timezones.includes(timezone)) {
+            return interaction.reply({
+                content: 'Incorrect timezone! Please use a valid timezone.',
                 ephemeral: true
             });
         };
@@ -149,17 +165,14 @@ module.exports = {
 
     autocomplete: async ({ interaction, client, handler }) => {
         const focusedValue = interaction.options.getFocused();
-        // Check if the focused option is 'timezone'
-        if (interaction.options.getName() === 'timezone') {
-            const timezones = Intl.supportedValuesOf('timeZone');
+        const timezones = Intl.supportedValuesOf('timeZone');
 
-            const filteredTimezones = timezones
-                .filter((timezone) => timezone.toLowerCase().includes(focusedValue.toLowerCase()))
-                .slice(0, 25) // Limit to 25 results
-                .map((timezone) => ({ name: timezone, value: timezone }));
+        const filteredTimezones = timezones
+            .filter((timezone) => timezone.toLowerCase().includes(focusedValue.toLowerCase()))
+            .slice(0, 25) // Limit to 25 results
+            .map((timezone) => ({ name: timezone, value: timezone }));
 
-            await interaction.respond(filteredTimezones);
-        };
+        await interaction.respond(filteredTimezones);
     },
 
     opTeamOnly: true,
