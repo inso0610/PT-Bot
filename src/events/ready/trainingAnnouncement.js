@@ -96,16 +96,16 @@ module.exports = async (client) => {
         };
 
         const nextDriverTrainingData = nearestDate(driverTimes);
-        const nextDriverTrainingIndex = nextDriverTrainingData[0];
+        const nextDriverTrainingStamp = nextDriverTrainingData[0];
         const scheduledDriverTrainings = nextDriverTrainingData[1];
         
         let nextDriverTraining = {};
         let nextDriverTrainingText = 'No Driver trainings scheduled.';
 
-        if (nextDriverTrainingIndex !== 0) {
+        if (scheduledDriverTrainings !== 0) {
             nextDriverTraining = await trainings.findOne({ 
                 trainingType: 'Driver',
-                timestamp: driverTimes[nextDriverTrainingIndex]
+                timestamp: nextDriverTrainingStamp
             }).exec();
             nextDriverTrainingText = formatNextMessage(nextDriverTraining);
         };
@@ -123,16 +123,16 @@ module.exports = async (client) => {
         };
 
         const nextConductorTrainingData = nearestDate(conductorTimes);
-        const nextConductorTrainingIndex = nextConductorTrainingData[0];
+        const nextConductorTrainingStamp = nextConductorTrainingData[0];
         const scheduledConductorTrainings = nextConductorTrainingData[1];
         
         let nextConductorTraining = {};
         let nextConductorTrainingText = 'No Conductor trainings scheduled.';
 
-        if (nextConductorTrainingIndex !== 0) {
+        if (scheduledConductorTrainings !== 0) {
             nextConductorTraining = await trainings.findOne({ 
                 trainingType: 'Conductor',
-                timestamp: conductorTimes[nextConductorTrainingIndex]
+                timestamp: nextConductorTrainingStamp
             }).exec();
             nextConductorTrainingText = formatNextMessage(nextConductorTraining);
         };
@@ -150,16 +150,16 @@ module.exports = async (client) => {
         };
 
         const nextDispatcherTrainingData = nearestDate(dispatcherTimes);
-        const nextDispatcherTrainingIndex = nextDispatcherTrainingData[0];
+        const nextDispatcherTrainingStamp = nextDispatcherTrainingData[0];
         const scheduledDispatcherTrainings = nextDispatcherTrainingData[1];
         
         let nextDispatcherTraining = {};
         let nextDispatcherTrainingText = 'No Dispatcher trainings scheduled.';
 
-        if (nextDispatcherTrainingIndex !== 0) {
+        if (scheduledDispatcherTrainings !== 0) {
             nextDispatcherTraining = await trainings.findOne({ 
                 trainingType: 'Dispatcher',
-                timestamp: dispatcherTimes[nextDispatcherTrainingIndex]
+                timestamp: nextDispatcherTrainingStamp
             }).exec();
             nextDispatcherTrainingText = formatNextMessage(nextDispatcherTraining);
         };
@@ -177,16 +177,16 @@ module.exports = async (client) => {
         };
 
         const nextSignallerTrainingData = nearestDate(signallerTimes);
-        const nextSignallerTrainingIndex = nextSignallerTrainingData[0];
+        const nextSignallerTrainingStamp = nextSignallerTrainingData[0];
         const scheduledSignallerTrainings = nextSignallerTrainingData[1];
         
         let nextSignallerTraining = {};
         let nextSignallerTrainingText = 'No Signaller trainings scheduled.';
 
-        if (nextSignallerTrainingIndex !== 0) {
+        if (scheduledSignallerTrainings !== 0) {
             nextSignallerTraining = await trainings.findOne({ 
                 trainingType: 'Signaller',
-                timestamp: signallerTimes[nextSignallerTrainingIndex]
+                timestamp: nextSignallerTrainingStamp
             }).exec();
             nextSignallerTrainingText = formatNextMessage(nextSignallerTraining);
         };
