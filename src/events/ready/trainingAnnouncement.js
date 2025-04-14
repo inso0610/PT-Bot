@@ -102,7 +102,7 @@ module.exports = async (client) => {
         let nextDriverTraining = {};
         let nextDriverTrainingText = 'No Driver trainings scheduled.';
 
-        if (nextDriverTrainingIndex != -1) {
+        if (nextDriverTrainingIndex !== 0) {
             nextDriverTraining = await trainings.findOne({ 
                 trainingType: 'Driver',
                 timestamp: driverTimes[nextDriverTrainingIndex]
@@ -129,7 +129,7 @@ module.exports = async (client) => {
         let nextConductorTraining = {};
         let nextConductorTrainingText = 'No Conductor trainings scheduled.';
 
-        if (nextConductorTrainingIndex != -1) {
+        if (nextConductorTrainingIndex !== 0) {
             nextConductorTraining = await trainings.findOne({ 
                 trainingType: 'Conductor',
                 timestamp: conductorTimes[nextConductorTrainingIndex]
@@ -156,7 +156,7 @@ module.exports = async (client) => {
         let nextDispatcherTraining = {};
         let nextDispatcherTrainingText = 'No Dispatcher trainings scheduled.';
 
-        if (nextDispatcherTrainingIndex != -1) {
+        if (nextDispatcherTrainingIndex !== 0) {
             nextDispatcherTraining = await trainings.findOne({ 
                 trainingType: 'Dispatcher',
                 timestamp: dispatcherTimes[nextDispatcherTrainingIndex]
@@ -183,7 +183,7 @@ module.exports = async (client) => {
         let nextSignallerTraining = {};
         let nextSignallerTrainingText = 'No Signaller trainings scheduled.';
 
-        if (nextSignallerTrainingIndex != -1) {
+        if (nextSignallerTrainingIndex !== 0) {
             nextSignallerTraining = await trainings.findOne({ 
                 trainingType: 'Signaller',
                 timestamp: signallerTimes[nextSignallerTrainingIndex]
