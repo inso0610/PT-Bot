@@ -43,9 +43,9 @@ module.exports = async (client) => {
 	    .addComponents(linkButton, calendarButton);
 
     async function updateMessage() {
-        const d = new Date();
+        const d = new Date().setSeconds(0, 0); // Set seconds to 0 for the nearest full minute
 
-        const nearestFullMinute = Math.ceil(d.getTime() / 60000) * 60000;
+        const nearestFullMinute = d.getTime()
 
         const allTrainings = await trainings.find({}).exec();
 
