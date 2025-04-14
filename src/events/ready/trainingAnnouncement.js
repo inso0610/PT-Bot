@@ -107,7 +107,7 @@ module.exports = async (client) => {
                 trainingType: 'Driver',
                 timestamp: driverTimes[nextDriverTrainingIndex]
             }).exec();
-            nextDriverTrainingText = await formatNextMessage(nextDriverTraining);
+            nextDriverTrainingText = formatNextMessage(nextDriverTraining);
         };
 
 
