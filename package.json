@@ -13,6 +13,7 @@
     "commandkit": "^0.1.6",
     "discord.js": "^14.8.0",
     "dotenv": "^16.0.3",
+    "luxon": "^3.6.1",
     "mathjs": "^14.2.1",
     "mongoose": "^7.5.2",
     "puppeteer": "^22.11.0"
