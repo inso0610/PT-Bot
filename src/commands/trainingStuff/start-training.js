@@ -45,7 +45,7 @@ module.exports = {
                 link = cLinkCMD;
             };
 
-            const training = await trainings.findByIdAndDelete(idCMD).exec();
+            const training = await trainings.findById(idCMD).exec();
 
             if (!training) {
                 return interaction.reply({
@@ -87,11 +87,15 @@ module.exports = {
             interaction.reply({
                 content: 'Training started.',
                 ephemeral: true
-            })
+            });
+
+            training.status = 'Server unlocked.'
+
+            await training.save()
         } catch (error) {
             console.warn(error)
             interaction.reply({
-                content: 'Command failed. Did you use the correct ID?',
+                content: 'Command failed. Please contact Emilsen.',
                 ephemeral: true
             })
         }

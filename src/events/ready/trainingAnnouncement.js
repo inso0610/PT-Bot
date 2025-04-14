@@ -1,32 +1,8 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const trainings = require('../../utils/trainings.js');
 
-function nearestDate (dates, target) {
-    if (!target) {
-        let targetMilli = Date.now();
-        target = Math.floor(targetMilli / 1000);
-    } else if (target instanceof Date) {
-        target = target.getTime();
-    };
-  
-    let nearest = Infinity;
-    let winner = -1;
-    let scheduled = 0;
-  
-    dates.forEach(function (date, index) {
-        if (date instanceof Date) {
-            date = date.getTime();
-        };
-        let distance = Math.abs(date - target);
-        scheduled += 1;
-
-        if (distance < nearest) {
-            nearest = distance;
-            winner = index;
-        };
-    });
-  
-    const data = [winner, scheduled];
+function nearestDate(dates) {
+    const data = dates.sort((a, b) => a - b);
 
     return data;
 };
@@ -69,20 +45,44 @@ module.exports = async (client) => {
     async function updateMessage() {
         const d = new Date();
 
-        /*let hour = d.getUTCHours().toString();
+        const nearestFullMinute = Math.ceil(d.getTime() / 60000) * 60000;
 
-        if (hour.length == 1) {
-            const old = hour;
-            hour = `0${old}`
+        const allTrainings = await trainings.find({}).exec();
+
+        const OMChannel = client.channels.cache.get('1246904420495523925');
+
+        for (const training of allTrainings) {
+            const difference = training.date.getTime() - nearestFullMinute; // Positive if training date is in the future, negative if it's in the past
+            const differenceInMinutes = Math.floor(difference / 60000);
+
+            if ((differenceInMinutes <= 0 && differenceInMinutes > -120) && training.status !== 'Server locked') {
+                if (training.status !== 'Server unlocked') {
+                    const host = await client.users.fetch(training.hostDiscordId).catch(e => {
+                        console.warn(e);
+                    });
+                    if (host) {
+                        host.send(`You missed the training you were hosting. It has been deleted.`).catch(e => {
+                            console.warn(e);
+                        });
+                    };
+
+                    OMChannel.send(`<@$1089284408042848377> <@&1089284399830409337>\n\n<@${training.hostDiscordId}> missed their training. Start time: <t:${training.timestamp}:R>`).catch(e => {
+                        console.warn(e);
+                    });
+
+                    training.deleteOne();
+                }
+
+                training.status = 'Server locked';
+                training.save();
+            } else if (differenceInMinutes <= -120) {
+                training.deleteOne();
+            };
         };
 
-        let minute = d.getUTCMinutes().toString();
-
-        if (minute.length == 1) {
-            const old = minute;
-            minute = `0${old}`
-        };*/
-        //Driver Trainings
+        function formatNextMessage(session) {
+            return `Next: <t:${session.timestamp}:F> (<t:${session.timestamp}:R>). Hosted by: ${session.hostRobloxUsername}. \nAdditional Info: ${session.additionalInfo}${session.status == 'Server unlocked' ? '\n >**🟢 Training server is unlocked.' : ''}${session.status == 'Server locked' ? '\n >**⏲️ Training has started, the server is locked.' : ''}`;
+        };
 
         const driverTrainings = await trainings.find({ 
             trainingType: 'Driver'
@@ -106,7 +106,7 @@ module.exports = async (client) => {
                 trainingType: 'Driver',
                 timestamp: driverTimes[nextDriverTrainingIndex]
             });
-            nextDriverTrainingText = `Next: <t:${nextDriverTraining.timestamp}:F> (<t:${nextDriverTraining.timestamp}:R>). Hosted by: ${nextDriverTraining.hostRobloxUsername}. \nAdditional Info: ${nextDriverTraining.additionalInfo}`;
+            nextDriverTrainingText = formatNextMessage(nextDriverTraining);
         };
 
 
@@ -133,7 +133,7 @@ module.exports = async (client) => {
                 trainingType: 'Conductor',
                 timestamp: conductorTimes[nextConductorTrainingIndex]
             });
-            nextConductorTrainingText = `Next: <t:${nextConductorTraining.timestamp}:F> (<t:${nextConductorTraining.timestamp}:R>). Hosted by: ${nextConductorTraining.hostRobloxUsername}. \nAdditional Info: ${nextConductorTraining.additionalInfo}`;
+            nextConductorTrainingText = formatNextMessage(nextConductorTraining);
         };
 
 
@@ -160,7 +160,7 @@ module.exports = async (client) => {
                 trainingType: 'Dispatcher',
                 timestamp: dispatcherTimes[nextDispatcherTrainingIndex]
             });
-            nextDispatcherTrainingText = `Next: <t:${nextDispatcherTraining.timestamp}:F> (<t:${nextDispatcherTraining.timestamp}:R>). Hosted by: ${nextDispatcherTraining.hostRobloxUsername}. \nAdditional Info: ${nextDispatcherTraining.additionalInfo}`;
+            nextDispatcherTrainingText = formatNextMessage(nextDispatcherTraining);
         };
 
         
@@ -187,7 +187,7 @@ module.exports = async (client) => {
                 trainingType: 'Signaller',
                 timestamp: signallerTimes[nextSignallerTrainingIndex]
             });
-            nextSignallerTrainingText = `Next: <t:${nextSignallerTraining.timestamp}:F> (<t:${nextSignallerTraining.timestamp}:R>). Hosted by: ${nextSignallerTraining.hostRobloxUsername}. \nAdditional Info: ${nextSignallerTraining.additionalInfo}`;
+            nextSignallerTrainingText = formatNextMessage(nextSignallerTraining);
         };
 
         
@@ -215,4 +215,6 @@ module.exports = async (client) => {
     updateMessage()
 
     setInterval(updateMessage, 60000);
+
+
 };

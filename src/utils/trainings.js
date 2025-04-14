@@ -36,7 +36,7 @@ const trainingSchema = new Schema({
     },
     server: {
         type: String,
-        default: 'Training not started.'
+        default: 'Training not started'
     },
     teamupId: {
         type: String,
