@@ -4,7 +4,7 @@ const trainings = require('../../utils/trainings.js');
 function nearestDate(dates) {
     const data = dates.sort((a, b) => a - b);
 
-    return data;
+    return [data[0], data.length];
 };
 
 /* function sleep(ms) {
