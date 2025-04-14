@@ -1,14 +1,15 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { DateTime } = require('luxon');
 const trainings = require('../../utils/trainings.js');
 
-const { isValidDateFormat, isValidTimeFormat } = require( '../../utils/dateTimeUtils.js');
+const { isValidDateFormat, isValidTimeFormat } = require('../../utils/dateTimeUtils.js');
 
 function updateTeamup(newStartDate, type, id, host) {
     const endDate = new Date(newStartDate);
     endDate.setMinutes(newStartDate.getMinutes() + 60);
 
-    const startISO = newStartDate.toISOString().replace('.000','');
-    const endISO = endDate.toISOString().replace('.000','');
+    const startISO = newStartDate.toISOString().replace('.000', '');
+    const endISO = endDate.toISOString().replace('.000', '');
 
     let subcalendar
 
@@ -22,13 +23,13 @@ function updateTeamup(newStartDate, type, id, host) {
         subcalendar = 13324160;
     };
 
-    const jsondata = {id: id, subcalendar_ids: [subcalendar], start_dt: startISO, end_dt: endISO, title: `${type} training`, who: host, signup_enabled: false, comments_enabled: false};
+    const jsondata = { id: id, subcalendar_ids: [subcalendar], start_dt: startISO, end_dt: endISO, title: `${type} training`, who: host, signup_enabled: false, comments_enabled: false };
 
     const options = {
-        method: "PUT", 
+        method: "PUT",
         headers: {
             "Content-Type": "application/json",
-            "Teamup-Token": process.env.TEAMUP_TOKEN, 
+            "Teamup-Token": process.env.TEAMUP_TOKEN,
             "Authorization": process.env.TEAMUP_LOGIN
         },
         body: JSON.stringify(jsondata)
@@ -39,28 +40,28 @@ function updateTeamup(newStartDate, type, id, host) {
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('edit-training-time')
-    .setDescription('Edit the date and time of the training.')
-    .setDMPermission(false)
-    .addStringOption((option) => 
-        option
-            .setName('id')
-            .setDescription('What is the ID of the training?')
-            .setRequired(true))
-    .addStringOption((option) => 
-        option
-            .setName('date')
-            .setDescription('Format: dd/mm/yyyy. Use UTC time!')
-            .setRequired(true))
-    .addStringOption((option) => 
-        option
-            .setName('time')
-            .setDescription('Format: hh:mm. Use UTC time!')
-            .setRequired(true)),
+        .setName('edit-training-time')
+        .setDescription('Edit the date and time of the training.')
+        .setDMPermission(false)
+        .addStringOption((option) =>
+            option
+                .setName('id')
+                .setDescription('What is the ID of the training?')
+                .setRequired(true))
+        .addStringOption((option) =>
+            option
+                .setName('date')
+                .setDescription('Format: dd/mm/yyyy. Use UTC time!')
+                .setRequired(true))
+        .addStringOption((option) =>
+            option
+                .setName('time')
+                .setDescription('Format: hh:mm. Use UTC time!')
+                .setRequired(true)),
 
     run: async ({ interaction, client, handler }) => {
         const trainingChannel = client.channels.cache.get('1337095950027456603');
-        
+
         const idCMD = interaction.options.getString('id')
         const updatedDateCMD = interaction.options.getString('date');
         const updatedStartCMD = interaction.options.getString('time');
@@ -86,12 +87,20 @@ module.exports = {
         try {
             const splitDate = updatedDateCMD.split('/');
             const splitTime = updatedStartCMD.split(':');
-    
-            const dateCMD = new Date(Date.UTC(splitDate[2], splitDate[1]-1, splitDate[0], splitTime[0], splitTime[1]));
-    
+
+            const localDate = DateTime.fromObject({
+                day: parseInt(splitDate[0]),
+                month: parseInt(splitDate[1]),
+                year: parseInt(splitDate[2]),
+                hour: parseInt(splitTime[0]),
+                minute: parseInt(splitTime[1])
+            }, { zone: interaction.options.getString('timezone') });
+
+            const dateCMD = localDate.setZone('UTC').toJSDate();
+
             const timestampMilli = dateCMD.getTime();
             const timestampCMD = Math.floor(timestampMilli / 1000);
-            
+
             const training = await trainings.findById(idCMD).exec();
 
             if (!training) {
@@ -100,31 +109,31 @@ module.exports = {
                     ephemeral: true
                 });
             };
-    
+
             const type = training.trainingType;
             const oldTimestamp = training.timestamp;
             const teamupId = training.teamupId;
             const rblxName = training.hostRobloxUsername;
 
             updateTeamup(dateCMD, type, teamupId, rblxName);
-    
-            training.date.setUTCFullYear(splitDate[2], splitDate[1]-1, splitDate[0]);
+
+            training.date.setUTCFullYear(splitDate[2], splitDate[1] - 1, splitDate[0]);
             training.date.setUTCHours(splitTime[0], splitTime[1]);
-    
+
             training.timestamp = timestampCMD;
-    
+
             training.markModified('date');
-    
+
             await training.save();
-    
+
             const timeChangedEmbed = new EmbedBuilder()
                 .setTitle(`A ${type} training has changed!`)
                 .setDescription(`Time: <t:${oldTimestamp}:F> -> <t:${training.timestamp}:F> \n**Info:** \nHost: ${rblxName}`)
-    
+
             trainingChannel.send({
-                embeds: [ timeChangedEmbed ]
+                embeds: [timeChangedEmbed]
             });
-    
+
             interaction.editReply({
                 content: 'Updated!',
                 ephemeral: true
@@ -137,6 +146,22 @@ module.exports = {
             console.warn(error);
         }
     },
+
+    autocomplete: async ({ interaction, client, handler }) => {
+        const focusedValue = interaction.options.getFocused();
+        // Check if the focused option is 'timezone'
+        if (interaction.options.getName() === 'timezone') {
+            const timezones = Intl.supportedValuesOf('timeZone');
+
+            const filteredTimezones = timezones
+                .filter((timezone) => timezone.toLowerCase().includes(focusedValue.toLowerCase()))
+                .slice(0, 25) // Limit to 25 results
+                .map((timezone) => ({ name: timezone, value: timezone }));
+
+            await interaction.respond(filteredTimezones);
+        };
+    },
+
     opTeamOnly: true,
 
     options: {

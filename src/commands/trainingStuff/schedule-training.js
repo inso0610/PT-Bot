@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
-const { dateTime, DateTime } = require('luxon');
+const { DateTime } = require('luxon');
 const model = require('../../utils/trainings.js');
-const { isValidDateFormat, isValidTimeFormat } = require( '../../utils/dateTimeUtils.js');
+const { isValidDateFormat, isValidTimeFormat } = require('../../utils/dateTimeUtils.js');
 
 const guides = {
     Driver: 'https://guides.polartracks.no/driver-guides',
@@ -12,8 +12,8 @@ const guides = {
 
 function getRobloxId(id) {
     const functionResult = fetch(`https://api.blox.link/v4/public/guilds/1089282844657987587/discord-to-roblox/${id.toString()}`, { method: "GET", headers: { "Authorization": "66ef19b6-b0f6-41f4-b883-63d833484ac6" } })
-	    .then((response) => response.json())
-	    .then((data) => {
+        .then((response) => response.json())
+        .then((data) => {
             try {
                 const responseData = JSON.parse(JSON.stringify(data));
 
@@ -34,8 +34,8 @@ function scheduleTeamup(startDate, type, host) {
     const endDate = new Date(startDate);
     endDate.setMinutes(startDate.getMinutes() + 60);
 
-    const startISO = startDate.toISOString().replace('.000','')
-    const endISO = endDate.toISOString().replace('.000','')
+    const startISO = startDate.toISOString().replace('.000', '')
+    const endISO = endDate.toISOString().replace('.000', '')
 
     let subcalendar
 
@@ -49,13 +49,13 @@ function scheduleTeamup(startDate, type, host) {
         subcalendar = 13324160
     };
 
-    const jsondata = {subcalendar_ids: [subcalendar], start_dt: startISO, end_dt: endISO, title: `${type} training`, who: host, signup_enabled: false, comments_enabled: false};
+    const jsondata = { subcalendar_ids: [subcalendar], start_dt: startISO, end_dt: endISO, title: `${type} training`, who: host, signup_enabled: false, comments_enabled: false };
 
     const options = {
-        method: "POST", 
+        method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Teamup-Token": process.env.TEAMUP_TOKEN, 
+            "Teamup-Token": process.env.TEAMUP_TOKEN,
             "Authorization": process.env.TEAMUP_LOGIN
         },
         body: JSON.stringify(jsondata)
@@ -66,7 +66,7 @@ function scheduleTeamup(startDate, type, host) {
         .then((data) => {
             try {
                 const responseData = JSON.parse(JSON.stringify(data));
-    
+
                 return responseData.event.id;
             } catch (error) {
                 console.warn(JSON.parse(JSON.stringify(data)));
@@ -79,50 +79,50 @@ function scheduleTeamup(startDate, type, host) {
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('schedule-training')
-    .setDescription('Scheduled a training')
-    .setDMPermission(false)
-    .addStringOption((option) =>
-        option
-            .setName('timezone')
-            .setDescription('What timezone are you in? Example: Europe/Oslo')
-            .setRequired(true)
-            .setAutocomplete(true))
-    .addStringOption((option) => 
-        option
-            .setName('type')
-            .setDescription('What type of training are you hosting?')
-            .setRequired(true)
-            .addChoices(
-				{ name: 'Driver', value: 'Driver' },
-				{ name: 'Conductor', value: 'Conductor' },
-				{ name: 'Dispatcher', value: 'Dispatcher' },
-                { name: 'Signaller', value: 'Signaller' }
-			))
+        .setName('schedule-training')
+        .setDescription('Scheduled a training')
+        .setDMPermission(false)
+        .addStringOption((option) =>
+            option
+                .setName('timezone')
+                .setDescription('What timezone are you in? Example: Europe/Oslo')
+                .setRequired(true)
+                .setAutocomplete(true))
+        .addStringOption((option) =>
+            option
+                .setName('type')
+                .setDescription('What type of training are you hosting?')
+                .setRequired(true)
+                .addChoices(
+                    { name: 'Driver', value: 'Driver' },
+                    { name: 'Conductor', value: 'Conductor' },
+                    { name: 'Dispatcher', value: 'Dispatcher' },
+                    { name: 'Signaller', value: 'Signaller' }
+                ))
 
-    .addStringOption((option) => 
-        option
-            .setName('date')
-            .setDescription('Format: dd/mm/yyyy.')
-            .setRequired(true))
+        .addStringOption((option) =>
+            option
+                .setName('date')
+                .setDescription('Format: dd/mm/yyyy.')
+                .setRequired(true))
 
-    .addStringOption((option) => 
-        option
-            .setName('time')
-            .setDescription('Format: hh:mm.')
-            .setRequired(true))
+        .addStringOption((option) =>
+            option
+                .setName('time')
+                .setDescription('Format: hh:mm.')
+                .setRequired(true))
 
-    .addStringOption((option) => 
-        option
-            .setName('additional-info')
-            .setDescription('Write any additional info about the training here.')
-            .setRequired(false))
-            
-    .addUserOption((option) => 
-        option
-            .setName('host')
-            .setDescription('Who is hosting the training?')
-            .setRequired(false)),
+        .addStringOption((option) =>
+            option
+                .setName('additional-info')
+                .setDescription('Write any additional info about the training here.')
+                .setRequired(false))
+
+        .addUserOption((option) =>
+            option
+                .setName('host')
+                .setDescription('Who is hosting the training?')
+                .setRequired(false)),
 
     run: async ({ interaction, client, handler }) => {
         await interaction.deferReply({
@@ -143,7 +143,7 @@ module.exports = {
                     ephemeral: true
                 });
             };
-    
+
             if (!isValidTimeFormat(scheduledStartCMD)) {
                 return interaction.editReply({
                     content: 'Incorrect time format! Please use this format: hh:mm',
@@ -152,7 +152,7 @@ module.exports = {
             };
 
             const trainingChannel = client.channels.cache.get('1337095950027456603');
-            
+
             const userInfo = await getRobloxId(id);
             if (!Array.isArray(userInfo)) {
                 console.log(userInfo)
@@ -186,7 +186,7 @@ module.exports = {
             if (teamupId === 'Error') {
                 return;
             };
-    
+
             const newTraining = new model({
                 hostDiscordId: id,
                 hostRobloxId: rblxId,
@@ -197,7 +197,7 @@ module.exports = {
                 additionalInfo: additionalInfoCMD,
                 teamupId: teamupId
             });
-    
+
             await newTraining.save();
 
             const trainingId = newTraining._id.toString();
@@ -215,45 +215,45 @@ module.exports = {
                     { name: 'Timestamp:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
                     { name: 'Additional Info:', value: additionalInfoCMD }
                 )
-                .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.'});
+                .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.' });
 
             if (hostCMD != interaction.user) {
                 const creatorEmbed = new EmbedBuilder()
-                .setTitle('You have created a training for another user.')
-                .setDescription(`**When making changes use this id: ${trainingId}**`)
-                .addFields(
-                    { name: 'Host Discord ID:', value: id },
-                    { name: 'Host Roblox ID:', value: rblxId },
-                    { name: 'Host Roblox Username:', value: rblxName },
-                    { name: 'Training Type:', value: trainingTypeCMD },
-                    { name: 'Scheduled Date in UTC:', value: scheduledDateCMD },
-                    { name: 'Scheduled Start in UTC:', value: scheduledStartCMD },
-                    { name: 'Timestamp:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
-                    { name: 'Additional Info:', value: additionalInfoCMD }
-                )
-                .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.'});
+                    .setTitle('You have created a training for another user.')
+                    .setDescription(`**When making changes use this id: ${trainingId}**`)
+                    .addFields(
+                        { name: 'Host Discord ID:', value: id },
+                        { name: 'Host Roblox ID:', value: rblxId },
+                        { name: 'Host Roblox Username:', value: rblxName },
+                        { name: 'Training Type:', value: trainingTypeCMD },
+                        { name: 'Scheduled Date in UTC:', value: scheduledDateCMD },
+                        { name: 'Scheduled Start in UTC:', value: scheduledStartCMD },
+                        { name: 'Timestamp:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
+                        { name: 'Additional Info:', value: additionalInfoCMD }
+                    )
+                    .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.' });
                 client.users.send(interaction.user.id, {
                     embeds: [creatorEmbed]
                 });
             };
 
             const linkButton = new ButtonBuilder()
-	            .setLabel('You should read the training guide before attending')
+                .setLabel('You should read the training guide before attending')
                 .setURL(guides[trainingTypeCMD])
-	            .setStyle(ButtonStyle.Link);
+                .setStyle(ButtonStyle.Link);
 
             const row = new ActionRowBuilder()
                 .addComponents(linkButton);
 
             const publicEmbed = new EmbedBuilder()
-            .setTitle(`New ${trainingTypeCMD} training!`)
-            .setDescription('React to this message if you are planning to attend.')
-            .addFields(
-                { name: 'Host:', value: rblxName },
-                { name: 'Start:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
-                { name: 'Additional Info:', value: additionalInfoCMD }
-            )
-            .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.'});
+                .setTitle(`New ${trainingTypeCMD} training!`)
+                .setDescription('React to this message if you are planning to attend.')
+                .addFields(
+                    { name: 'Host:', value: rblxName },
+                    { name: 'Start:', value: `<t:${timestampCMD.toString()}:F> (<t:${timestampCMD.toString()}:R>)` },
+                    { name: 'Additional Info:', value: additionalInfoCMD }
+                )
+                .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.' });
             client.users.send(id, {
                 embeds: [trainingEmbed]
             });
@@ -265,11 +265,11 @@ module.exports = {
             });
 
             message.react('✅')
-    
+
             interaction.editReply({
                 content: 'The training has been scheduled.',
                 ephemeral: true
-            });  
+            });
         } catch (error) {
             console.warn(error)
         };
@@ -277,19 +277,19 @@ module.exports = {
     },
 
     autocomplete: async ({ interaction, client, handler }) => {
-            const focusedValue = interaction.options.getFocused();
-            // Check if the focused option is 'timezone'
-            if (interaction.options.getName() === 'timezone') {
-               const timezones = Intl.supportedValuesOf('timeZone');
-    
-                const filteredTimezones = timezones
-                    .filter((timezone) => timezone.toLowerCase().includes(focusedValue.toLowerCase()))
-                    .slice(0, 25) // Limit to 25 results
-                    .map((timezone) => ({ name: timezone, value: timezone }));
-                
-                await interaction.respond(filteredTimezones);
-            };
-        },
+        const focusedValue = interaction.options.getFocused();
+        // Check if the focused option is 'timezone'
+        if (interaction.options.getName() === 'timezone') {
+            const timezones = Intl.supportedValuesOf('timeZone');
+
+            const filteredTimezones = timezones
+                .filter((timezone) => timezone.toLowerCase().includes(focusedValue.toLowerCase()))
+                .slice(0, 25) // Limit to 25 results
+                .map((timezone) => ({ name: timezone, value: timezone }));
+
+            await interaction.respond(filteredTimezones);
+        };
+    },
 
     opTeamOnly: true,
 

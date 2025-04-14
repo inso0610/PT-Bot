@@ -1,29 +1,29 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
-const { isValidDateFormat, isValidTimeFormat } = require( '../../utils/dateTimeUtils.js');
+const { isValidDateFormat, isValidTimeFormat } = require('../../utils/dateTimeUtils.js');
 const { autocomplete } = require('../application-stuff/application.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('request-training')
-    .setDescription('Use this command to request a training.')
-    .setDMPermission(false)
-    .addStringOption((option) =>
-        option
-            .setName('timezone')
-            .setDescription('What timezone are you in? Example: Europe/Oslo')
-            .setRequired(true)
-            .setAutocomplete(true))
-    .addStringOption((option) => 
-        option
-            .setName('date')
-            .setDescription('What date should the training be hosted? Format: dd/mm/yyyy')
-            .setRequired(true))
-    .addStringOption((option) => 
-        option
-            .setName('time')
-            .setDescription('When should the training be hosted? Format: hh:mm')
-            .setRequired(true)),
+        .setName('request-training')
+        .setDescription('Use this command to request a training.')
+        .setDMPermission(false)
+        .addStringOption((option) =>
+            option
+                .setName('timezone')
+                .setDescription('What timezone are you in? Example: Europe/Oslo')
+                .setRequired(true)
+                .setAutocomplete(true))
+        .addStringOption((option) =>
+            option
+                .setName('date')
+                .setDescription('What date should the training be hosted? Format: dd/mm/yyyy')
+                .setRequired(true))
+        .addStringOption((option) =>
+            option
+                .setName('time')
+                .setDescription('When should the training be hosted? Format: hh:mm')
+                .setRequired(true)),
 
     run: async ({ interaction, client, handler }) => {
         const date = interaction.options.getString('date');
@@ -33,13 +33,13 @@ module.exports = {
 
         function createEmbed(type) {
             return new EmbedBuilder()
-            .setTitle(`${type} Training Request`)
-            .setFields(
-                { name: 'User:', value: `<@${interaction.member.id}>` },
-                { name: 'Timezone:', value: interaction.options.getString('timezone') },
-                { name: 'Date:', value: date },
-                { name: 'Time:', value: time }
-            );
+                .setTitle(`${type} Training Request`)
+                .setFields(
+                    { name: 'User:', value: `<@${interaction.member.id}>` },
+                    { name: 'Timezone:', value: interaction.options.getString('timezone') },
+                    { name: 'Date:', value: date },
+                    { name: 'Time:', value: time }
+                );
         };
 
         if (!isValidDateFormat(date)) {
@@ -58,17 +58,17 @@ module.exports = {
 
         function createButtonRow() {
             const confirmButton = new ButtonBuilder()
-			.setCustomId('create-training')
-			.setLabel('Create Training from information')
-			.setStyle(ButtonStyle.Primary);
+                .setCustomId('create-training')
+                .setLabel('Create Training from information')
+                .setStyle(ButtonStyle.Primary);
 
             const testButton = new ButtonBuilder()
-			.setCustomId('test-training-req')
-			.setLabel('Test training information')
-			.setStyle(ButtonStyle.Secondary);
+                .setCustomId('test-training-req')
+                .setLabel('Test training information')
+                .setStyle(ButtonStyle.Secondary);
 
             return new ActionRowBuilder()
-            .addComponents(confirmButton, testButton);
+                .addComponents(confirmButton, testButton);
         };
 
         if (interaction.member.roles.cache.has('1089284424543260763')) { //Is user Passenger? 
@@ -86,7 +86,7 @@ module.exports = {
                 name: 'Driver Training Request',
                 autoArchiveDuration: 60,
                 reason: 'Driver Training Request thread.',
-            });            
+            });
 
             interaction.reply({
                 content: 'Your Driver Training request has been sent!',
@@ -107,7 +107,7 @@ module.exports = {
                 name: 'Dispatcher Training Request',
                 autoArchiveDuration: 60,
                 reason: 'Dispatcher Training Request thread.',
-            });  
+            });
 
             interaction.reply({
                 content: 'Your Dispatcher Training request has been sent!',
@@ -128,7 +128,7 @@ module.exports = {
                 name: 'Dispatcher Training Request',
                 autoArchiveDuration: 60,
                 reason: 'Dispatcher Training Request thread.',
-            });  
+            });
 
             interaction.reply({
                 content: 'Your Dispatcher Training request has been sent!',
@@ -149,13 +149,13 @@ module.exports = {
                 name: 'Signaller Training Request',
                 autoArchiveDuration: 60,
                 reason: 'Signaller Training Request thread.',
-            });  
+            });
 
             interaction.reply({
                 content: 'Your Signaller Training request has been sent!',
                 ephemeral: true
             });
-        } else if (interaction.member.roles.cache.has('1111370796439453777') &&	!interaction.member.roles.cache.has('1138884023465283696')) { //Is user Manager without QUS? 
+        } else if (interaction.member.roles.cache.has('1111370796439453777') && !interaction.member.roles.cache.has('1138884023465283696')) { //Is user Manager without QUS? 
             const embed = createEmbed('Signaller');
 
             const row = createButtonRow();
@@ -170,7 +170,7 @@ module.exports = {
                 name: 'Signaller Training Request',
                 autoArchiveDuration: 60,
                 reason: 'Signaller Training Request thread.',
-            }); 
+            });
 
             interaction.reply({
                 content: 'Your Signaller Training request has been sent!',
@@ -188,13 +188,13 @@ module.exports = {
         const focusedValue = interaction.options.getFocused();
         // Check if the focused option is 'timezone'
         if (interaction.options.getName() === 'timezone') {
-           const timezones = Intl.supportedValuesOf('timeZone');
+            const timezones = Intl.supportedValuesOf('timeZone');
 
             const filteredTimezones = timezones
                 .filter((timezone) => timezone.toLowerCase().includes(focusedValue.toLowerCase()))
                 .slice(0, 25) // Limit to 25 results
                 .map((timezone) => ({ name: timezone, value: timezone }));
-            
+
             await interaction.respond(filteredTimezones);
         };
     },

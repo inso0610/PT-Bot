@@ -3,7 +3,8 @@ const model = require('../../utils/trainings.js')
 
 const tickets = require('../../utils/tickets.js');
 
-const { closeTicket, createTicket } = require( '../../utils/ticketChannels.js');
+const { closeTicket, createTicket } = require('../../utils/ticketChannels.js');
+const { DateTime } = require('luxon');
 
 const guides = {
     Driver: 'https://guides.polartracks.no/driver-guides',
@@ -14,8 +15,8 @@ const guides = {
 
 function getRobloxId(id) {
     const functionResult = fetch(`https://api.blox.link/v4/public/guilds/1089282844657987587/discord-to-roblox/${id.toString()}`, { method: "GET", headers: { "Authorization": "66ef19b6-b0f6-41f4-b883-63d833484ac6" } })
-	    .then((response) => response.json())
-	    .then((data) => {
+        .then((response) => response.json())
+        .then((data) => {
             try {
                 const response = JSON.parse(JSON.stringify(data));
 
@@ -36,8 +37,8 @@ function scheduleTeamup(startDate, type, host) {
     const endDate = new Date(startDate);
     endDate.setMinutes(startDate.getMinutes() + 60);
 
-    const startISO = startDate.toISOString().replace('.000','')
-    const endISO = endDate.toISOString().replace('.000','')
+    const startISO = startDate.toISOString().replace('.000', '')
+    const endISO = endDate.toISOString().replace('.000', '')
 
     let subcalendar
 
@@ -51,13 +52,13 @@ function scheduleTeamup(startDate, type, host) {
         subcalendar = 13324160
     };
 
-    const jsondata = {subcalendar_ids: [subcalendar], start_dt: startISO, end_dt: endISO, title: `${type} training`, who: host, signup_enabled: false, comments_enabled: false};
+    const jsondata = { subcalendar_ids: [subcalendar], start_dt: startISO, end_dt: endISO, title: `${type} training`, who: host, signup_enabled: false, comments_enabled: false };
 
     const options = {
-        method: "POST", 
+        method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Teamup-Token": process.env.TEAMUP_TOKEN, 
+            "Teamup-Token": process.env.TEAMUP_TOKEN,
             "Authorization": process.env.TEAMUP_LOGIN
         },
         body: JSON.stringify(jsondata)
@@ -68,7 +69,7 @@ function scheduleTeamup(startDate, type, host) {
         .then((data) => {
             try {
                 const responseData = JSON.parse(JSON.stringify(data));
-    
+
                 return responseData.event.id;
             } catch (error) {
                 console.warn(JSON.parse(JSON.stringify(data)));
@@ -122,41 +123,50 @@ module.exports = async (interaction, client) => {
 
         try {
             const trainingChannel = client.channels.cache.get('1337095950027456603');
-    
+
             const id = interaction.user.id
-    
+
             const userInfo = await getRobloxId(id);
-                if (!Array.isArray(userInfo)) {
-                    console.log(userInfo)
-                    interaction.reply({
-                        content: 'The button failed. Contact Emilsen.',
-                        ephemeral: true
-                    })
-                    return
-                };
+            if (!Array.isArray(userInfo)) {
+                console.log(userInfo)
+                interaction.reply({
+                    content: 'The button failed. Contact Emilsen.',
+                    ephemeral: true
+                })
+                return
+            };
             const rblxId = userInfo[0];
             const rblxName = userInfo[1];
-    
+
             const embed = interaction.message.embeds[0];
             const data = embed.data;
             const title = data.title;
             const fields = data.fields;
-    
-            const dateFromMsg = fields[1].value;
-            const time = fields[2].value;
-    
+
+            const timezone = fields[1].value;
+            const dateFromMsg = fields[2].value;
+            const time = fields[3].value;
+
             const trainingType = title.replace(' Training Request', '')
-    
+
             const splitDate = dateFromMsg.split('/');
             const splitTime = time.split(':');
-    
-            const date = new Date(Date.UTC(splitDate[2], splitDate[1]-1, splitDate[0], splitTime[0], splitTime[1]));
-    
+
+            const localDate = DateTime.fromObject({
+                day: parseInt(splitDate[0]),
+                month: parseInt(splitDate[1]),
+                year: parseInt(splitDate[2]),
+                hour: parseInt(splitTime[0]),
+                minute: parseInt(splitTime[1])
+            }, { zone: timezone });
+
+            const date = localDate.toUTC().toJSDate();
+
             const timestampMilli = date.getTime();
             const timestamp = Math.floor(timestampMilli / 1000);
 
-            const teamupId = await scheduleTeamup(date, trainingType, rblxName); 
-    
+            const teamupId = await scheduleTeamup(date, trainingType, rblxName);
+
             const newTraining = new model({
                 hostDiscordId: id,
                 hostRobloxId: rblxId,
@@ -167,11 +177,11 @@ module.exports = async (interaction, client) => {
                 additionalInfo: 'No additional information.',
                 teamupId: teamupId
             });
-    
+
             await newTraining.save();
-    
+
             const trainingId = newTraining._id.toString();
-    
+
             const trainingEmbed = new EmbedBuilder()
                 .setTitle('You have been assigned to a training!')
                 .setDescription(`**When making changes use this id: ${trainingId}**`)
@@ -185,7 +195,7 @@ module.exports = async (interaction, client) => {
                     { name: 'Timestamp:', value: `<t:${timestamp.toString()}:F> (<t:${timestamp.toString()}:R>)` },
                     { name: 'Additional Info:', value: 'No additional information.' }
                 )
-                .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.'});
+                .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.' });
 
             const linkButton = new ButtonBuilder()
                 .setLabel('You should read the training guide before attending')
@@ -203,11 +213,11 @@ module.exports = async (interaction, client) => {
                     { name: 'Start:', value: `<t:${timestamp.toString()}:F> (<t:${timestamp.toString()}:R>)` },
                     { name: 'Additional Info:', value: 'No additional information.' }
                 )
-                .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.'});
+                .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.' });
             client.users.send(id, {
                 embeds: [trainingEmbed]
             });
-    
+
             const publicMessage = await trainingChannel.send({
                 content: '<@&1140220447535923200>',
                 embeds: [publicEmbed],
@@ -215,7 +225,7 @@ module.exports = async (interaction, client) => {
             });
 
             publicMessage.react('✅');
-        
+
             interaction.editReply({
                 content: 'The training has been scheduled.',
                 ephemeral: true
@@ -238,69 +248,78 @@ module.exports = async (interaction, client) => {
             });
             console.warn(error);
         };
-    } else if(interaction.customId === "test-training-req") {
+    } else if (interaction.customId === "test-training-req") {
         interaction.deferReply({
             ephemeral: true
         });
 
         const id = interaction.user.id
-    
-            const userInfo = await getRobloxId(id);
-                if (!Array.isArray(userInfo)) {
-                    console.log(userInfo)
-                    interaction.reply({
-                        content: 'The button failed. Contact Emilsen.',
-                        ephemeral: true
-                    })
-                    return
-                };
-            const rblxName = userInfo[1];
-    
-            const embed = interaction.message.embeds[0];
-            const data = embed.data;
-            const title = data.title;
-            const fields = data.fields;
-    
-            const dateFromMsg = fields[1].value;
-            const time = fields[2].value;
-    
-            const trainingType = title.replace(' Training Request', '')
-    
-            const splitDate = dateFromMsg.split('/');
-            const splitTime = time.split(':');
-    
-            const date = new Date(Date.UTC(splitDate[2], splitDate[1]-1, splitDate[0], splitTime[0], splitTime[1]));
-    
-            const timestampMilli = date.getTime();
-            const timestamp = Math.floor(timestampMilli / 1000);
 
-            const publicEmbed = new EmbedBuilder()
-                .setTitle(`New ${trainingType} training!`)
-                .addFields(
-                    { name: 'Host:', value: rblxName },
-                    { name: 'Start:', value: `<t:${timestamp.toString()}:F> (<t:${timestamp.toString()}:R>)` },
-                    { name: 'Additional Info:', value: 'No additional information.' }
-                )
-                .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.'});
-            
-            interaction.editReply({
-                embeds: [publicEmbed],
+        const userInfo = await getRobloxId(id);
+        if (!Array.isArray(userInfo)) {
+            console.log(userInfo)
+            interaction.reply({
+                content: 'The button failed. Contact Emilsen.',
                 ephemeral: true
-            });
-    /*} else if (interaction.customId === 'roadMapInfo') {
-        const embed = new EmbedBuilder()
-            .setTitle('Roadmap')
-            .setDescription('# Check out what we are working on, here')
-            .addFields(
-                { name: 'Engineering and Technology:', value: 'https://trello.com/b/eA59AXF4/engineering-and-technology-board' },
-                { name: 'Operations:', value: 'https://trello.com/b/cyYBEanG/operations-board' },
-                { name: 'Community Team:', value: 'https://trello.com/b/BpFQHHBE/customer-experience-board' }
-            );
+            })
+            return
+        };
+        const rblxName = userInfo[1];
 
-        interaction.reply({
-            embeds: [embed],
+        const embed = interaction.message.embeds[0];
+        const data = embed.data;
+        const title = data.title;
+        const fields = data.fields;
+
+        const timezone = fields[1].value;
+        const dateFromMsg = fields[2].value;
+        const time = fields[3].value;
+
+        const trainingType = title.replace(' Training Request', '')
+
+        const splitDate = dateFromMsg.split('/');
+        const splitTime = time.split(':');
+
+        const localDate = DateTime.fromObject({
+            day: parseInt(splitDate[0]),
+            month: parseInt(splitDate[1]),
+            year: parseInt(splitDate[2]),
+            hour: parseInt(splitTime[0]),
+            minute: parseInt(splitTime[1])
+        }, { zone: timezone });
+
+        const date = localDate.toUTC().toJSDate();
+
+        const timestampMilli = date.getTime();
+        const timestamp = Math.floor(timestampMilli / 1000);
+
+        const publicEmbed = new EmbedBuilder()
+            .setTitle(`New ${trainingType} training!`)
+            .addFields(
+                { name: 'Host:', value: rblxName },
+                { name: 'Start:', value: `<t:${timestamp.toString()}:F> (<t:${timestamp.toString()}:R>)` },
+                { name: 'Additional Info:', value: 'No additional information.' }
+            )
+            .setFooter({ text: 'This message does not update. For updated information, please check the message at the top of the trainings channel.' });
+
+        interaction.editReply({
+            embeds: [publicEmbed],
             ephemeral: true
-        });*/
+        });
+        /*} else if (interaction.customId === 'roadMapInfo') {
+            const embed = new EmbedBuilder()
+                .setTitle('Roadmap')
+                .setDescription('# Check out what we are working on, here')
+                .addFields(
+                    { name: 'Engineering and Technology:', value: 'https://trello.com/b/eA59AXF4/engineering-and-technology-board' },
+                    { name: 'Operations:', value: 'https://trello.com/b/cyYBEanG/operations-board' },
+                    { name: 'Community Team:', value: 'https://trello.com/b/BpFQHHBE/customer-experience-board' }
+                );
+    
+            interaction.reply({
+                embeds: [embed],
+                ephemeral: true
+            });*/
     } else if (interaction.customId === 'socialMediaInfo') {
         const embed = new EmbedBuilder()
             .setTitle('Roadmap')
@@ -344,50 +363,50 @@ module.exports = async (interaction, client) => {
         try {
             // Base variables
             const acceptedSuggestions = client.channels.cache.get('1251895090952015914');
-    
+
             // Variables from message
             const message = interaction.message;
-    
+
             const messageComponets = message.components[0].components;
             const acceptButton = messageComponets[0];
             const declineButton = messageComponets[1];
             const emAcceptButton = messageComponets[2];
-   
+
             const embed = message.embeds[0];
             const embedData = embed.data;
             const title = embedData.title;
             const description = embedData.description;
             const footer = embedData.footer;
             const authorName = embedData.author.name;
-   
+
             const thread = await client.channels.fetch(message.id);
-   
+
             // code
             acceptButton.data.disabled = true;
             declineButton.data.disabled = true;
             emAcceptButton.data.disabled = true;
-    
+
             const row = new ActionRowBuilder()
                 .addComponents(acceptButton, declineButton, emAcceptButton);
-    
+
             interaction.message.edit({
                 components: [row]
             });
-    
+
             acceptedSuggestions.send({
                 content: `Accepted suggestion. Accepted by <@${interaction.user.id}>`,
                 embeds: [embed]
             });
-    
+
             thread.send(`<@${footer.text}> your suggestion was accepted!`);
-        
+
             interaction.reply({
                 content: 'Suggestion accepted.',
                 ephemeral: true
             });
-    
+
             const trelloTitle = `${title} - ${authorName}`;
-    
+
             postToTrello('901205295987', trelloTitle, description);
         } catch (error) {
             interaction.reply({
@@ -408,32 +427,32 @@ module.exports = async (interaction, client) => {
         try {
             // Variables from message
             const message = interaction.message;
-    
+
             const messageComponets = message.components[0].components;
             const acceptButton = messageComponets[0];
             const declineButton = messageComponets[1];
             const emAcceptButton = messageComponets[2];
-    
+
             const embed = message.embeds[0];
             const embedData = embed.data;
             const footer = embedData.footer;
-    
+
             const thread = await client.channels.fetch(message.id);
-    
+
             // code
             acceptButton.data.disabled = true;
             declineButton.data.disabled = true;
             emAcceptButton.data.disabled = true;
-    
+
             const row = new ActionRowBuilder()
                 .addComponents(acceptButton, declineButton, emAcceptButton);
-    
+
             interaction.message.edit({
                 components: [row]
             });
-            
+
             thread.send(`<@${footer.text}> your suggestion was declined.`);
-    
+
             interaction.reply({
                 content: 'Suggestion declined.',
                 ephemeral: true
@@ -458,40 +477,40 @@ module.exports = async (interaction, client) => {
         try {
             // Base variables
             const acceptedSuggestions = client.channels.cache.get('1302286236995813467');
-    
+
             // Variables from message
             const message = interaction.message;
-    
+
             const messageComponets = message.components[0].components;
             const acceptButton = messageComponets[0];
             const declineButton = messageComponets[1];
             const emAcceptButton = messageComponets[2];
-    
+
             const embed = message.embeds[0];
             const embedData = embed.data;
             const footer = embedData.footer;
-    
+
             const thread = await client.channels.fetch(message.id);
-    
+
             // code
             acceptButton.data.disabled = true;
             declineButton.data.disabled = true;
             emAcceptButton.data.disabled = true;
-    
+
             const row = new ActionRowBuilder()
                 .addComponents(acceptButton, declineButton, emAcceptButton);
-    
+
             interaction.message.edit({
                 components: [row]
             });
-    
+
             acceptedSuggestions.send({
                 content: `Accepted Community suggestion. Accepted by <@${interaction.user.id}>`,
                 embeds: [embed]
             });
-    
+
             thread.send(`<@${footer.text}> your suggestion was accepted!`);
-        
+
             interaction.reply({
                 content: 'Suggestion accepted.',
                 ephemeral: true
@@ -506,7 +525,7 @@ module.exports = async (interaction, client) => {
     } else if (interaction.customId === 'claimTicket') {
         const message = interaction.message;
 
-        const ticket = await tickets.findOne({ticketMessageId: message.id}).exec()
+        const ticket = await tickets.findOne({ ticketMessageId: message.id }).exec()
 
         if (!ticket) {
             interaction.reply({
@@ -528,12 +547,12 @@ module.exports = async (interaction, client) => {
             .setTitle('🎫 Ticket')
             .setDescription(`Claimed by: ${interaction.user.username}`)
             .addFields(
-                {name: 'ID', value: String(ticket._id)},
-                {name: 'Topic', value: ticket.topic},
-                {name: 'Important note', value: ticket.importantNote},
-                {name: 'Creator', value: ticket.creatorUsername},
-                {name: 'Department', value: ticket.department},
-                {name: 'Language', value: ticket.language}
+                { name: 'ID', value: String(ticket._id) },
+                { name: 'Topic', value: ticket.topic },
+                { name: 'Important note', value: ticket.importantNote },
+                { name: 'Creator', value: ticket.creatorUsername },
+                { name: 'Department', value: ticket.department },
+                { name: 'Language', value: ticket.language }
             );
 
         message.edit({
@@ -579,15 +598,15 @@ module.exports = async (interaction, client) => {
         const ticketCommands = new EmbedBuilder()
             .setTitle('Ticket commands')
             .addFields(
-                { name: `\`/ticket reply id:${String(ticket._id)}\``, value: 'Send a reply to the creator of the ticket. If you want to prompt the person to close the ticket set prompt to true.'},
-                { name: `\`/ticket note id:${String(ticket._id)}\``, value: 'Add a note to the ticket. If you set important to true it will be set as the important note.'},
-                { name: `\`/ticket questions id:${String(ticket._id)}\``, value: 'Sends the questions sent by the ticket creator.'},
-                { name: `\`/ticket unassign id:${String(ticket._id)}\``, value: 'Unassigns you and makes the ticket claimable for someone else.'},
-                { name: `\`/ticket transfer id:${String(ticket._id)}\``, value: 'Transfers the ticket to a new department.'},
-                { name: `\`/ticket logs id:${String(ticket._id)}\``, value: 'Sends the ticket logs.'},
-                { name: `\`/ticket info id:${String(ticket._id)}\``, value: 'Send the ticket information.'},
-                { name: `\`/ticket notes id:${String(ticket._id)}\``, value: 'Sends all ticket notes.'},
-                { name: `\`/ticket close id:${String(ticket._id)}\``, value: 'Closes the ticket.'}
+                { name: `\`/ticket reply id:${String(ticket._id)}\``, value: 'Send a reply to the creator of the ticket. If you want to prompt the person to close the ticket set prompt to true.' },
+                { name: `\`/ticket note id:${String(ticket._id)}\``, value: 'Add a note to the ticket. If you set important to true it will be set as the important note.' },
+                { name: `\`/ticket questions id:${String(ticket._id)}\``, value: 'Sends the questions sent by the ticket creator.' },
+                { name: `\`/ticket unassign id:${String(ticket._id)}\``, value: 'Unassigns you and makes the ticket claimable for someone else.' },
+                { name: `\`/ticket transfer id:${String(ticket._id)}\``, value: 'Transfers the ticket to a new department.' },
+                { name: `\`/ticket logs id:${String(ticket._id)}\``, value: 'Sends the ticket logs.' },
+                { name: `\`/ticket info id:${String(ticket._id)}\``, value: 'Send the ticket information.' },
+                { name: `\`/ticket notes id:${String(ticket._id)}\``, value: 'Sends all ticket notes.' },
+                { name: `\`/ticket close id:${String(ticket._id)}\``, value: 'Closes the ticket.' }
             );
 
         interaction.user.send({
@@ -609,7 +628,7 @@ module.exports = async (interaction, client) => {
         })
     } else if (interaction.customId === 'closeTicket-Yes') {
         const message = interaction.message;
-    
+
         const messageComponets = message.components[0].components;
         const yesButton = messageComponets[0];
         const noButton = messageComponets[1];
@@ -625,13 +644,13 @@ module.exports = async (interaction, client) => {
 
         const row = new ActionRowBuilder()
             .addComponents(yesButton, noButton);
-    
+
         message.edit({
             components: [row]
         });
     } else if (interaction.customId === 'closeTicket-No') {
         const message = interaction.message;
-    
+
         const messageComponets = message.components[0].components;
         const yesButton = messageComponets[0];
         const noButton = messageComponets[1];
@@ -645,13 +664,13 @@ module.exports = async (interaction, client) => {
 
         const row = new ActionRowBuilder()
             .addComponents(yesButton, noButton);
-    
+
         message.edit({
             components: [row]
         });
 
         interaction.reply({
-            content:'Ticket closure canceled.',
+            content: 'Ticket closure canceled.',
             ephemeral: true
         });
     } else if (interaction.customId === 'createTicket') {
@@ -660,7 +679,7 @@ module.exports = async (interaction, client) => {
         const roleId = interaction.customId.split('-')[1];
         const role = interaction.guild.roles.cache.get(roleId);
         const member = interaction.member;
-    
+
         if (member && role) {
             if (member.roles.cache.has(roleId)) {
                 // Remove role if the user already has it (toggle behavior)
@@ -675,5 +694,5 @@ module.exports = async (interaction, client) => {
             await interaction.reply({ content: "Role not found or an error occurred.", ephemeral: true });
         }
     }
-    
+
 };
