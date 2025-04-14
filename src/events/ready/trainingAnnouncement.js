@@ -106,8 +106,8 @@ module.exports = async (client) => {
             nextDriverTraining = await trainings.findOne({ 
                 trainingType: 'Driver',
                 timestamp: driverTimes[nextDriverTrainingIndex]
-            });
-            nextDriverTrainingText = formatNextMessage(nextDriverTraining);
+            }).exec();
+            nextDriverTrainingText = await formatNextMessage(nextDriverTraining);
         };
 
 
@@ -133,7 +133,7 @@ module.exports = async (client) => {
             nextConductorTraining = await trainings.findOne({ 
                 trainingType: 'Conductor',
                 timestamp: conductorTimes[nextConductorTrainingIndex]
-            });
+            }).exec();
             nextConductorTrainingText = formatNextMessage(nextConductorTraining);
         };
 
@@ -160,7 +160,7 @@ module.exports = async (client) => {
             nextDispatcherTraining = await trainings.findOne({ 
                 trainingType: 'Dispatcher',
                 timestamp: dispatcherTimes[nextDispatcherTrainingIndex]
-            });
+            }).exec();
             nextDispatcherTrainingText = formatNextMessage(nextDispatcherTraining);
         };
 
@@ -187,7 +187,7 @@ module.exports = async (client) => {
             nextSignallerTraining = await trainings.findOne({ 
                 trainingType: 'Signaller',
                 timestamp: signallerTimes[nextSignallerTrainingIndex]
-            });
+            }).exec();
             nextSignallerTrainingText = formatNextMessage(nextSignallerTraining);
         };
 
