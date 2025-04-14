@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
+const { dateTime, DateTime } = require('luxon');
 const model = require('../../utils/trainings.js');
 const { isValidDateFormat, isValidTimeFormat } = require( '../../utils/dateTimeUtils.js');
 
@@ -81,6 +82,12 @@ module.exports = {
     .setName('schedule-training')
     .setDescription('Scheduled a training')
     .setDMPermission(false)
+    .addStringOption((option) =>
+        option
+            .setName('timezone')
+            .setDescription('What timezone are you in? Example: Europe/Oslo')
+            .setRequired(true)
+            .setAutocomplete(true))
     .addStringOption((option) => 
         option
             .setName('type')
@@ -96,13 +103,13 @@ module.exports = {
     .addStringOption((option) => 
         option
             .setName('date')
-            .setDescription('Format: dd/mm/yyyy. Use UTC time!')
+            .setDescription('Format: dd/mm/yyyy.')
             .setRequired(true))
 
     .addStringOption((option) => 
         option
             .setName('time')
-            .setDescription('Format: hh:mm. Use UTC time!')
+            .setDescription('Format: hh:mm.')
             .setRequired(true))
 
     .addStringOption((option) => 
@@ -161,7 +168,15 @@ module.exports = {
             const splitDate = scheduledDateCMD.split('/')
             const splitTime = scheduledStartCMD.split(':')
 
-            const dateCMD = new Date(Date.UTC(splitDate[2], splitDate[1]-1, splitDate[0], splitTime[0], splitTime[1]));
+            const localDate = DateTime.fromObject({
+                day: parseInt(splitDate[0]),
+                month: parseInt(splitDate[1]),
+                year: parseInt(splitDate[2]),
+                hour: parseInt(splitTime[0]),
+                minute: parseInt(splitTime[1])
+            }, { zone: interaction.options.getString('timezone') });
+
+            const dateCMD = localDate.setZone('UTC').toJSDate();
 
             const timestampMilli = dateCMD.getTime();
             const timestampCMD = Math.floor(timestampMilli / 1000);
@@ -260,6 +275,22 @@ module.exports = {
         };
 
     },
+
+    autocomplete: async ({ interaction, client, handler }) => {
+            const focusedValue = interaction.options.getFocused();
+            // Check if the focused option is 'timezone'
+            if (interaction.options.getName() === 'timezone') {
+               const timezones = Intl.supportedValuesOf('timeZone');
+    
+                const filteredTimezones = timezones
+                    .filter((timezone) => timezone.toLowerCase().includes(focusedValue.toLowerCase()))
+                    .slice(0, 25) // Limit to 25 results
+                    .map((timezone) => ({ name: timezone, value: timezone }));
+                
+                await interaction.respond(filteredTimezones);
+            };
+        },
+
     opTeamOnly: true,
 
     options: {
