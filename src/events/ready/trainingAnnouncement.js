@@ -43,16 +43,17 @@ module.exports = async (client) => {
 	    .addComponents(linkButton, calendarButton);
 
     async function updateMessage() {
-        const d = new Date().setSeconds(0, 0); // Set seconds to 0 for the nearest full minute
+        const d = new Date()
+        d.setSeconds(0,0)// Set seconds to 0 for the nearest full minute
 
-        const nearestFullMinute = d.getTime()
+        const dTimestamp = d.getTime()
 
         const allTrainings = await trainings.find({}).exec();
 
         const OMChannel = client.channels.cache.get('1246904420495523925');
 
         for (const training of allTrainings) {
-            const difference = training.date.getTime() - nearestFullMinute; // Positive if training date is in the future, negative if it's in the past
+            const difference = training.date.getTime() - dTimestamp; // Positive if training date is in the future, negative if it's in the past
             const differenceInMinutes = Math.floor(difference / 60000);
 
             if ((differenceInMinutes <= 0 && differenceInMinutes > -120) && training.status !== 'Server locked') {
