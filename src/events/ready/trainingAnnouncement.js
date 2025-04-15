@@ -85,7 +85,7 @@ return;
         };
 
         function formatNextMessage(session) {
-            return `Next: <t:${session.timestamp}:F> (<t:${session.timestamp}:R>). Hosted by: ${session.hostRobloxUsername}. \nAdditional Info: ${session.additionalInfo}${session.status == 'Server unlocked' ? '\n > **🟢 Training server is unlocked.**' : ''}${session.status == 'Server locked' ? '\n > **⏲️ Training has started, the server is locked.**' : ''}`;
+            return `**Next: <t:${session.timestamp}:F> (<t:${session.timestamp}:R>).** Hosted by: ${session.hostRobloxUsername}. \n${session.status == 'Scheduled' && session.additionalInfo !== 'No additional information.' ? `🗒️ Note: ${session.additionalInfo}` : ''}${session.status == 'Server unlocked' ? '\n > 🟢 Training server is unlocked.' : ''}${session.status == 'Server locked' ? '\n > ⏲️ Training has started, the server is locked.' : ''}`;
         };
 
         const driverTrainings = await trainings.find({ 
