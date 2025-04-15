@@ -137,7 +137,7 @@ module.exports = {
 
             training.timestamp = timestampCMD;
 
-            training.markModified('date');
+            //training.markModified('date');
 
             await training.save();
 
