@@ -6,7 +6,7 @@ const { isValidDateFormat, isValidTimeFormat } = require('../../utils/dateTimeUt
 
 function updateTeamup(newStartDate, type, id, host) {
     const endDate = new Date(newStartDate);
-    endDate.setMinutes(newStartDate.getMinutes() + 60);
+    endDate.setMinutes(newStartDate.getMinutes() + 120);
 
     const startISO = newStartDate.toISOString().replace('.000', '');
     const endISO = endDate.toISOString().replace('.000', '');

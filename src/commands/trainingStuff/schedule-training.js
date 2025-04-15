@@ -32,7 +32,7 @@ function getRobloxId(id) {
 
 function scheduleTeamup(startDate, type, host) {
     const endDate = new Date(startDate);
-    endDate.setMinutes(startDate.getMinutes() + 60);
+    endDate.setMinutes(startDate.getMinutes() + 120);
 
     const startISO = startDate.toISOString().replace('.000', '')
     const endISO = endDate.toISOString().replace('.000', '')
