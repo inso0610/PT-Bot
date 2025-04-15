@@ -89,7 +89,7 @@ module.exports = {
                 ephemeral: true
             });
 
-            training.status = 'Server unlocked.'
+            training.status = 'Server unlocked'
 
             await training.save()
         } catch (error) {
