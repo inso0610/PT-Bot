@@ -133,8 +133,7 @@ module.exports = {
 
             updateTeamup(dateCMD, type, teamupId, rblxName);
 
-            training.date.setUTCFullYear(splitDate[2], splitDate[1] - 1, splitDate[0]);
-            training.date.setUTCHours(splitTime[0], splitTime[1]);
+            training.date = dateCMD;
 
             training.timestamp = timestampCMD;
 
