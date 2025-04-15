@@ -71,13 +71,14 @@ module.exports = async (client) => {
                         console.warn(e);
                     });
 
-                    training.deleteOne();
+                    await training.deleteOne();
+return;
                 }
 
                 training.status = 'Server locked';
-                training.save();
+                await training.save();
             } else if (differenceInMinutes <= -120) {
-                training.deleteOne();
+                await training.deleteOne();
             };
         };
 
