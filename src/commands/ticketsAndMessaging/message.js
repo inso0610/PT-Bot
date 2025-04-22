@@ -7,8 +7,8 @@ module.exports = {
     .setDMPermission(false)
     .addUserOption((option) =>
         option
-            .setName('reciever')
-            .setDescription('Who should recieve this message?')
+            .setName('receiver')
+            .setDescription('Who should receive this message?')
             .setRequired(true))
     .addStringOption((option) => 
         option
