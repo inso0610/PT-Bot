@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('timeout')
     .setDescription('Timeout someone in the Discord server')
-    .setDMPermission(false)
+    .setContexts(['Guild'])
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .addUserOption((option) =>
         option

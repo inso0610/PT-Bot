@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('reset-all-activity')
     .setDescription('Reset all activity for every manager')
-    .setDMPermission(false),
+    .setContexts(['Guild']),
 
     run: async ({ interaction, client, handler }) => {
         interaction.reply({

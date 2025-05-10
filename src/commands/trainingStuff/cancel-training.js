@@ -21,7 +21,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('cancel-training')
     .setDescription('Cancel a training')
-    .setDMPermission(false)
+    .setContexts(['Guild'])
     .addStringOption((option) => 
         option
             .setName('id')

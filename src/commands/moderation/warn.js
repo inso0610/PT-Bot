@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('warn')
     .setDescription('Commands related to warnings.')
-    .setDMPermission(false)
+    .setContexts(['Guild'])
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .addSubcommand(subcommand =>
         subcommand

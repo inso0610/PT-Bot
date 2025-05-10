@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('kick')
     .setDescription('Kick someone from the Discord server')
-    .setDMPermission(false)
+    .setContexts(['Guild'])
     .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
     .addUserOption((option) =>
         option

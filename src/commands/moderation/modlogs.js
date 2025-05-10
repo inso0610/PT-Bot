@@ -5,7 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('modlogs')
         .setDescription('Sends a list of moderation logs for a user')
-        .setDMPermission(false)
+        .setContexts(['Guild'])
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
         .addUserOption(option =>
             option.setName('user').setDescription("Whose logs do you want to list?").setRequired(true)

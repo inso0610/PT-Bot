@@ -5,7 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('purge')
     .setDescription('Commands related to deleting multiple messages at once.')
-    .setDMPermission(false)
+    .setContexts(['Guild'])
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .addSubcommand(subcommand =>
         subcommand

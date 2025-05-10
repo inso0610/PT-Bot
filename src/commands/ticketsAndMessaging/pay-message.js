@@ -24,7 +24,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('pay-message')
     .setDescription('Send a payment message to a user.')
-    .setDMPermission(false)
+    .setContexts(['Guild'])
     .addUserOption((option) => 
         option
             .setName('user')

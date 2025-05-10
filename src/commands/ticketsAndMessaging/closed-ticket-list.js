@@ -5,7 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('closed-tickets')
         .setDescription('Lists all closed ticket IDs.')
-        .setDMPermission(false),
+        .setContexts(['Guild']),
 
     run: async ({ interaction }) => {
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });

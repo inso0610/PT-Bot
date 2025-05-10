@@ -42,7 +42,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('edit-training-time')
         .setDescription('Edit the date and time of the training.')
-        .setDMPermission(false)
+        .setContexts(['Guild'])
         .addStringOption((option) =>
             option
                 .setName('id')

@@ -5,7 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('counting-blacklist')
     .setDescription('Commands related to the counting blacklist')
-    .setDMPermission(false)
+    .setContexts(['Guild'])
     .addSubcommand(subcommand =>
         subcommand
             .setName('add')

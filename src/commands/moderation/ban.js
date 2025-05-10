@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('ban')
     .setDescription('Ban someone in the Discord server')
-    .setDMPermission(false)
+    .setContexts(['Guild'])
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .addUserOption((option) =>
         option

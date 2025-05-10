@@ -7,7 +7,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('request-training')
         .setDescription('Use this command to request a training.')
-        .setDMPermission(false)
+        .setContexts(['Guild'])
         .addStringOption((option) =>
             option
                 .setName('timezone')

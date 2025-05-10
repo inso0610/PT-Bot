@@ -81,7 +81,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('schedule-training')
         .setDescription('Scheduled a training')
-        .setDMPermission(false)
+        .setContexts(['Guild'])
         .addStringOption((option) =>
             option
                 .setName('type')

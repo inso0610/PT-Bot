@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('get-my-activity')
     .setDescription('Get your activity')
-    .setDMPermission(false),
+    .setContexts(['Guild']),
 
     run: async ({ interaction, client, handler }) => {
         await interaction.deferReply({

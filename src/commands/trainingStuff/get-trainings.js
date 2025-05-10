@@ -5,7 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('get-trainings')
         .setDescription('Get your trainings')
-        .setDMPermission(false),
+        .setContexts(['Guild']),
     
     run: async ({ interaction, client, handler }) => {
         await interaction.reply({

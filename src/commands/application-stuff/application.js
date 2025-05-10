@@ -5,7 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('application')
         .setDescription('Commands for applications')
-        .setDMPermission(false)
+        .setContexts(['Guild'])
         .addSubcommand(subcommand =>
             subcommand
                 .setName('update-state')
