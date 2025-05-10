@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 const activity = require('../../utils/activity.js');
 const activityRequirements = require('../../utils/activityRequirement.js');
 
@@ -10,7 +10,7 @@ module.exports = {
 
     run: async ({ interaction, client, handler }) => {
         await interaction.deferReply({
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
 
         const managerActivity = await activity.findOne( {discordId: interaction.user.id} ).exec();
@@ -18,7 +18,7 @@ module.exports = {
         if (!managerActivity) {
             interaction.editReply({
                 content: 'You are not in the activity system',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             return;
         };
@@ -82,12 +82,12 @@ module.exports = {
                 interaction.editReply({
                     content: 'Got activity.',
                     embeds: [activityEmbed],
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
         } else {
             interaction.editReply({
                 content: 'You are not in the activity system',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         };
     },

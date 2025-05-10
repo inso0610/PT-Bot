@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
 const model = require('../../utils/trainings.js')
 
 const tickets = require('../../utils/tickets.js');
@@ -118,7 +118,7 @@ module.exports = async (interaction, client) => {
 
     if (interaction.customId === "create-training") {
         interaction.deferReply({
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
 
         try {
@@ -131,7 +131,7 @@ module.exports = async (interaction, client) => {
                 console.log(userInfo)
                 interaction.reply({
                     content: 'The button failed. Contact Emilsen.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 })
                 return
             };
@@ -228,7 +228,7 @@ module.exports = async (interaction, client) => {
 
             interaction.editReply({
                 content: 'The training has been scheduled.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
             interaction.message.delete().catch(e => {
@@ -244,13 +244,13 @@ module.exports = async (interaction, client) => {
         } catch (error) {
             interaction.editReply({
                 content: 'The button failed. Schedule the training using /schedule-training.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             console.warn(error);
         };
     } else if (interaction.customId === "test-training-req") {
         interaction.deferReply({
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
 
         const id = interaction.user.id
@@ -260,7 +260,7 @@ module.exports = async (interaction, client) => {
             console.log(userInfo)
             interaction.reply({
                 content: 'The button failed. Contact Emilsen.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             })
             return
         };
@@ -304,7 +304,7 @@ module.exports = async (interaction, client) => {
 
         interaction.editReply({
             embeds: [publicEmbed],
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
         /*} else if (interaction.customId === 'roadMapInfo') {
             const embed = new EmbedBuilder()
@@ -318,7 +318,7 @@ module.exports = async (interaction, client) => {
     
             interaction.reply({
                 embeds: [embed],
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });*/
     } else if (interaction.customId === 'socialMediaInfo') {
         const embed = new EmbedBuilder()
@@ -332,7 +332,7 @@ module.exports = async (interaction, client) => {
 
         interaction.reply({
             embeds: [embed],
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
 
     } else if (interaction.customId === 'routesInfo') {
@@ -348,13 +348,13 @@ module.exports = async (interaction, client) => {
 
         interaction.reply({
             embeds: [embed],
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
     } else if (interaction.customId === 'acceptSuggestion') {
         if (!interaction.member.roles.cache.has('1089284397519347762') && !interaction.member.roles.cache.has('1089284396282032178')) {
             interaction.reply({
                 content: 'You do not have access to this button.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
             return true;
@@ -402,7 +402,7 @@ module.exports = async (interaction, client) => {
 
             interaction.reply({
                 content: 'Suggestion accepted.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
             const trelloTitle = `${title} - ${authorName}`;
@@ -411,7 +411,7 @@ module.exports = async (interaction, client) => {
         } catch (error) {
             interaction.reply({
                 content: 'Button failed. Please try again later or contact Emilsen.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             console.warn(error)
         };
@@ -419,7 +419,7 @@ module.exports = async (interaction, client) => {
         if (!interaction.member.roles.cache.has('1089284397519347762') && !interaction.member.roles.cache.has('1089284396282032178') && !interaction.member.roles.cache.has('1302284945451913308')) {
             interaction.reply({
                 content: 'You do not have access to this button.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             return true;
         };
@@ -455,12 +455,12 @@ module.exports = async (interaction, client) => {
 
             interaction.reply({
                 content: 'Suggestion declined.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         } catch (error) {
             interaction.reply({
                 content: 'Button failed. Please try again later or contact Emilsen.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             console.warn(error)
         }
@@ -468,7 +468,7 @@ module.exports = async (interaction, client) => {
         if (!interaction.member.roles.cache.has('1302284945451913308')) {
             interaction.reply({
                 content: 'You do not have access to this button.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
             return true;
@@ -513,12 +513,12 @@ module.exports = async (interaction, client) => {
 
             interaction.reply({
                 content: 'Suggestion accepted.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         } catch (error) {
             interaction.reply({
                 content: 'Button failed. Please try again later or contact Emilsen.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             console.warn(error)
         };
@@ -530,7 +530,7 @@ module.exports = async (interaction, client) => {
         if (!ticket) {
             interaction.reply({
                 content: 'The claiming failed. Please contact Emilsen so he can claim it manually for you.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             return;
         };
@@ -570,7 +570,7 @@ module.exports = async (interaction, client) => {
         if (!ticketCreator) {
             interaction.reply({
                 content: 'Could not find the ticket creator.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             return;
         };
@@ -579,7 +579,7 @@ module.exports = async (interaction, client) => {
             console.warn(e)
             interaction.reply({
                 content: 'The ticket creator may not be able to see your replies, please contact Emilsen.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             return;
         });
@@ -614,7 +614,7 @@ module.exports = async (interaction, client) => {
         }).catch(e => {
             interaction.reply({
                 content: `I could not send you the ticket information, but the ticket was claimed. Do \`/ticket info id:${String(ticket._id)}\` to send it manually.`,
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
             console.warn(e);
@@ -624,7 +624,7 @@ module.exports = async (interaction, client) => {
 
         interaction.reply({
             content: 'The ticket has been claimed. Please check your DMs.',
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         })
     } else if (interaction.customId === 'closeTicket-Yes') {
         const message = interaction.message;
@@ -671,7 +671,7 @@ module.exports = async (interaction, client) => {
 
         interaction.reply({
             content: 'Ticket closure canceled.',
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
     } else if (interaction.customId === 'createTicket') {
         createTicket(interaction, client)
@@ -684,14 +684,14 @@ module.exports = async (interaction, client) => {
             if (member.roles.cache.has(roleId)) {
                 // Remove role if the user already has it (toggle behavior)
                 await member.roles.remove(role);
-                await interaction.reply({ content: `Removed role <@&${roleId}>!`, ephemeral: true });
+                await interaction.reply({ content: `Removed role <@&${roleId}>!`, flags: MessageFlags.Ephemeral });
             } else {
                 // Add role if the user doesn’t have it
                 await member.roles.add(role);
-                await interaction.reply({ content: `Added role <@&${roleId}>!`, ephemeral: true });
+                await interaction.reply({ content: `Added role <@&${roleId}>!`, flags: MessageFlags.Ephemeral });
             }
         } else {
-            await interaction.reply({ content: "Role not found or an error occurred.", ephemeral: true });
+            await interaction.reply({ content: "Role not found or an error occurred.", flags: MessageFlags.Ephemeral });
         }
     }
 

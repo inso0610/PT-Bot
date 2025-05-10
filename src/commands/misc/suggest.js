@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -75,14 +75,14 @@ module.exports = {
 
             interaction.reply({
                 content: ('There! Check <#1152944134747865119>'),
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
         } catch (error) {
             console.warn(`Error with suggestion command! ${error}`)
             interaction.reply({
                 content: 'Command failure. Try again.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         };
     },

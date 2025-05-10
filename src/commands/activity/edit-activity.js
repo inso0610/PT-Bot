@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder, MessageFlags } = require('discord.js')
 const activity = require('../../utils/activity.js');
 
 module.exports = {
@@ -52,12 +52,12 @@ module.exports = {
 
             interaction.reply({
                 content: 'Successfully registered',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         } else {
             interaction.reply({
                 content: 'This user is not in the activity system',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         };
     },

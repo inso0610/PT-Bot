@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 const activity = require('../../utils/activity.js');
 const activityRequirements = require('../../utils/activityRequirement.js');
 
@@ -11,7 +11,7 @@ module.exports = {
     run: async ({ interaction, client, handler }) => {
         interaction.reply({
             content: 'Reset started',
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
 
         const guild = client.guilds.cache.get('1089282844657987587');
@@ -28,7 +28,7 @@ module.exports = {
             if (!guild) {
                 interaction.reply({
                     content: 'Could not fetch guild.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
                 return true;
             }
@@ -38,7 +38,7 @@ module.exports = {
             if (!member) {
                 interaction.reply({
                     content: 'Could not fetch member.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
     
                 return true;

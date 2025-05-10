@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 const applications = require('../../utils/applications');
 
 module.exports = {
@@ -47,13 +47,13 @@ module.exports = {
         if (interaction.guild === null) {
             interaction.reply({
                 content: 'This command can not be ran in DM\'s.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             return true;
         } else if (!interaction.member.roles.cache.has('1326233866083762277')) {
             interaction.reply({
                 content: 'You do not have access to this command.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             return true;
         };
@@ -117,7 +117,7 @@ module.exports = {
             if (!application) {
                 return interaction.reply({
                     content: 'This application does not exist!',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             };
     
@@ -133,9 +133,9 @@ module.exports = {
     
                 await application.save();
     
-                interaction.reply({ content: `Application status updated successfully! The bot has also cleared all feedback`, ephemeral: true });
+                interaction.reply({ content: `Application status updated successfully! The bot has also cleared all feedback`, flags: MessageFlags.Ephemeral });
             } else {
-                interaction.reply({ content: `Application status updated successfully!`, ephemeral: true });
+                interaction.reply({ content: `Application status updated successfully!`, flags: MessageFlags.Ephemeral });
     
                 await application.save();
             };
@@ -149,13 +149,13 @@ module.exports = {
                 if (!application) {
                     return interaction.reply({
                         content: 'This application does not exist!',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
     
                 interaction.reply({
                     content: 'Please check your DMs',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
     
                 const feedback = await collectResponse('Please reply with the feedback for the user. Reply with `cancel` if you want to cancel.', true)

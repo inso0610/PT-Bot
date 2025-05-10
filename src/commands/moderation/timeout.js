@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
 const warnings = require('../../utils/moderation/warnings');
 const modlogs = require('../../utils/moderation/modlogs');
 
@@ -30,7 +30,7 @@ module.exports = {
             .setRequired(false)),
 
     run: async ({ interaction, client, handler }) => {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         
         const commandUser = interaction.options.getUser('user');
         const duration = interaction.options.getInteger('duration');
@@ -41,32 +41,32 @@ module.exports = {
         const user = interaction.guild.members.cache.get(commandUser.id);
 
         if (!moderator || !user) {
-            return interaction.editReply({ content: 'An error occurred while fetching user data.', ephemeral: true });
+            return interaction.editReply({ content: 'An error occurred while fetching user data.', flags: MessageFlags.Ephemeral });
         }
 
         if (user.id === interaction.user.id) {
-            return interaction.editReply({ content: 'You can\'t timeout yourself!', ephemeral: true });
+            return interaction.editReply({ content: 'You can\'t timeout yourself!', flags: MessageFlags.Ephemeral });
         }
 
         if (user.id === client.user.id) {
-            return interaction.editReply({ content: 'You can\'t timeout me!', ephemeral: true });
+            return interaction.editReply({ content: 'You can\'t timeout me!', flags: MessageFlags.Ephemeral });
         }
 
         if (!user.kickable) {
-            return interaction.editReply({ content: 'I can\'t timeout this user!', ephemeral: true });
+            return interaction.editReply({ content: 'I can\'t timeout this user!', flags: MessageFlags.Ephemeral });
         }
         
         // Compare the highest roles
         if (moderator.roles.highest.comparePositionTo(user.roles.highest) <= 0) {
             return interaction.editReply({ 
                 content: 'You can\'t timeout this user because they have a higher or equal role than you!', 
-                ephemeral: true 
+                flags: MessageFlags.Ephemeral 
             });
         }
 
         // Timout the user
         await user.timeout(duration * 60 * 1000, reason).catch(() => {
-            return interaction.editReply({ content: 'I couldn\'t timeout this user!', ephemeral: true });
+            return interaction.editReply({ content: 'I couldn\'t timeout this user!', flags: MessageFlags.Ephemeral });
         });
 
         const message = await user.send(`**⚠️You have been given a timeout in the Polar Tracks Discord server.**\nReason: \`${reason}\`.\n${warn ? '\n**A warning was also applied.**' : ''}`).catch(() => {
@@ -107,7 +107,7 @@ module.exports = {
             warnLog.save();
         };
 
-        return interaction.editReply({ content: `User <@${user.id}> has been given a timeout. ${message ? '' : 'Failed to message this user.'}`, ephemeral: true });
+        return interaction.editReply({ content: `User <@${user.id}> has been given a timeout. ${message ? '' : 'Failed to message this user.'}`, flags: MessageFlags.Ephemeral });
     },
     modOnly: true,
 

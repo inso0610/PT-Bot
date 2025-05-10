@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
 const modlogs = require('../../utils/moderation/modlogs');
 const timebans = require('../../utils/moderation/timebans');
 
@@ -35,7 +35,7 @@ module.exports = {
             .setRequired(false)),
 
     run: async ({ interaction, client, handler }) => {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         
         const commandUser = interaction.options.getUser('user');
         const reason = interaction.options.getString('reason');
@@ -47,26 +47,26 @@ module.exports = {
         const user = interaction.guild.members.cache.get(commandUser.id);
 
         if (!moderator || !user) {
-            return interaction.editReply({ content: 'An error occurred while fetching user data.', ephemeral: true });
+            return interaction.editReply({ content: 'An error occurred while fetching user data.', flags: MessageFlags.Ephemeral });
         }
 
         if (user.id === interaction.user.id) {
-            return interaction.editReply({ content: 'You can\'t ban yourself!', ephemeral: true });
+            return interaction.editReply({ content: 'You can\'t ban yourself!', flags: MessageFlags.Ephemeral });
         }
 
         if (user.id === client.user.id) {
-            return interaction.editReply({ content: 'You can\'t ban me!', ephemeral: true });
+            return interaction.editReply({ content: 'You can\'t ban me!', flags: MessageFlags.Ephemeral });
         }
 
         if (!user.bannable) {
-            return interaction.editReply({ content: 'I can\'t ban this user!', ephemeral: true });
+            return interaction.editReply({ content: 'I can\'t ban this user!', flags: MessageFlags.Ephemeral });
         }
 
         // Compare the highest roles
         if (moderator.roles.highest.comparePositionTo(user.roles.highest) <= 0) {
             return interaction.editReply({ 
                 content: 'You can\'t ban this user because they have a higher or equal role than you!', 
-                ephemeral: true 
+                flags: MessageFlags.Ephemeral 
             });
         }
 
@@ -86,12 +86,12 @@ module.exports = {
         // Ban the user
         if (deleteMessages) {
             await user.ban({ deleteMessageSeconds: 60 * 60 * 24 * 7, reason: reason }).catch(() => {
-                interaction.editReply({ content: 'I couldn\'t ban this user! You can ban manually.', ephemeral: true });
+                interaction.editReply({ content: 'I couldn\'t ban this user! You can ban manually.', flags: MessageFlags.Ephemeral });
                 finishedBan = false;
             });
         } else {
             await user.ban({ reason: reason }).catch(() => {
-                interaction.editReply({ content: 'I couldn\'t ban this user! You can ban manually.', ephemeral: true });
+                interaction.editReply({ content: 'I couldn\'t ban this user! You can ban manually.', flags: MessageFlags.Ephemeral });
                 finishedBan = false;
             });
         };
@@ -120,7 +120,7 @@ module.exports = {
         if (finishedBan) {
             interaction.editReply({
                 content: `User <@${user.id}> has been banned for reason: ${reason}. ${message ? '' : 'Failed to message this user.'}`,
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         }
     },

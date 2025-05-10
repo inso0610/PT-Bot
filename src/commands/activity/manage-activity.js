@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 const activity = require('../../utils/activity.js');
 
 function getRobloxId(id) {
@@ -43,7 +43,7 @@ module.exports = {
 
     run: async ({ interaction, client, handler }) => {
         await interaction.deferReply({
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
 
         const activityFunction =  interaction.options.getString('function');
@@ -53,7 +53,7 @@ module.exports = {
             if (await activity.findOne( {discordId: manager.id} )) {
                 interaction.editReply({
                     content: 'This manager already exists in the system.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
                 return;
             };
@@ -63,7 +63,7 @@ module.exports = {
                 console.log(robloxId[0])
                 interaction.editReply({
                     content: 'The command failed. Contact Emilsen.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
                 return;
             };
@@ -77,7 +77,7 @@ module.exports = {
 
             interaction.editReply({
                 content: 'Created successfully.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             
         } else if (activityFunction === 'delete' ) {
@@ -85,7 +85,7 @@ module.exports = {
 
             interaction.editReply({
                 content: 'Deleted successfully.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         } else if (activityFunction === 'reset' ) {
             const managerActivity = await activity.findOne( {discordId: manager.id} ).exec();
@@ -108,12 +108,12 @@ module.exports = {
                 interaction.editReply({
                     content: 'Reset successfully.',
                     embeds: [oldActivityEmbed],
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             } else {
                 interaction.editReply({
                     content: 'This user is not in the activity system',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             };
         } else if (activityFunction === 'get' ) {
@@ -131,12 +131,12 @@ module.exports = {
                 interaction.editReply({
                     content: 'Got activity.',
                     embeds: [activityEmbed],
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             } else {
                 interaction.editReply({
                     content: 'This user is not in the activity system',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             };
         };

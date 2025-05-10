@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, MessageFlags } = require('discord.js');
 const { Types } = require('mongoose');
 
 const tickets = require('../../utils/tickets.js');
@@ -154,7 +154,7 @@ module.exports = {
                 } else {
                     return interaction.reply({
                         content: 'This ticket id is not valid.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 }
 
@@ -163,7 +163,7 @@ module.exports = {
                 if (!ticket) {
                     return interaction.reply({
                         content: 'This ticket does not exist or you don\'t have access to it with this command.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 }
 
@@ -172,7 +172,7 @@ module.exports = {
                 if (!ticketCreator) {
                     return interaction.reply({
                         content: 'Could not find the ticket creator.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 }
 
@@ -202,7 +202,7 @@ module.exports = {
                     if (error) {
                         interaction.followUp({
                             content: 'The modal timed out. Please try again.',
-                            ephemeral: true
+                            flags: MessageFlags.Ephemeral
                         });
                     }
                     return null;
@@ -218,7 +218,7 @@ module.exports = {
                         console.warn(e);
                         return interaction.followUp({
                             content: 'Something went wrong. Contact Emilsen.',
-                            ephemeral: true
+                            flags: MessageFlags.Ephemeral
                         });
                     });
 
@@ -249,7 +249,7 @@ module.exports = {
                         console.warn(e);
                         return interaction.followUp({
                             content: 'Something went wrong. Contact Emilsen.',
-                            ephemeral: true
+                            flags: MessageFlags.Ephemeral
                         });
                     });
 
@@ -267,12 +267,12 @@ module.exports = {
                 if (interaction.replied || interaction.deferred) {
                     interaction.followUp({
                         content: 'An unexpected error occurred.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     }).catch(console.warn);
                 } else {
                     interaction.followUp({
                         content: 'An unexpected error occurred.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     }).catch(console.warn);
                 }
                 console.warn(error);
@@ -289,7 +289,7 @@ module.exports = {
                 } else {
                     return interaction.reply({
                         content: 'This ticket id is not valid.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -298,7 +298,7 @@ module.exports = {
                 if (!ticket) {
                     return interaction.reply({
                         content: 'This ticket does not exist or you don\'t have access to it with this command.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -320,7 +320,7 @@ module.exports = {
                     if (!ticketMessage) {
                         interaction.reply({
                             content: 'Could not get the ticket message.',
-                            ephemeral: true
+                            flags: MessageFlags.Ephemeral
                         });
                         return;
                     };
@@ -350,12 +350,12 @@ module.exports = {
 
                 interaction.reply({
                     content: 'Succesfully added this note',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             } catch (error) {
                 interaction.reply({
                     content: 'An unexpected error occurred.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 }).catch(fe => {
                     console.warn(fe);
                 });
@@ -371,7 +371,7 @@ module.exports = {
                 if (!ticket) {
                     return interaction.reply({
                         content: 'This ticket does not exist.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -385,12 +385,12 @@ module.exports = {
 
                 interaction.reply({
                     content: 'The question responses have been sent to you in DMs.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             } catch (error) {
                 interaction.reply({
                     content: 'An unexpected error occurred.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 }).catch(fe => {
                     console.warn(fe);
                 });
@@ -407,7 +407,7 @@ module.exports = {
                 } else {
                     return interaction.reply({
                         content: 'This ticket id is not valid.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -416,7 +416,7 @@ module.exports = {
                 if (!ticket) {
                     return interaction.reply({
                         content: 'This ticket does not exist or you don\'t have access to it with this command.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -439,7 +439,7 @@ module.exports = {
                 if (!ticketMessage) {
                     return interaction.reply({
                         content: 'Could not get the ticket message.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -475,7 +475,7 @@ module.exports = {
                 if (!creator) {
                     return interaction.reply({
                         content: 'Could not find the user.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -483,18 +483,18 @@ module.exports = {
                     console.warn(e);
                     return interaction.reply({
                         content: 'The creator could not recieve the unclaim message.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     })
                 });
 
                 interaction.reply({
                     content: 'You unclaimed the ticket',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             } catch (error) {
                 interaction.reply({
                     content: 'An unexpected error occurred.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 }).catch(fe => {
                     console.warn(fe);
                 });
@@ -503,7 +503,7 @@ module.exports = {
 
         } else if (subcommand === "transfer") {
             await interaction.deferReply({
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
             try {
@@ -516,7 +516,7 @@ module.exports = {
                 } else {
                     return interaction.editReply({
                         content: 'This ticket id is not valid.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -525,7 +525,7 @@ module.exports = {
                 if (!ticket) {
                     return interaction.editReply({
                         content: 'This ticket does not exist or you don\'t have access to it with this command.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -591,7 +591,7 @@ module.exports = {
                 if (!creator) {
                     return interaction.editReply({
                         content: 'Could not find the user.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -602,19 +602,19 @@ module.exports = {
 
                 interaction.editReply({
                     content: 'The ticket has been transfered',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             } catch (error) {
                 interaction.editReply({
                     content: 'An unexpected error occurred.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 }).catch(fe => {
                     console.warn(fe);
                 });
                 console.warn(error);
             };
         } else if (subcommand === "logs") {
-            await interaction.deferReply({ ephemeral: true });
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
             try {
                 const ticketIdString = interaction.options.getString('id');
@@ -625,7 +625,7 @@ module.exports = {
                 } else {
                     return interaction.editReply({
                         content: 'This ticket ID is not valid.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -634,7 +634,7 @@ module.exports = {
                 if (!guild) {
                     return interaction.editReply({
                         content: 'Could not fetch guild.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -643,7 +643,7 @@ module.exports = {
                 if (!member) {
                     return interaction.editReply({
                         content: 'Could not fetch member.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -657,7 +657,7 @@ module.exports = {
                 if (!ticket) {
                     return interaction.editReply({
                         content: 'This ticket does not exist or you don\'t have access to it with this command.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -665,7 +665,7 @@ module.exports = {
                 if (!logs || Object.keys(logs).length === 0) {
                     return interaction.editReply({
                         content: 'No logs found for this ticket.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -693,12 +693,12 @@ module.exports = {
 
                 interaction.editReply({
                     content: 'The logs have been sent in your DMs.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             } catch (error) {
                 interaction.editReply({
                     content: 'An unexpected error occurred.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 }).catch(fe => {
                     console.warn(fe);
                 });
@@ -714,7 +714,7 @@ module.exports = {
                 } else {
                     return interaction.editReply({
                         content: 'This ticket ID is not valid.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -723,7 +723,7 @@ module.exports = {
                 if (!guild) {
                     return interaction.editReply({
                         content: 'Could not fetch guild.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -732,7 +732,7 @@ module.exports = {
                 if (!member) {
                     return interaction.editReply({
                         content: 'Could not fetch member.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -746,7 +746,7 @@ module.exports = {
                 if (!ticket) {
                     return interaction.editReply({
                         content: 'This ticket does not exist or you don\'t have access to it with this command.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -780,7 +780,7 @@ module.exports = {
                 }).catch(e => {
                     interaction.reply({
                         content: `I could not send you the ticket information.`,
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
 
                     console.warn(e);
@@ -790,19 +790,19 @@ module.exports = {
 
                 interaction.reply({
                     content: 'The ticket information has been sent.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             } catch (error) {
                 interaction.reply({
                     content: 'An unexpected error occurred.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 }).catch(fe => {
                     console.warn(fe);
                 });
                 console.warn(error);
             };
         } else if (subcommand === "notes") {
-            interaction.deferReply({ ephemeral: true });
+            interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
             try {
                 const ticketIdString = interaction.options.getString('id');
@@ -813,7 +813,7 @@ module.exports = {
                 } else {
                     return interaction.editReply({
                         content: 'This ticket ID is not valid.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 }
 
@@ -822,7 +822,7 @@ module.exports = {
                 if (!guild) {
                     return interaction.editReply({
                         content: 'Could not fetch guild.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 }
 
@@ -831,7 +831,7 @@ module.exports = {
                 if (!member) {
                     return interaction.editReply({
                         content: 'Could not fetch member.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 }
 
@@ -845,7 +845,7 @@ module.exports = {
                 if (!ticket) {
                     return interaction.editReply({
                         content: 'This ticket does not exist or you don\'t have access to it with this command.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 }
 
@@ -853,7 +853,7 @@ module.exports = {
                 if (!notes || Object.keys(notes).length === 0) {
                     return interaction.editReply({
                         content: 'No notes found for this ticket.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 }
 
@@ -881,12 +881,12 @@ module.exports = {
 
                 interaction.editReply({
                     content: 'The notes have been sent in your DMs.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             } catch (error) {
                 interaction.editReply({
                     content: 'An unexpected error occurred.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 }).catch(fe => {
                     console.warn(fe);
                 });
@@ -902,7 +902,7 @@ module.exports = {
                 } else {
                     return interaction.editReply({
                         content: 'This ticket ID is not valid.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -911,7 +911,7 @@ module.exports = {
                 if (!guild) {
                     return interaction.editReply({
                         content: 'Could not fetch guild.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -920,7 +920,7 @@ module.exports = {
                 if (!member) {
                     return interaction.editReply({
                         content: 'Could not fetch member.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -934,7 +934,7 @@ module.exports = {
                 if (!ticket) {
                     return interaction.editReply({
                         content: 'This ticket does not exist or you don\'t have access to it with this command.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -942,7 +942,7 @@ module.exports = {
             } catch (error) {
                 interaction.reply({
                     content: 'An unexpected error occurred.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 }).catch(fe => {
                     console.warn(fe);
                 });
@@ -959,7 +959,7 @@ module.exports = {
                 if (blacklisted) {
                     return interaction.reply({
                         content: 'This user is already blacklisted.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
@@ -985,7 +985,7 @@ module.exports = {
 
                 interaction.reply({
                     content: `User <@${user.id}> has been blacklisted for reason: ${reason}.`,
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
 
                 if (permanent) {
@@ -993,7 +993,7 @@ module.exports = {
                         console.warn(e);
                         interaction.followUp({
                             content: 'User has been blacklisted, but I was unable to send them a DM.',
-                            ephemeral: true
+                            flags: MessageFlags.Ephemeral
                         });
                     });
                 } else {
@@ -1001,14 +1001,14 @@ module.exports = {
                         console.warn(e);
                         interaction.followUp({
                             content: 'User has been blacklisted, but I was unable to send them a DM.',
-                            ephemeral: true
+                            flags: MessageFlags.Ephemeral
                         });
                     });
                 };
             } catch (error) {
                 interaction.reply({
                     content: 'An unexpected error occurred.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 }).catch(fe => {
                     console.warn(fe);
                 });
@@ -1023,26 +1023,26 @@ module.exports = {
                 if (!blacklisted) {
                     return interaction.reply({
                         content: `User <@${user.id}> is not blacklisted.`,
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 };
 
                 interaction.reply({
                     content: `User <@${user.id}> has been removed from the blacklist.`,
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
 
                 user.send(`You have been removed from the ticket blacklist.`).catch(e => {
                     console.warn(e);
                     interaction.followUp({
                         content: 'User has been removed from the blacklist, but I was unable to send them a DM.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 });
             } catch (error) {
                 interaction.reply({
                     content: 'An unexpected error occurred.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 }).catch(fe => {
                     console.warn(fe);
                 });

@@ -1,3 +1,5 @@
+const { MessageFlags } = require('discord.js');
+
 module.exports = async ({ interaction, commandObj }) => {
     if (commandObj.ticketModOnly) {
         const guild = interaction.client.guilds.cache.get('1089282844657987587');
@@ -5,7 +7,7 @@ module.exports = async ({ interaction, commandObj }) => {
         if (!guild) {
             interaction.reply({
                 content: 'Could not fetch guild.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             return true;
         };
@@ -15,7 +17,7 @@ module.exports = async ({ interaction, commandObj }) => {
         if (!member) {
             interaction.reply({
                 content: 'Could not fetch member.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
             return true;
@@ -24,7 +26,7 @@ module.exports = async ({ interaction, commandObj }) => {
         if (!member.roles.cache.has('1111370796439453777') && !member.roles.cache.has('1142479698635526304')) {
             interaction.reply({
                 content: 'You do not have access to this command.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
             return true;

@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
 const modlogs = require('../../utils/moderation/modlogs');
 const timebans = require('../../utils/moderation/timebans');
 
@@ -20,7 +20,7 @@ module.exports = {
             .setRequired(true)),
 
     run: async ({ interaction, client, handler }) => {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
         const userId = interaction.options.getString('user-id');
         const reason = interaction.options.getString('reason');
@@ -28,13 +28,13 @@ module.exports = {
         const moderator = interaction.guild.members.cache.get(interaction.user.id);
 
         if (!moderator) {
-            return interaction.editReply({ content: 'An error occurred while fetching user data.', ephemeral: true });
+            return interaction.editReply({ content: 'An error occurred while fetching user data.', flags: MessageFlags.Ephemeral });
         }
 
         // Unban the user
         interaction.guild.members.unban(userId, reason)
         .then(async () => {
-            await interaction.editReply({ content: `Successfully unbanned <@${userId}>!`, ephemeral: true });
+            await interaction.editReply({ content: `Successfully unbanned <@${userId}>!`, flags: MessageFlags.Ephemeral });
 
             // Delete timeban if exists
             const timeban = await timebans.findOne({ discordId: userId });
@@ -53,7 +53,7 @@ module.exports = {
             
             await unbanLog.save();
         }).catch((error) => {
-            interaction.editReply({ content: 'An error occurred while unbanning the user.', ephemeral: true });
+            interaction.editReply({ content: 'An error occurred while unbanning the user.', flags: MessageFlags.Ephemeral });
             console.warn(error);
         });
     },

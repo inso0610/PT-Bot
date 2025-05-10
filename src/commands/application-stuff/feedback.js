@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js')
 
 const applications = require('../../utils/applications');
 
@@ -69,7 +69,7 @@ module.exports = {
             if (!application[0]) {
                 interaction.reply({
                     content: 'We have no feedback for you.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
 
                 return;
@@ -87,14 +87,14 @@ module.exports = {
 
             interaction.reply({
                 content: 'Your application results have been sent in your DMs.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
         } catch (error) {
             console.log(error);
             interaction.reply({
                 content: 'Failed to get feedback. Expecting feedback? Please create a ticket!',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             return
         };

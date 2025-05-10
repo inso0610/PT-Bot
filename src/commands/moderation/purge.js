@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, WebhookClient } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, WebhookClient, MessageFlags } = require('discord.js');
 const webhookClient = new WebhookClient({ id: '1338191419709591682', token: '_bGgIHOt6m5VFFqhahwKNj8b_9M8fkbMueVEfRWz9fY2GEwAMybKYjuKcEsXkEoJ_YJ0' }); 
 
 module.exports = {
@@ -23,8 +23,8 @@ module.exports = {
         const channel = interaction.channel;
 
         if (subcommand === 'any') {
-            if (amount > 1000) return interaction.reply({ content: 'You can only delete up to 1000 messages at once.', ephemeral: true });
-            if (amount < 2) return interaction.reply({ content: 'You need to delete at least 2 messages.', ephemeral: true });
+            if (amount > 1000) return interaction.reply({ content: 'You can only delete up to 1000 messages at once.', flags: MessageFlags.Ephemeral });
+            if (amount < 2) return interaction.reply({ content: 'You need to delete at least 2 messages.', flags: MessageFlags.Ephemeral });
 
             const messages = await channel.messages.fetch({ limit: amount });
             await channel.bulkDelete(messages, true).catch(() => {});
@@ -43,7 +43,7 @@ module.exports = {
                 return;
             }); 
 
-            return interaction.reply({ content: `Deleted ${amount} messages.`, ephemeral: true });
+            return interaction.reply({ content: `Deleted ${amount} messages.`, flags: MessageFlags.Ephemeral });
         }
     },
     modOnly: true,
