@@ -114,13 +114,13 @@ module.exports = {
         .addStringOption((option) =>
             option
                 .setName('additional-info')
-                .setDescription('Write any additional info about the training here.')
+                .setDescription('Write any additional info about the training here, leave empty if there is none.')
                 .setRequired(false))
 
         .addUserOption((option) =>
             option
                 .setName('host')
-                .setDescription('Who is hosting the training?')
+                .setDescription('Who is hosting the training? Leave this empty if you are.')
                 .setRequired(false)),
 
     run: async ({ interaction, client, handler }) => {
