@@ -74,7 +74,7 @@ console.log(differenceInMinutes);
                     });
 
                     await training.deleteOne();
-return;
+                    return;
                 }
 
                 training.status = 'Server locked';

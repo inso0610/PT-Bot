@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "commandkit": "^0.1.6",
-    "discord.js": "^14.8.0",
+    "discord.js": "^14.19.3",
     "dotenv": "^16.0.3",
     "luxon": "^3.6.1",
     "mathjs": "^14.2.1",
