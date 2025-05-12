@@ -56,8 +56,6 @@ module.exports = async (client) => {
             const difference = training.date.getTime() - dTimestamp; // Positive if training date is in the future, negative if it's in the past
             const differenceInMinutes = Math.floor(difference / 60000);
 
-console.log(differenceInMinutes);
-
             if ((differenceInMinutes <= 0 && differenceInMinutes > -120) && training.status !== 'Server locked') {
                 if (training.status !== 'Server unlocked') {
                     const host = await client.users.fetch(training.hostDiscordId).catch(e => {
@@ -74,7 +72,7 @@ console.log(differenceInMinutes);
                     });
 
                     await training.deleteOne();
-return;
+                    return;
                 }
 
                 training.status = 'Server locked';
