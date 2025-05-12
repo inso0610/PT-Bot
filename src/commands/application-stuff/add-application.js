@@ -1,11 +1,11 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 const applications = require('../../utils/applications.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('add-application')
     .setDescription('Add a new application to the application system. (Bot dev only)')
-    .setDMPermission(false)
+    .setContexts(['Guild'])
     .addStringOption((option) => 
         option
             .setName('role')
@@ -26,7 +26,7 @@ module.exports = {
         if (existing) {
             interaction.reply({
                 content: 'This application already exists in the system!',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             return;
         };
@@ -40,7 +40,7 @@ module.exports = {
 
         interaction.reply({
             content: 'Hopefully added lol',
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
     },
     gaOnly: true,

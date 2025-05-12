@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags } = require('discord.js');
 
 const tickets = require('./tickets.js');
 const ticketBlacklist = require('./ticketBlacklist.js');
@@ -76,7 +76,7 @@ const creatingATicket = [];
 async function createTicket(interaction, client) {
     await interaction.reply({
         content: 'The ticket creation process is starting. Please check your DMs.',
-        ephemeral: true
+        flags: MessageFlags.Ephemeral
     });
 
     const createTicketButton = new ButtonBuilder()
@@ -93,7 +93,7 @@ async function createTicket(interaction, client) {
         return interaction.user.send(messageContent).catch(e => {
             interaction.followUp({
                 content: "I can't DM you, please check your DM settings!",
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             }).catch(e2 => {
                 console.warn(e2);
             });
@@ -209,7 +209,7 @@ async function createTicket(interaction, client) {
         if (creatingATicket.includes(interaction.user.id)) {
             interaction.followUp({
                 content: 'You are already creating a ticket.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
             return;
@@ -546,7 +546,7 @@ async function closeTicket(id, interaction, client) {
     if (!ticket) {
         interaction.reply({
             content: 'This ticket does not exist.',
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
         return;
     };
@@ -554,7 +554,7 @@ async function closeTicket(id, interaction, client) {
     if (ticket.claimedId === '-1') {
         interaction.reply({
             content: 'This ticket is already closed.',
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
         return;
     };
@@ -574,7 +574,7 @@ async function closeTicket(id, interaction, client) {
     if (!ticketCreator) {
         return interaction.reply({
             content: 'Could not find the user.',
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
     };
 
@@ -582,7 +582,7 @@ async function closeTicket(id, interaction, client) {
         console.warn(e);
         return interaction.reply({
             content: 'Something went wrong. Contact Emilsen.',
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
     });
 
@@ -591,7 +591,7 @@ async function closeTicket(id, interaction, client) {
     if (!claimedUser) {
         return interaction.reply({
             content: 'Could not find the user.',
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
     };
 
@@ -599,13 +599,13 @@ async function closeTicket(id, interaction, client) {
         console.warn(e);
         return interaction.reply({
             content: 'Something went wrong. Contact Emilsen.',
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
     });
 
     interaction.reply({
         content: 'The ticket was closed.',
-        ephemeral: true
+        flags: MessageFlags.Ephemeral
     });
 
     ticket.claimedId = '-1';

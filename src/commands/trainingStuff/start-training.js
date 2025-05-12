@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 const trainings = require('../../utils/trainings.js');
 const activity = require('../../utils/activity.js');
 
@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('start-training')
     .setDescription('Start a training')
-    .setDMPermission(false)
+    .setContexts(['Guild'])
     .addStringOption((option) => 
         option
             .setName('id')
@@ -50,7 +50,7 @@ module.exports = {
             if (!training) {
                 return interaction.reply({
                     content: 'This training does not exist.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             };
 
@@ -86,7 +86,7 @@ module.exports = {
 
             interaction.reply({
                 content: 'Training started.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
             training.status = 'Server unlocked'
@@ -96,7 +96,7 @@ module.exports = {
             console.warn(error)
             interaction.reply({
                 content: 'Command failed. Please contact Emilsen.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             })
         }
     },

@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 
 const { isValidDateFormat, isValidTimeFormat } = require('../../utils/dateTimeUtils.js');
 const { autocomplete } = require('../application-stuff/application.js');
@@ -7,7 +7,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('request-training')
         .setDescription('Use this command to request a training.')
-        .setDMPermission(false)
+        .setContexts(['Guild'])
         .addStringOption((option) =>
             option
                 .setName('timezone')
@@ -46,14 +46,14 @@ module.exports = {
         if (!isValidDateFormat(date)) {
             return interaction.reply({
                 content: 'Incorrect date format! Please use this format: dd/mm/yyyy',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         };
 
         if (!isValidTimeFormat(time)) {
             return interaction.reply({
                 content: 'Incorrect time format! Please use this format: hh:mm',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         };
 
@@ -62,7 +62,7 @@ module.exports = {
         if (!timezones.includes(timezone)) {
             return interaction.reply({
                 content: 'Incorrect timezone! Please use a valid timezone.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         };
 
@@ -100,7 +100,7 @@ module.exports = {
 
             interaction.reply({
                 content: 'Your Driver Training request has been sent!',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         } else if (interaction.member.roles.cache.has('1140337698335371384')) { //Is user Driver? 
             const embed = createEmbed('Dispatcher');
@@ -121,7 +121,7 @@ module.exports = {
 
             interaction.reply({
                 content: 'Your Dispatcher Training request has been sent!',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         } else if (interaction.member.roles.cache.has('1089284420143419503')) { //Is user Conductor? 
             const embed = createEmbed('Dispatcher');
@@ -142,7 +142,7 @@ module.exports = {
 
             interaction.reply({
                 content: 'Your Dispatcher Training request has been sent!',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         } else if (interaction.member.roles.cache.has('1089284418541199522')) { //Is user Dispatcher? 
             const embed = createEmbed('Signaller');
@@ -163,7 +163,7 @@ module.exports = {
 
             interaction.reply({
                 content: 'Your Signaller Training request has been sent!',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         } else if (interaction.member.roles.cache.has('1111370796439453777') && !interaction.member.roles.cache.has('1138884023465283696')) { //Is user Manager without QUS? 
             const embed = createEmbed('Signaller');
@@ -184,12 +184,12 @@ module.exports = {
 
             interaction.reply({
                 content: 'Your Signaller Training request has been sent!',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         } else {
             interaction.reply({
                 content: 'Request failed. Either you are not in the group or you are fully trained.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         };
     },

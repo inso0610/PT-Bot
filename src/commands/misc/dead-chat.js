@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder, MessageFlags } = require('discord.js')
 const deadChat = require('../../utils/storedDates.js');
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
         if (interaction.guild === null) {
             interaction.reply({
                 content: 'This command can not be ran in DM\'s.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             return;
         };
@@ -22,7 +22,7 @@ module.exports = {
 
             interaction.reply({
                 content: 'Finished',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
             deadChatSchema.save();

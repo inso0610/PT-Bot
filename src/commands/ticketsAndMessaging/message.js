@@ -1,10 +1,10 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('message')
     .setDescription('Sends a message to someone using the PT Bot')
-    .setDMPermission(false)
+    .setContexts(['Guild'])
     .addUserOption((option) =>
         option
             .setName('receiver')
@@ -48,13 +48,13 @@ module.exports = {
         if (team === 'Director' && !interaction.member.roles.cache.has('1140260309915938866')) {
             interaction.reply({
                 content: "You can't send a message as a Director.",
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             return;
         } else if (team === 'Group Advisor' && !interaction.member.roles.cache.has('1089284396282032178')) {
             interaction.reply({
                 content: "You can't send a message as a Group Advisor.",
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             return;
         };
@@ -77,7 +77,7 @@ module.exports = {
                 console.warn(e);
                 interaction.reply({
                     content: 'I could not message the user.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
                 return false;
             });
@@ -85,7 +85,7 @@ module.exports = {
             if (message !== false) {
                 interaction.reply({
                     content: 'Sent the message.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             }
         } else {
@@ -96,7 +96,7 @@ module.exports = {
                 console.warn(e);
                 interaction.reply({
                     content: 'I could not message the user.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
                 return false;
             });
@@ -104,7 +104,7 @@ module.exports = {
             if (message !== false) {
                 interaction.reply({
                     content: 'Sent the message.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             }
         };

@@ -1,16 +1,16 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 const trainings = require('../../utils/trainings.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('get-trainings')
         .setDescription('Get your trainings')
-        .setDMPermission(false),
+        .setContexts(['Guild']),
     
     run: async ({ interaction, client, handler }) => {
         await interaction.reply({
             content: 'Please check your DMs.',
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
 
         try {
@@ -18,7 +18,7 @@ module.exports = {
             
             if (!assignedTrainings.length) {
                 return interaction.user.send('You have no assigned trainings.').catch(() => {
-                    interaction.followUp({ content: 'I was unable to send you a DM.', ephemeral: true });
+                    interaction.followUp({ content: 'I was unable to send you a DM.', flags: MessageFlags.Ephemeral });
                 });
             }
             
@@ -30,11 +30,11 @@ module.exports = {
 **Status:** ${t.status}`).join('\n\n'));
 
             interaction.user.send({ embeds: [embed] }).catch(() => {
-                interaction.followUp({ content: 'I was unable to send you a DM.', ephemeral: true });
+                interaction.followUp({ content: 'I was unable to send you a DM.', flags: MessageFlags.Ephemeral });
             });
         } catch (error) {
             console.error(error);
-            interaction.followUp({ content: 'An error occurred while fetching your trainings.', ephemeral: true });
+            interaction.followUp({ content: 'An error occurred while fetching your trainings.', flags: MessageFlags.Ephemeral });
         }
     },
     

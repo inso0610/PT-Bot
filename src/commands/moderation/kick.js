@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
 const warnings = require('../../utils/moderation/warnings');
 const modlogs = require('../../utils/moderation/modlogs');
 
@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('kick')
     .setDescription('Kick someone from the Discord server')
-    .setDMPermission(false)
+    .setContexts(['Guild'])
     .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
     .addUserOption((option) =>
         option
@@ -25,7 +25,7 @@ module.exports = {
             .setRequired(false)),
 
     run: async ({ interaction, client, handler }) => {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
         const commandUser = interaction.options.getUser('user');
         const reason = interaction.options.getString('reason');
@@ -35,26 +35,26 @@ module.exports = {
         const user = interaction.guild.members.cache.get(commandUser.id);
 
         if (!moderator || !user) {
-            return interaction.editReply({ content: 'An error occurred while fetching user data.', ephemeral: true });
+            return interaction.editReply({ content: 'An error occurred while fetching user data.', flags: MessageFlags.Ephemeral });
         }
 
         if (user.id === interaction.user.id) {
-            return interaction.editReply({ content: 'You can\'t kick yourself!', ephemeral: true });
+            return interaction.editReply({ content: 'You can\'t kick yourself!', flags: MessageFlags.Ephemeral });
         }
 
         if (user.id === client.user.id) {
-            return interaction.editReply({ content: 'You can\'t kick me!', ephemeral: true });
+            return interaction.editReply({ content: 'You can\'t kick me!', flags: MessageFlags.Ephemeral });
         }
 
         if (!user.kickable) {
-            return interaction.editReply({ content: 'I can\'t kick this user!', ephemeral: true });
+            return interaction.editReply({ content: 'I can\'t kick this user!', flags: MessageFlags.Ephemeral });
         }
         
         // Compare the highest roles
         if (moderator.roles.highest.comparePositionTo(user.roles.highest) <= 0) {
             return interaction.editReply({ 
                 content: 'You can\'t kick this user because they have a higher or equal role than you!', 
-                ephemeral: true 
+                flags: MessageFlags.Ephemeral 
             });
         }
 
@@ -65,7 +65,7 @@ module.exports = {
 
         // Kick the user
         await user.kick(reason).catch(() => {
-            return interaction.editReply({ content: 'I couldn\'t kick this user!', ephemeral: true });
+            return interaction.editReply({ content: 'I couldn\'t kick this user!', flags: MessageFlags.Ephemeral });
         });
 
         // Log the action
@@ -102,7 +102,7 @@ module.exports = {
             warnLog.save();
         };
 
-        return interaction.editReply({ content: `User <@${user.id}> has been kicked. ${message ? '' : 'Failed to message this user.'}`, ephemeral: true });
+        return interaction.editReply({ content: `User <@${user.id}> has been kicked. ${message ? '' : 'Failed to message this user.'}`, flags: MessageFlags.Ephemeral });
     },
     modOnly: true,
 

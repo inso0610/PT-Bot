@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags } = require('discord.js');
 const { DateTime } = require('luxon');
 const model = require('../../utils/trainings.js');
 const { isValidDateFormat, isValidTimeFormat } = require('../../utils/dateTimeUtils.js');
@@ -81,7 +81,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('schedule-training')
         .setDescription('Scheduled a training')
-        .setDMPermission(false)
+        .setContexts(['Guild'])
         .addStringOption((option) =>
             option
                 .setName('type')
@@ -114,18 +114,18 @@ module.exports = {
         .addStringOption((option) =>
             option
                 .setName('additional-info')
-                .setDescription('Write any additional info about the training here.')
+                .setDescription('Write any additional info about the training here, leave empty if there is none.')
                 .setRequired(false))
 
         .addUserOption((option) =>
             option
                 .setName('host')
-                .setDescription('Who is hosting the training?')
+                .setDescription('Who is hosting the training? Leave this empty if you are.')
                 .setRequired(false)),
 
     run: async ({ interaction, client, handler }) => {
         await interaction.deferReply({
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
 
         try {
@@ -140,14 +140,14 @@ module.exports = {
             if (!isValidDateFormat(scheduledDateCMD)) {
                 return interaction.editReply({
                     content: 'Incorrect date format! Please use this format: dd/mm/yyyy',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             };
 
             if (!isValidTimeFormat(scheduledStartCMD)) {
                 return interaction.editReply({
                     content: 'Incorrect time format! Please use this format: hh:mm',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             };
 
@@ -156,7 +156,7 @@ module.exports = {
             if (!timezones.includes(timezone)) {
                 return interaction.reply({
                     content: 'Incorrect timezone! Please use a valid timezone.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             };
 
@@ -167,7 +167,7 @@ module.exports = {
                 console.log(userInfo)
                 interaction.editReply({
                     content: 'The command failed. Contact Emilsen.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
                 return;
             };
@@ -279,7 +279,7 @@ module.exports = {
 
             interaction.editReply({
                 content: 'The training has been scheduled.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         } catch (error) {
             console.warn(error)

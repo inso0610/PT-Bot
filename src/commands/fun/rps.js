@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -115,7 +115,7 @@ module.exports = {
         } catch (error) {
             interaction.reply({
                 content: 'Error, contact <@935889950547771512>',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
             console.warn(error)

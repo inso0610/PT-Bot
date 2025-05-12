@@ -1,11 +1,11 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 const counting = require('../../utils/counting.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('edit-count')
     .setDescription('Edit the count')
-    .setDMPermission(false)
+    .setContexts(['Guild'])
     .addIntegerOption((option) => 
         option
             .setName('new-count')
@@ -17,7 +17,7 @@ module.exports = {
         const nextCount = interaction.options.getInteger('new-count')
 
         await interaction.deferReply({
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
 
         try {
@@ -42,12 +42,12 @@ module.exports = {
     
             interaction.editReply({
                 content: 'Updated!',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         } catch (error) {
             interaction.editReply({
                 content: 'Command failed.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             console.warn(error);
         }

@@ -1,11 +1,11 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 const countingBlacklist = require('../../utils/countingBlacklist.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('counting-blacklist')
     .setDescription('Commands related to the counting blacklist')
-    .setDMPermission(false)
+    .setContexts(['Guild'])
     .addSubcommand(subcommand =>
         subcommand
             .setName('add')
@@ -48,7 +48,7 @@ module.exports = {
 
             interaction.reply({
                 content: `User <@${user.id}> has been blacklisted for reason: ${reason}.`,
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
             if (permanent) {
@@ -56,7 +56,7 @@ module.exports = {
                     console.warn(e);
                     interaction.followUp({
                         content: 'User has been blacklisted, but I was unable to send them a DM.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 });
             } else {
@@ -64,7 +64,7 @@ module.exports = {
                     console.warn(e);
                     interaction.followUp({
                         content: 'User has been blacklisted, but I was unable to send them a DM.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 });
             };
@@ -76,21 +76,21 @@ module.exports = {
             if (!blacklisted) {
                 interaction.reply({
                     content: `User <@${user.id}> is not blacklisted.`,
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
                 return;
             };
 
             interaction.reply({
                 content: `User <@${user.id}> has been removed from the blacklist.`,
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
             user.send(`You have been removed from the counting blacklist.`).catch(e => {
                 console.warn(e);
                 interaction.followUp({
                     content: 'User has been removed from the blacklist, but I was unable to send them a DM.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             });
         }

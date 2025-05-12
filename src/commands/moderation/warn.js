@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
 const warnings = require('../../utils/moderation/warnings');
 const modlogs = require('../../utils/moderation/modlogs');
 
@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('warn')
     .setDescription('Commands related to warnings.')
-    .setDMPermission(false)
+    .setContexts(['Guild'])
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .addSubcommand(subcommand =>
         subcommand
@@ -27,7 +27,7 @@ module.exports = {
 
     run: async ({ interaction, client, handler }) => {
         const subcommand = interaction.options.getSubcommand();
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
         if (subcommand === 'add') {
             const user = interaction.options.getUser('user');
@@ -40,20 +40,20 @@ module.exports = {
             if (moderator.roles.highest.comparePositionTo(warnedUser.roles.highest) <= 0) {
                 return interaction.editReply({ 
                     content: 'You can\'t warn this user because they have a higher or equal role than you!', 
-                    ephemeral: true 
+                    flags: MessageFlags.Ephemeral 
                 });
             }
 
             if (!moderator || !warnedUser) {
-                return interaction.editReply({ content: 'An error occurred while fetching user data.', ephemeral: true });
+                return interaction.editReply({ content: 'An error occurred while fetching user data.', flags: MessageFlags.Ephemeral });
             }
 
             if (warnedUser.id === interaction.user.id) {
-                return interaction.editReply({ content: 'You can\'t warn yourself!', ephemeral: true });
+                return interaction.editReply({ content: 'You can\'t warn yourself!', flags: MessageFlags.Ephemeral });
             }
 
             if (warnedUser.id === client.user.id) {
-                return interaction.editReply({ content: 'You can\'t warn me!', ephemeral: true });
+                return interaction.editReply({ content: 'You can\'t warn me!', flags: MessageFlags.Ephemeral });
             }
 
             const newWarning = new warnings({
@@ -78,14 +78,14 @@ module.exports = {
 
             interaction.editReply({
                 content: `User <@${user.id}> has been warned for reason: ${reason}.`,
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
             warnedUser.send(`**⚠️You have been warned in the Polar Tracks Discord server.**\nReason: \`${reason}.\``).catch(e => {
                 console.warn(e);
                 interaction.followUp({
                     content: 'User has been warned, but I was unable to send them a DM.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             });
         } else if (subcommand === 'remove') {
@@ -93,12 +93,12 @@ module.exports = {
 
             const warningToRemove = await warnings.findByIdAndRemove(warning).exec();
             if (!warningToRemove) {
-                return interaction.editReply({ content: 'This warning does not exist.', ephemeral: true });
+                return interaction.editReply({ content: 'This warning does not exist.', flags: MessageFlags.Ephemeral });
             }
 
             interaction.editReply({
                 content: `Warning ${warning} has been removed from user <@${warningToRemove.discordId}>.`,
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
 
             // log the warning removal
@@ -116,14 +116,14 @@ module.exports = {
 
             const userWarnings = await warnings.find({ discordId: user.id }).exec();
             if (!userWarnings.length) {
-                return interaction.editReply({ content: 'This user has no warnings.', ephemeral: true });
+                return interaction.editReply({ content: 'This user has no warnings.', flags: MessageFlags.Ephemeral });
             };
 
             const embed = new EmbedBuilder()
                 .setTitle(`Warnings for ${user.tag}`)
                 .setDescription(userWarnings.map(warning => `**${warning._id.toString()}** - ${warning.reason} (Warned by: ${warning.moderatorUsername})`).join('\n'));
 
-            interaction.editReply({ embeds: [embed], ephemeral: true });
+            interaction.editReply({ embeds: [embed], flags: MessageFlags.Ephemeral });
         }
     },
     modOnly: true,

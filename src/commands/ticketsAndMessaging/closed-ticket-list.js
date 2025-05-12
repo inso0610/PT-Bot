@@ -1,14 +1,14 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 const tickets = require('../../utils/tickets.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('closed-tickets')
         .setDescription('Lists all closed ticket IDs.')
-        .setDMPermission(false),
+        .setContexts(['Guild']),
 
     run: async ({ interaction }) => {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
         const closedTickets = await tickets.find({ claimedId: '-1' }).exec();
         if (!closedTickets.length) {
@@ -35,7 +35,7 @@ module.exports = {
         });
 
         for (const msg of messages) {
-            await interaction.followUp({ content: msg, ephemeral: true });
+            await interaction.followUp({ content: msg, flags: MessageFlags.Ephemeral });
         }
     },
 

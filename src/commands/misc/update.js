@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -16,7 +16,7 @@ module.exports = {
 
         await interaction.deferReply({
             content: 'Wait...',
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
 
         fetch(`https://api.blox.link/v4/public/guilds/1089282844657987587/update-user/${interaction.user.id}`, { method: "POST", headers: { "Authorization": "66ef19b6-b0f6-41f4-b883-63d833484ac6" } })
@@ -64,13 +64,13 @@ module.exports = {
 
                     interaction.editReply({
                         embeds: [updateEmbed],
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                 
                 } catch (error) {
                     interaction.editReply({
                         content: 'Command failed, you may not be verified with Bloxlink. Use /verify to verify.',
-                        ephemeral: true
+                        flags: MessageFlags.Ephemeral
                     });
                     console.log(error);
                 };

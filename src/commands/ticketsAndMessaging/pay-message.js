@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, Embed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 
 function getRobloxData(id) {
     const functionResult = fetch(`https://api.blox.link/v4/public/guilds/1089282844657987587/discord-to-roblox/${id.toString()}`, { method: "GET", headers: { "Authorization": "66ef19b6-b0f6-41f4-b883-63d833484ac6" } })
@@ -24,7 +24,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('pay-message')
     .setDescription('Send a payment message to a user.')
-    .setDMPermission(false)
+    .setContexts(['Guild'])
     .addUserOption((option) => 
         option
             .setName('user')
@@ -37,7 +37,7 @@ module.exports = {
             .setRequired(true)),
 
     run: async ({ interaction, client, handler }) => {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         const user = interaction.options.getUser('user');
         const amount = interaction.options.getString('amount');
 
@@ -47,7 +47,7 @@ module.exports = {
             console.warn(userInfo)
             interaction.editReply({
                 content: 'The command failed. Contact Emilsen.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             return;
         };
@@ -72,7 +72,7 @@ module.exports = {
                 console.log(e);
                 interaction.editReply({
                     content: 'The command failed. Contact Emilsen.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
                 return;
             })
@@ -80,7 +80,7 @@ module.exports = {
             interaction.editReply({
                 content: 'Message sent.',
                 embeds: [ paymentEmbed ],
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
     },
     gaOnly: true,

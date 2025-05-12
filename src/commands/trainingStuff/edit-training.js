@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 const { DateTime } = require('luxon');
 const trainings = require('../../utils/trainings.js');
 
@@ -42,7 +42,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('edit-training-time')
         .setDescription('Edit the date and time of the training.')
-        .setDMPermission(false)
+        .setContexts(['Guild'])
         .addStringOption((option) =>
             option
                 .setName('id')
@@ -76,14 +76,14 @@ module.exports = {
         if (!isValidDateFormat(updatedDateCMD)) {
             return interaction.reply({
                 content: 'Incorrect date format! Please use this format: dd/mm/yyyy',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         };
 
         if (!isValidTimeFormat(updatedStartCMD)) {
             return interaction.reply({
                 content: 'Incorrect time format! Please use this format: hh:mm',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         };
 
@@ -92,12 +92,12 @@ module.exports = {
         if (!timezones.includes(timezone)) {
             return interaction.reply({
                 content: 'Incorrect timezone! Please use a valid timezone.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         };
 
         await interaction.deferReply({
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
 
         try {
@@ -122,7 +122,7 @@ module.exports = {
             if (!training) {
                 return interaction.editReply({
                     content: 'This training does not exist.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             };
 
@@ -151,12 +151,12 @@ module.exports = {
 
             interaction.editReply({
                 content: 'Updated!',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         } catch (error) {
             interaction.editReply({
                 content: 'Command failed. Did you use the correct ID?',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             console.warn(error);
         }

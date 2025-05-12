@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 const trainings = require('../../utils/trainings.js');
 
 function cancelTeamup(id) {
@@ -21,7 +21,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('cancel-training')
     .setDescription('Cancel a training')
-    .setDMPermission(false)
+    .setContexts(['Guild'])
     .addStringOption((option) => 
         option
             .setName('id')
@@ -30,7 +30,7 @@ module.exports = {
     run: async ({ interaction, client, handler }) => {
 
         await interaction.deferReply({
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
         });
 
         try {
@@ -43,7 +43,7 @@ module.exports = {
             if (!training) {
                 return interaction.editReply({
                     content: 'This training does not exist.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             };
 
@@ -59,13 +59,13 @@ module.exports = {
 
             interaction.editReply({
                 content: 'Training canceled.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             })
         } catch (error) {
             console.warn(error)
             interaction.reply({
                 content: 'Command failed. Did you use the correct ID?',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             })
         }
     },
