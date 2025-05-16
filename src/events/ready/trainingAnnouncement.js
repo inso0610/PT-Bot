@@ -198,10 +198,10 @@ module.exports = async (client) => {
             .setTitle('Trainings')
             .setDescription(`**Information about the next trainings will be sent here.**`)
             .addFields(
-                { name: `Driver Trainings (${scheduledDriverTrainings.toString()} scheduled):`, value: nextDriverTrainingText },
-                { name: `Conductor Trainings (${scheduledConductorTrainings.toString()} scheduled):`, value: nextConductorTrainingText },
-                { name: `Dispatcher Trainings (${scheduledDispatcherTrainings.toString()} scheduled):`, value: nextDispatcherTrainingText },
-                { name: `Signaller Trainings (${scheduledSignallerTrainings.toString()} scheduled):`, value: nextSignallerTrainingText }
+                { name: `Driver Trainings (${scheduledDriverTrainings.toString()} scheduled):`, value: '~~' + nextDriverTrainingText + '~~ The training system is not working.' },
+                { name: `Conductor Trainings (${scheduledConductorTrainings.toString()} scheduled):`, value: '~~' + nextConductorTrainingText + '~~ The training system is not working.' },
+                { name: `Dispatcher Trainings (${scheduledDispatcherTrainings.toString()} scheduled):`, value: '~~' + nextDispatcherTrainingText + '~~ The training system is not working.' },
+                { name: `Signaller Trainings (${scheduledSignallerTrainings.toString()} scheduled):`, value: '~~' + nextSignallerTrainingText + '~~ The training system is not working.' }
             )
             //.setFooter({ text: `This message updates every minute. Last update: ${hour}:${minute} UTC` });
             .setFooter({ text: 'This message updates every minute. Last update' })
