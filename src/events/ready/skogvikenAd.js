@@ -86,6 +86,7 @@ module.exports = async (client) => {
             .setFooter({ text: 'Skogviken Kommune' });
 
         message.edit({
+            content: '# Skogviken Kommune',
             embeds: [embed],
             components: [row],
         }).catch(e => {
