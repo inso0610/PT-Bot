@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, AttachmentBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 
 const operators = {
     NEX: 'Northern Express',
@@ -13,7 +13,7 @@ module.exports = async (client) => {
 
     let message;
 
-    message = await partnerChannel.messages.fetch('1374819745089585285').catch(e => {  // Replace with your actual message ID
+    message = await partnerChannel.messages.fetch('1374844979033407488').catch(e => {  // Replace with your actual message ID
         console.warn(e);
     });
 
@@ -82,8 +82,6 @@ module.exports = async (client) => {
             .addFields(
                 { name: 'Next train from Skogviken Station', value: nextTrainMessage, inline: false },
             )
-            .setThumbnail('https://imgur.com/a/i92m1yY')
-            .setImage('https://imgur.com/a/2tqWx8D')
             .setTimestamp()
             .setFooter({ text: 'Skogviken Kommune' });
 
