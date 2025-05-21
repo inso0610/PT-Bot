@@ -72,7 +72,7 @@ module.exports = async (client) => {
             if (departureTime.getTime() !== defaultDepartureTime.getTime())
                 departureTimeString = `~~<t:${Math.floor(defaultDepartureTime.getTime() / 1000)}:t>~~ <t:${Math.floor(departureTime.getTime() / 1000)}:t>`;
 
-            nextTrainMessage = `*${routeString} train  to ${nextTrain.fullRoute[nextTrain.fullRoute.length - 1].name} departs at ${departureTimeString}.*\n*Train Number:* ${nextTrain.trainNumber}\n*Operator:* ${operatorString}`;
+            nextTrainMessage = `*${routeString} train to ${nextTrain.fullRoute[nextTrain.fullRoute.length - 1].name} departs at ${departureTimeString}.*\n*Train Number:* ${nextTrain.trainNumber}\n*Operator:* ${operatorString}`;
         };
 
         const embed = new EmbedBuilder()
