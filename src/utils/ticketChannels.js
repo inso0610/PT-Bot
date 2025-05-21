@@ -233,7 +233,7 @@ async function createTicket(interaction, client) {
         }).exec();
 
         if (exitingTicket) {
-            if (allExisting.length > 1) {
+            if (allExisting.length >= 2) {
                 sendDM('You already have two tickets. Please request for one of them to be closed before creating a new one.');
 
                 return;
