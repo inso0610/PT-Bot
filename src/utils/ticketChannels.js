@@ -307,7 +307,6 @@ async function createTicket(interaction, client) {
 
 
             return;
-
         };
 
         const ticketDescription = await collectResponse('Please reply with a more detailed description of your ticket. (Images or videos need to be added as a link) (Maximum 500 characters)');
