@@ -19,15 +19,14 @@ const client = new Client({
     ]
 });
 
-(async () => {
-    try {
-        await mongoose.connect(process.env.MONGODB_URI);
-        console.log('Connected to Mongo DB.');
-
-    } catch (error) {
-        console.log(`Mongo DB Error: ${error}`);
-    }      
-})();
+mongoose.connect(process.env.MONGO_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => {
+  console.log('✅ Connected to MongoDB');
+}).catch(err => {
+  console.error('❌ MongoDB connection error:', err);
+});
 
 new CommandKit({
     client,
