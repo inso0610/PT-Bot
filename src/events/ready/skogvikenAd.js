@@ -38,6 +38,7 @@ module.exports = async (client) => {
         .addComponents(joinDiscordButton, joinGameButton);
 
     const SkogvikenLogo = new AttachmentBuilder('./src/utils/Images/SkogvikenLogo.png', { name: 'SkogvikenLogo.png' });
+    const SkogvikenBanner = new AttachmentBuilder('./src/utils/Images/SkogvikenBanner.png', { name: 'SkogvikenBanner.png' });
 
     async function updateMessage() {
         const SKTrains = await fetch(`${process.env.TIOS_API_URL}/locations/SK/departures`).then(res => res.json()).catch(e => {
@@ -69,24 +70,25 @@ module.exports = async (client) => {
             if (departureTime.getTime() !== defaultDepartureTime.getTime())
                 departureTimeString = `~~<t:${Math.floor(defaultDepartureTime.getTime() / 1000)}:t>~~ <t:${Math.floor(departureTime.getTime() / 1000)}:t>`;
 
-            nextTrainMessage = `**${routeString} train  to ${nextTrain.fullRoute[nextTrain.fullRoute.length - 1].name} departs at ${departureTimeString}.**\n**Train Number:** ${nextTrain.trainNumber}\n**Operator:** ${operatorString}`;
+            nextTrainMessage = `*${routeString} train  to ${nextTrain.fullRoute[nextTrain.fullRoute.length - 1].name} departs at ${departureTimeString}.*\n*Train Number:* ${nextTrain.trainNumber}\n*Operator:* ${operatorString}`;
         };
 
         const embed = new EmbedBuilder()
             .setColor('#295abf')
             .setTitle('Play Skogviken Kommune!')
-            .setDescription('Awaiting description...')
+            .setDescription('Create your story in a dynamic Arctic town with endless possibilities. Shape the world around you and be part of an evolving community.')
             .addFields(
                 { name: 'Next train from Skogviken Station', value: nextTrainMessage, inline: false },
             )
             .setThumbnail('attachment://SkogvikenLogo.png')
+            .setImage('attachment://SkogvikenBanner.png')
             .setTimestamp()
             .setFooter({ text: 'Skogviken Kommune' });
 
         message.edit({
             embeds: [embed],
             components: [row],
-            files: [SkogvikenLogo]
+            files: [SkogvikenLogo, SkogvikenBanner]
         }).catch(e => {
             console.warn(`Error updating message: ${e}`);
         });
