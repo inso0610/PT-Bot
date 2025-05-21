@@ -107,6 +107,7 @@ module.exports = {
         
                 await browser.close();
             } catch (error) {
+                console.warn(error);
                 interaction.editReply(link);
             }
         } catch (error) {
