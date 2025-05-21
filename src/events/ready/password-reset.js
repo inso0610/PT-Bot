@@ -23,10 +23,14 @@ module.exports = async (client) => {
         console.log(`Error initializing database: ${error}`);
     }*/
 
+    const checkedTokens = [];
+
     async function getResets() {
         const allResets = await passwordResets.find({}).exec()
 
         for (const reset of allResets) {
+            if (checkedTokens.includes(reset.token)) continue;
+            
             const staffDocument = await staffs.findOne({ email: reset.email });
             if (!staffDocument) return;
 
@@ -41,10 +45,12 @@ module.exports = async (client) => {
             } else {
                 console.warn(`User with ID ${staffDocument.discordId} not found.`);
             }
+
+            checkedTokens.push(reset.token);
         };
     };
 
     getResets();
 
-    setInterval(getResets, 60_00); 
+    setInterval(getResets, 60000); 
 };
