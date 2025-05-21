@@ -45,10 +45,15 @@ module.exports = async (client) => {
             console.warn(`Error fetching SKTrains: ${e}`);
         });
 
-        if (SKTrains.error !== undefined) {
-            console.warn(`Error fetching SKTrains: ${SKTrains.error}`);
+        if (!SKTrains) {
+            console.warn(`SKTrains is undefined. Fetch might have failed. Tried to fetch: ${process.env.TIOS_API_URL}/locations/SK/departures`);
             return;
-        };
+        }
+
+        if (SKTrains.error !== undefined) {
+            console.warn(`SKTrains error: ${SKTrains.error}`);
+            return;
+        }
 
         const nextTrains = SKTrains.filter(train => {
             const trainTime = new Date(train.departure);
