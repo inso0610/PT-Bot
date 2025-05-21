@@ -37,9 +37,6 @@ module.exports = async (client) => {
     const row = new ActionRowBuilder()
         .addComponents(joinDiscordButton, joinGameButton);
 
-    const SkogvikenLogo = new AttachmentBuilder('./src/utils/Images/SkogvikenLogo.png', { name: 'SkogvikenLogo.png' });
-    const SkogvikenBanner = new AttachmentBuilder('./src/utils/Images/SkogvikenBanner.png', { name: 'SkogvikenBanner.png' });
-
     async function updateMessage() {
         const SKTrains = await fetch(`${process.env.TIOS_API_URL}/locations/SK/departures`).then(res => res.json()).catch(e => {
             console.warn(`Error fetching SKTrains: ${e}`);
@@ -85,15 +82,14 @@ module.exports = async (client) => {
             .addFields(
                 { name: 'Next train from Skogviken Station', value: nextTrainMessage, inline: false },
             )
-            .setThumbnail('attachment://SkogvikenLogo.png')
-            .setImage('attachment://SkogvikenBanner.png')
+            .setThumbnail('https://imgur.com/a/i92m1yY')
+            .setImage('https://imgur.com/a/2tqWx8D')
             .setTimestamp()
             .setFooter({ text: 'Skogviken Kommune' });
 
         message.edit({
             embeds: [embed],
             components: [row],
-            files: [SkogvikenLogo, SkogvikenBanner]
         }).catch(e => {
             console.warn(`Error updating message: ${e}`);
         });
