@@ -84,6 +84,8 @@ module.exports = {
                         deviceScaleFactor: 1
                     });
                 };
+
+                page.emulateTimezone('Europe/Oslo');
         
                 await page.goto(link);
         
