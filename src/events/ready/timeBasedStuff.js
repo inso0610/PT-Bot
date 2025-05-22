@@ -5,7 +5,7 @@ const commandTimeout = require('../../utils/commandTimeout');
 
 module.exports = (client) => {
     setInterval(async () => {
-        const now = Date(Date.now()); // Cache time for consistency
+        const now = new Date(); // Cache time for consistency
 
         // --- Ticket Blacklist Cleanup ---
         const ticketBlacklisted = await ticketBlacklist.find({
