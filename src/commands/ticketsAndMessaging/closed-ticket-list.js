@@ -39,7 +39,7 @@ module.exports = {
         }
     },
 
-    gaOnly: true,
+    dirOnly: true,
 
     options: {
         devOnly: false,

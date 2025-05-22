@@ -54,22 +54,22 @@ module.exports = async (client) => {
             })))
             //.setFooter({ text: `This message updates every minute. Last update: ${hour}:${minute} UTC` });
 
-        const marketingApplications = await applications.find({ department: 'Marketing' }).exec();
+        const communityApplications = await applications.find({ department: 'Community' }).exec();
         
-        const marketingEmbed = new EmbedBuilder()
-            .setTitle('Marketing')
-            .addFields(...marketingApplications.map(application => ({
+        const communityEmbed = new EmbedBuilder()
+            .setTitle('Community')
+            .addFields(...communityApplications.map(application => ({
                 name: application.role,
                 value: `${statusIcons[application.status]} (${application.status})`,
                 inline: false
             })));
             //.setFooter({ text: `This message updates every minute. Last update: ${hour}:${minute} UTC` });
 
-        const communityApplications = await applications.find({ department: 'Community' }).exec();
+        const brandingApplications = await applications.find({ department: 'Branding' }).exec();
         
-        const communityEmbed = new EmbedBuilder()
-            .setTitle('Community')
-            .addFields(...communityApplications.map(application => ({
+        const brandingEmbed = new EmbedBuilder()
+            .setTitle('Branding')
+            .addFields(...brandingApplications.map(application => ({
                 name: application.role,
                 value: `${statusIcons[application.status]} (${application.status})`,
                 inline: false
@@ -90,7 +90,7 @@ module.exports = async (client) => {
 
         message.edit({
             content: '# Applications',
-            embeds: [operationsEmbed, marketingEmbed, communityEmbed, developmentEmbed]  // Add the other embeds as well
+            embeds: [operationsEmbed, communityEmbed, brandingEmbed, developmentEmbed]
         });
     };
 

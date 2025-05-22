@@ -83,7 +83,7 @@ module.exports = {
                 flags: MessageFlags.Ephemeral
             });
     },
-    gaOnly: true,
+    dirOnly: true,
 
     options: {
         devOnly: false,

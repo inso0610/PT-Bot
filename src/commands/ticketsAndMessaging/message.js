@@ -17,8 +17,7 @@ module.exports = {
             .setRequired(true)
             .addChoices(
                 { name: 'Senior Management', value: 'Senior Management' },
-                { name: 'Directors', value: 'Director' },
-                { name: 'Group Advisors', value: 'Group Advisor' }
+                { name: 'Directors', value: 'Director' }
             ))
     .addStringOption((option) => 
         option
@@ -51,19 +50,12 @@ module.exports = {
                 flags: MessageFlags.Ephemeral
             });
             return;
-        } else if (team === 'Group Advisor' && !interaction.member.roles.cache.has('1089284396282032178')) {
-            interaction.reply({
-                content: "You can't send a message as a Group Advisor.",
-                flags: MessageFlags.Ephemeral
-            });
-            return;
         };
 
         if (showSender) {
             const teamRoles = {
                 ['Senior Management']: 'Senior Manager',
-                Director: 'Director',
-                ['Group Advisor']: 'Group Advisor',
+                Director: 'Director'
             }
 
             const role = teamRoles[team];

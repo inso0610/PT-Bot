@@ -64,12 +64,10 @@ module.exports = {
                             { name: 'Operations Managers (SENIOR-OM)', value: 'SENIOR-OM' },
                             { name: 'Railway Advisors (SPECIAL-RA)', value: 'SPECIAL-RA' },
                             { name: 'Directors (DIRECTOR-ALL)', value: 'DIRECTOR-ALL' },
-                            { name: 'Marketing Director (DIRECTOR-MD)', value: 'DIRECTOR-MD' },
                             { name: 'Operations Director (DIRECTOR-OD)', value: 'DIRECTOR-OD' },
-                            { name: 'Engineering and Technology Director (DIRECTOR-ED)', value: 'DIRECTOR-ED' },
-                            { name: 'Advisors Team (ADVISOR-ALL)', value: 'ADVISOR-ALL' },
-                            { name: 'Community Administrator (ADVISOR-CA)', value: 'ADVISOR-CA' },
-                            { name: 'Group Holder (ADVISOR-GH)', value: 'ADVISOR-GH' }
+                            { name: 'Community Director (DIRECTOR-CD)', value: 'DIRECTOR-CD' },
+                            { name: 'Branding Director (DIRECTOR-BD)', value: 'DIRECTOR-BD' },
+                            { name: 'Engineering and Technology Director (DIRECTOR-ED)', value: 'DIRECTOR-ED' }
                         )))
         .addSubcommand(subcommand =>
             subcommand
@@ -648,7 +646,7 @@ module.exports = {
                 };
 
                 let ticket;
-                if (member.roles.cache.has('1089284396282032178')) {
+                if (member.roles.cache.has('1140260309915938866')) {
                     ticket = await tickets.findById(ticketIdString);
                 } else {
                     ticket = await tickets.findOne({ claimedId: interaction.user.id, _id: ticketId }).exec();
@@ -737,7 +735,7 @@ module.exports = {
                 };
 
                 let ticket;
-                if (member.roles.cache.has('1089284396282032178')) {
+                if (member.roles.cache.has('1140260309915938866')) {
                     ticket = await tickets.findById(ticketIdString);
                 } else {
                     ticket = await tickets.findOne({ claimedId: interaction.user.id, _id: ticketId }).exec();
@@ -836,7 +834,7 @@ module.exports = {
                 }
 
                 let ticket;
-                if (member.roles.cache.has('1089284396282032178')) {
+                if (member.roles.cache.has('1140260309915938866')) {
                     ticket = await tickets.findById(ticketIdString);
                 } else {
                     ticket = await tickets.findOne({ claimedId: interaction.user.id, _id: ticketId }).exec();
@@ -925,7 +923,7 @@ module.exports = {
                 };
 
                 let ticket;
-                if (member.roles.cache.has('1089284396282032178')) {
+                if (member.roles.cache.has('1140260309915938866')) {
                     ticket = await tickets.findById(ticketIdString);
                 } else {
                     ticket = await tickets.findOne({ claimedId: interaction.user.id, _id: ticketId }).exec();
