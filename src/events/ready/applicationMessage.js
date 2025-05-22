@@ -1,4 +1,5 @@
-const { EmbedBuilder, time } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
+const CronJob = require('cron').CronJob;
 
 const applications = require('../../utils/applications.js');
 
@@ -85,7 +86,7 @@ module.exports = async (client) => {
                 value: `${statusIcons[application.status]} (${application.status})`,
                 inline: false
             })))
-            .setFooter({ text: 'This message updates every minute. Last update' })
+            .setFooter({ text: 'This message updates every 10 minutes. Last update' })
             .setTimestamp(Date.now())
 
         message.edit({
@@ -94,6 +95,6 @@ module.exports = async (client) => {
         });
     };
 
-    updateMessage();
-    const messageUpdater = setInterval(updateMessage, 60000);
+    // run every minute
+    new CronJob('0 */10 * * * *', updateMessage, null, true, 'Norway/Oslo', null, true);
 };

@@ -1,5 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const trainings = require('../../utils/trainings.js');
+const CronJob = require('cron').CronJob;
 
 function nearestDate(dates) {
     const data = dates.sort((a, b) => a - b);
@@ -214,9 +215,6 @@ module.exports = async (client) => {
         });
     };
 
-    updateMessage()
-
-    setInterval(updateMessage, 60000);
-
-
+    // run every minute
+    new CronJob('0 */10 * * * *', updateMessage, null, true, 'Norway/Oslo', null, true);
 };
