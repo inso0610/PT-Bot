@@ -115,7 +115,7 @@ async function createTicket(interaction, client) {
             collector.on('end', (_, reason) => {
                 if (reason === 'time') {
                     interaction.user.send({
-                        content:"You took too long to respond. Please try again.",
+                        content: "You took too long to respond. Please try again.",
                         components: [ticketRow]
                     }).catch();
 
@@ -143,7 +143,7 @@ async function createTicket(interaction, client) {
             collector.on('end', (_, reason) => {
                 if (reason === 'time') {
                     interaction.user.send({
-                        content:"You took too long to respond. Please try again.",
+                        content: "You took too long to respond. Please try again.",
                         components: [ticketRow]
                     }).catch();
 
@@ -171,7 +171,7 @@ async function createTicket(interaction, client) {
             collector.on('end', (_, reason) => {
                 if (reason === 'time') {
                     interaction.user.send({
-                        content:"You took too long to respond. Please try again.",
+                        content: "You took too long to respond. Please try again.",
                         components: [ticketRow]
                     }).catch();
 
@@ -216,14 +216,14 @@ async function createTicket(interaction, client) {
         };
 
         // If the user already has a ticket ask if the person wants to create a new one
-        const exitingTicket = await tickets.findOne({ 
-            creatorId: interaction.user.id, 
-            claimedId: { $ne: '-1' } 
+        const exitingTicket = await tickets.findOne({
+            creatorId: interaction.user.id,
+            claimedId: { $ne: '-1' }
         }).exec();
-        
-        const allExisting = await tickets.find({ 
-            creatorId: interaction.user.id, 
-            claimedId: { $ne: '-1' } 
+
+        const allExisting = await tickets.find({
+            creatorId: interaction.user.id,
+            claimedId: { $ne: '-1' }
         }).exec();
 
         if (exitingTicket) {
@@ -422,35 +422,35 @@ async function createTicket(interaction, client) {
             if (member) {
                 if (member.roles.cache.has('1304849124528754729')) { // Bot Developer
                     const testTicket = await collectResponseYesNo('Hello bot dev! Is this a test ticket? Yes/No');
-        
+
                     if (Array.isArray(testTicket)) {
                         const index = creatingATicket.indexOf(interaction.user.id);
-        
+
                         if (index !== -1) {
                             creatingATicket.splice(index, 1);
                         };
-        
+
                         return;
                     };
-        
+
                     if (testTicket.toLowerCase() === 'yes') {
                         ticket.department = 'DEV-BOT';
                     };
                 };
-        
+
                 if (member.roles.cache.has('1375113831025479710')) { // Community Director
                     const testTicket = await collectResponseYesNo('Hello Community Director! Is this a training ticket? Yes/No');
-        
+
                     if (Array.isArray(testTicket)) {
                         const index = creatingATicket.indexOf(interaction.user.id);
-        
+
                         if (index !== -1) {
                             creatingATicket.splice(index, 1);
                         };
-        
+
                         return;
                     };
-        
+
                     if (testTicket.toLowerCase() === 'yes') {
                         ticket.department = 'COMMUNITY-TRAINING';
                     };
@@ -562,39 +562,33 @@ async function closeTicket(id, interaction, client) {
 
     ticketMessage.delete();
 
-    const ticketCreator = await client.users.fetch(ticket.creatorId);
+    const ticketCreator = await client.users.fetch(ticket.creatorId).catch(e => {
+        console.warn(e);
+    });
 
-    if (!ticketCreator) {
-        return interaction.reply({
-            content: 'Could not find the user.',
-            flags: MessageFlags.Ephemeral
+    if (ticketCreator) {
+        ticketCreator.send(`The ticket with the id \`${String(ticket._id)}\` was closed by <@${interaction.user.id}>`).catch(e => {
+            console.warn(e);
+            return interaction.reply({
+                content: 'Something went wrong. Contact Emilsen.',
+                flags: MessageFlags.Ephemeral
+            });
         });
     };
 
-    ticketCreator.send(`The ticket with the id \`${String(ticket._id)}\` was closed by <@${interaction.user.id}>`).catch(e => {
+    const claimedUser = await client.users.fetch(ticket.claimedId).catch(e => {
         console.warn(e);
-        return interaction.reply({
-            content: 'Something went wrong. Contact Emilsen.',
-            flags: MessageFlags.Ephemeral
-        });
     });
 
-    const claimedUser = await client.users.fetch(ticket.claimedId);
-
-    if (!claimedUser) {
-        return interaction.reply({
-            content: 'Could not find the user.',
-            flags: MessageFlags.Ephemeral
+    if (claimedUser) {
+        claimedUser.send(`The ticket with the id \`${String(ticket._id)}\` was closed by <@${interaction.user.id}>`).catch(e => {
+            console.warn(e);
+            return interaction.reply({
+                content: 'Something went wrong. Contact Emilsen.',
+                flags: MessageFlags.Ephemeral
+            });
         });
-    };
-
-    claimedUser.send(`The ticket with the id \`${String(ticket._id)}\` was closed by <@${interaction.user.id}>`).catch(e => {
-        console.warn(e);
-        return interaction.reply({
-            content: 'Something went wrong. Contact Emilsen.',
-            flags: MessageFlags.Ephemeral
-        });
-    });
+    }
 
     interaction.reply({
         content: 'The ticket was closed.',
@@ -605,7 +599,7 @@ async function closeTicket(id, interaction, client) {
 
     ticket.log.push(`<@${interaction.user.id}> - ${new Date(Date.now()).toUTCString()} closed this ticket.`);
 
-    ticket.save();
+    await ticket.save();
 };
 
 module.exports = { ticketChannels, closeTicket, createTicket };
