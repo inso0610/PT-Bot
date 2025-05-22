@@ -17,7 +17,7 @@ module.exports = (client) => {
 
         console.log('Will reset')
 
-        for (const [key, value] of allActivity) {
+        for (const value of allActivity) {
             if (!guild) {
                 return;
             }
@@ -81,5 +81,5 @@ module.exports = (client) => {
     };
 
     // Reset activity every month
-    const job = new CronJob('0 0 1 * *', resetAllActivity, null, true, 'Europe/Oslo', null, true);
+    new CronJob('0 0 1 * *', resetAllActivity, null, true, 'Europe/Oslo', null, false);
 };

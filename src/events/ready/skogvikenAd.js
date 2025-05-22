@@ -94,6 +94,6 @@ module.exports = async (client) => {
         });
     };
     
-    new CronJob('0 */10 * * * *', updateMessage, null, true, 'Europe/Oslo', null, true);
+    new CronJob('0 * * * * *', updateMessage, null, true, 'Europe/Oslo', null, false); // Run every 10 minutes
 }
 

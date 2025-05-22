@@ -4,7 +4,7 @@ const modlogs = require('../../utils/moderation/modlogs');
 //const commandTimeout = require('../../utils/commandTimeout');
 
 module.exports = (client) => {
-    new CronJob('0 */10 * * * *', async function () {
+    new CronJob('0 * * * * *', async function () {
         const now = new Date(); // Cache time for consistency
 
         // --- Ticket Blacklist Cleanup ---
@@ -55,5 +55,5 @@ module.exports = (client) => {
         await commandTimeout.deleteMany({
             expiration: { $lt: now }
         }).exec(); Uses TTL now*/ 
-    }, null, true, 'Europe/Oslo', null, true);
+    }, null, true, 'Europe/Oslo', null, false);
 };
