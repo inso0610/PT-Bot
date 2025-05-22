@@ -81,7 +81,7 @@ module.exports = {
                 };
 
                 await interaction.editReply({
-                    content: `${link}\n\n\You have to wait until <t:${timeout.expiration}:t> if you want to get an image from this command. **Server boosters can use this command without cooldown.**`
+                    content: `${link}\n\n\You have to wait until <t:${math.floor(timeout.expiration.getTime() / 1000)}:t> if you want to get an image from this command. **Server boosters can use this command without cooldown.**`
                 });
                 return;
             }
