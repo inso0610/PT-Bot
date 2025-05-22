@@ -67,7 +67,8 @@ module.exports = {
                             { name: 'Operations Director (DIRECTOR-OD)', value: 'DIRECTOR-OD' },
                             { name: 'Community Director (DIRECTOR-CD)', value: 'DIRECTOR-CD' },
                             { name: 'Branding Director (DIRECTOR-BD)', value: 'DIRECTOR-BD' },
-                            { name: 'Engineering and Technology Director (DIRECTOR-ED)', value: 'DIRECTOR-ED' }
+                            { name: 'Engineering and Technology Director (DIRECTOR-ED)', value: 'DIRECTOR-ED' },
+                            { name: 'Lead Director (DIRECTOR-LD)', value: 'DIRECTOR-LD' }
                         )))
         .addSubcommand(subcommand =>
             subcommand
