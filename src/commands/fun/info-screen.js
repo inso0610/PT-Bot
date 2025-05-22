@@ -55,6 +55,20 @@ module.exports = {
     run: async ({ interaction, client, handler }) => {
         await interaction.deferReply();
 
+        const stationCode = interaction.options.getString('station').toUpperCase();
+        const track = interaction.options.getString('track') ?? null;
+        const content = interaction.options.getString('content') ?? 'departure';
+        const layout = interaction.options.getString('layout') ?? 'landscape';
+        const notice = interaction.options.getString('notice') ?? 'yes';
+
+        let link;
+
+        if (track === null) {
+            link = `https://rtd.banenor.no/web_client/std?station=${stationCode}&layout=${layout}&content=${content}&notice=${notice}`
+        } else {
+            link = `https://rtd.kv.banenor.no/web_client/std?station=${stationCode}&header=no&content=track&track=${track}`
+        };
+
         // check if user has role
         if (!interaction.member.roles.cache.has('1140760173128982588')) {
             // Check if the command is in the cooldown period
@@ -66,19 +80,7 @@ module.exports = {
             });
 
             if (timeout) {
-                const stationCode = interaction.options.getString('station').toUpperCase();
-                const track = interaction.options.getString('track') ?? null;
-                const content = interaction.options.getString('content') ?? 'departure';
-                const layout = interaction.options.getString('layout') ?? 'landscape';
-                const notice = interaction.options.getString('notice') ?? 'yes';
 
-                let link;
-
-                if (track === null) {
-                    link = `https://rtd.banenor.no/web_client/std?station=${stationCode}&layout=${layout}&content=${content}&notice=${notice}`
-                } else {
-                    link = `https://rtd.kv.banenor.no/web_client/std?station=${stationCode}&header=no&content=track&track=${track}`
-                };
 
                 await interaction.editReply({
                     content: `${link}\n\n\You have to wait until <t:${math.floor(timeout.expiration.getTime() / 1000)}:t> if you want to get an image from this command. **Server boosters can use this command without cooldown.**`
@@ -98,20 +100,6 @@ module.exports = {
         }
 
         try {
-            const stationCode = interaction.options.getString('station').toUpperCase();
-            const track = interaction.options.getString('track') ?? null;
-            const content = interaction.options.getString('content') ?? 'departure';
-            const layout = interaction.options.getString('layout') ?? 'landscape';
-            const notice = interaction.options.getString('notice') ?? 'yes';
-
-            let link;
-
-            if (track === null) {
-                link = `https://rtd.banenor.no/web_client/std?station=${stationCode}&layout=${layout}&content=${content}&notice=${notice}`
-            } else {
-                link = `https://rtd.kv.banenor.no/web_client/std?station=${stationCode}&header=no&content=track&track=${track}`
-            };
-
             try {
                 const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'], ignoreDefaultArgs: ['--disable-extensions'] });
                 const page = await browser.newPage()
