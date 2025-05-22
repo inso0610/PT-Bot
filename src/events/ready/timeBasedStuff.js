@@ -2,6 +2,7 @@ const ticketBlacklist = require('../../utils/ticketBlacklist');
 const timebans = require('../../utils/moderation/timebans');
 const modlogs = require('../../utils/moderation/modlogs');
 //const commandTimeout = require('../../utils/commandTimeout');
+const CronJob = require('cron').CronJob;
 
 module.exports = (client) => {
     new CronJob('0 * * * * *', async function () {
