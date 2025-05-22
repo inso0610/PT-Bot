@@ -438,8 +438,8 @@ async function createTicket(interaction, client) {
                     };
                 };
         
-                if (member.roles.cache.has('1294321619149262942')) { // Community Administator
-                    const testTicket = await collectResponseYesNo('Hello Community Admin! Is this a training ticket? Yes/No');
+                if (member.roles.cache.has('1375113831025479710')) { // Community Director
+                    const testTicket = await collectResponseYesNo('Hello Community Director! Is this a training ticket? Yes/No');
         
                     if (Array.isArray(testTicket)) {
                         const index = creatingATicket.indexOf(interaction.user.id);

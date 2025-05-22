@@ -62,7 +62,7 @@ module.exports = (client) => {
             } else if (member.roles.cache.has('1089284409250824264')) {
                 activityRequirement = activityRequirements.EM;
 
-                pings = '<@&1294321619149262942>';
+                pings = '<@&1375113831025479710>';
             };
     
             const missingActivity = {
