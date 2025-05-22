@@ -12,7 +12,8 @@ const commandTimeout = new Schema({
     },
     expiration: {
         type: Date,
-        required: true
+        required: true,
+        index: { expires: 0 } 
     }
 });
 

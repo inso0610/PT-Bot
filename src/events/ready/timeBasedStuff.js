@@ -1,7 +1,7 @@
 const ticketBlacklist = require('../../utils/ticketBlacklist');
 const timebans = require('../../utils/moderation/timebans');
 const modlogs = require('../../utils/moderation/modlogs');
-const commandTimeout = require('../../utils/commandTimeout');
+//const commandTimeout = require('../../utils/commandTimeout');
 
 module.exports = (client) => {
     setInterval(async () => {
@@ -51,9 +51,9 @@ module.exports = (client) => {
             }
         }
 
-        // --- Command Timeout Cleanup ---
+        /* --- Command Timeout Cleanup ---
         await commandTimeout.deleteMany({
             expiration: { $lt: now }
-        }).exec();
+        }).exec(); Uses TTL now*/ 
     }, 60000); // Every 1 minute
 };
