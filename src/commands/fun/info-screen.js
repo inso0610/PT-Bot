@@ -101,7 +101,7 @@ module.exports = {
                         files: [{ attachment: `${images}/screen.png` }]
                     });
         
-                    fs.unlinkSync(`${images}/screen.png`)
+                    fs.unlinkSync(`${images}/screen.png`);
                 } else {
                     console.log("Screenshot not saved");
                     interaction.editReply(link);
