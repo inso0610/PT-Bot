@@ -81,5 +81,5 @@ module.exports = (client) => {
     };
 
     // Reset activity every month
-    const job = new CronJob('0 0 1 * *', resetAllActivity, null, true, 'Norway/Oslo', null, true);
+    const job = new CronJob('0 0 1 * *', resetAllActivity, null, true, 'Europe/Oslo', null, true);
 };

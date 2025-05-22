@@ -93,8 +93,7 @@ module.exports = async (client) => {
             console.warn(`Error updating message: ${e}`);
         });
     };
-    updateMessage();
-
-    setInterval(updateMessage, 60000); // Update every minute
+    
+    new CronJob('0 */10 * * * *', updateMessage, null, true, 'Europe/Oslo', null, true);
 }
 
