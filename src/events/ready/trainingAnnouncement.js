@@ -216,5 +216,5 @@ module.exports = async (client) => {
     };
 
     // run every minute
-    new CronJob('0 * * * * *', updateMessage, null, true, 'Europe/Oslo', null, true);
+    new CronJob('0 * * * * *', updateMessage, null, true, 'Europe/Oslo', null, false);
 };
