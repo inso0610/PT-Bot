@@ -31,7 +31,7 @@ const ticketChannels = {
             WEB: '1281956551178981566'
         }
     },
-    MARKETING: {
+    BRANDING: {
         channel: '1304845302963896462',
         pings: {
             ALL: '1304845486922006529',
