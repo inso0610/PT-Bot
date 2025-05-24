@@ -8,7 +8,7 @@ function getRobloxId(id) {
             try {
                 const responseData = JSON.parse(JSON.stringify(data));
 
-                const robloxID = responseData.robloxID.toString();
+               const robloxID = responseData.robloxId.toString();
 
                 return robloxID;
             } catch (error) {
