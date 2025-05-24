@@ -8,7 +8,7 @@ function getRobloxData(id) {
                 const response = JSON.parse(JSON.stringify(data));
 
                 const robloxID = response.robloxID.toString();
-                const username = response.resolved.roblox.name.toString();
+                const username = response.cachedUsername
 
                 const userInfo = [robloxID, username];
                 return userInfo;
