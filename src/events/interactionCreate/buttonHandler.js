@@ -14,7 +14,7 @@ const guides = {
 }
 
 function getRobloxId(id) {
-    const functionResult = fetch(`https://api.blox.link/v4/public/guilds/1089282844657987587/discord-to-roblox/${id.toString()}`, { method: "GET", headers: { "Authorization": "66ef19b6-b0f6-41f4-b883-63d833484ac6" } })
+    const functionResult = fetch(`https://registry.rover.link/api/guilds/1089282844657987587/discord-to-roblox/${id.toString()}`, { method: "GET", headers: { "Authorization": "Bearer rvr2g089xijilnr8qr2tmpnud2v8k379vo089k2qbxwzyh0t252y9h4arqf1d2qkbhz2" } })
         .then((response) => response.json())
         .then((data) => {
             try {
