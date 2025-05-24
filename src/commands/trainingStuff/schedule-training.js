@@ -15,9 +15,11 @@ function getRobloxId(id) {
         .then((response) => response.json())
         .then((data) => {
             try {
-                const responseData = JSON.parse(JSON.stringify(data));
+                console.log(data)
 
-                const robloxID = responseData.robloxId.toString();
+                const response = JSON.parse(JSON.stringify(data));
+
+                const robloxID = response.robloxId.toString();
                 const username = response.cachedUsername
 
                 const userInfo = [robloxID, username];
