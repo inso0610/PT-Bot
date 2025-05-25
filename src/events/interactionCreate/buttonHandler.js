@@ -416,7 +416,7 @@ module.exports = async (interaction, client) => {
             console.warn(error)
         };
     } else if (interaction.customId === 'declineSuggestion') {
-        if (!interaction.member.roles.cache.has('1089284397519347762') && !interaction.member.roles.cache.has('1140260309915938866') && !interaction.member.roles.cache.has('1302284945451913308')) {
+        if (!interaction.member.roles.cache.has('1140260309915938866') && !interaction.member.roles.cache.has('1089284402791588070')) {
             interaction.reply({
                 content: 'You do not have access to this button.',
                 flags: MessageFlags.Ephemeral
@@ -465,7 +465,7 @@ module.exports = async (interaction, client) => {
             console.warn(error)
         }
     } else if (interaction.customId === 'acceptSuggestion-EM') {
-        if (!interaction.member.roles.cache.has('1302284945451913308')) {
+        if (!interaction.member.roles.cache.has('1302284945451913308') && !interaction.member.roles.cache.has('1140260309915938866')) {
             interaction.reply({
                 content: 'You do not have access to this button.',
                 flags: MessageFlags.Ephemeral
