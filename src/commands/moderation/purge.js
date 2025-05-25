@@ -44,7 +44,7 @@ module.exports = {
                     return;
                 }); 
     
-                return interaction.reply({ content: `Deleted ${amount} messages.`, flags: MessageFlags.Ephemeral });
+                return interaction.reply({ content: `Deleted ${bulkDelete.size} messages.`, flags: MessageFlags.Ephemeral });
             } catch (error) {
                 console.warn(`Error in purge command: ${error}`);
                 return interaction.reply({ content: 'An error occurred while trying to delete messages.', flags: MessageFlags.Ephemeral });
