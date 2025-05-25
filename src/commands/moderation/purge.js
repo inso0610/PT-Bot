@@ -27,12 +27,12 @@ module.exports = {
             if (amount < 2) return interaction.reply({ content: 'You need to delete at least 2 messages.', flags: MessageFlags.Ephemeral });
 
             const messages = await channel.messages.fetch({ limit: amount });
-            await channel.bulkDelete(messages, true).catch(() => {});
+            const bulkDelete = await channel.bulkDelete(messages, true).catch(() => {});
 
             // Log deletion
             const deletedMessage = new EmbedBuilder()
             .setTitle(`Bulk delete by: ${interaction.user.username}`)
-            .setDescription(`Deleted ${amount} messages in <#${channel.id}>`);
+            .setDescription(`Deleted ${bulkDelete.size} messages in <#${channel.id}>`);
 
             webhookClient.send({
                 username: (`${interaction.user.username} (${interaction.user.id})`),
