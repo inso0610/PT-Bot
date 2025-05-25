@@ -23,27 +23,32 @@ module.exports = {
         const channel = interaction.channel;
 
         if (subcommand === 'any') {
-            if (amount > 1000) return interaction.reply({ content: 'You can only delete up to 1000 messages at once.', flags: MessageFlags.Ephemeral });
-            if (amount < 2) return interaction.reply({ content: 'You need to delete at least 2 messages.', flags: MessageFlags.Ephemeral });
-
-            const messages = await channel.messages.fetch({ limit: amount });
-            const bulkDelete = await channel.bulkDelete(messages, true).catch(() => {});
-
-            // Log deletion
-            const deletedMessage = new EmbedBuilder()
-            .setTitle(`Bulk delete by: ${interaction.user.username}`)
-            .setDescription(`Deleted ${bulkDelete.size} messages in <#${channel.id}>`);
-
-            webhookClient.send({
-                username: (`${interaction.user.username} (${interaction.user.id})`),
-                avatarURL: interaction.user.avatarURL(),
-                embeds: [ deletedMessage ]
-            }).catch(e => {
-                console.warn(`Error in purge: ${e}`)
-                return;
-            }); 
-
-            return interaction.reply({ content: `Deleted ${amount} messages.`, flags: MessageFlags.Ephemeral });
+            try {
+                if (amount > 1000) return interaction.reply({ content: 'You can only delete up to 1000 messages at once.', flags: MessageFlags.Ephemeral });
+                if (amount < 2) return interaction.reply({ content: 'You need to delete at least 2 messages.', flags: MessageFlags.Ephemeral });
+    
+                const messages = await channel.messages.fetch({ limit: amount });
+                const bulkDelete = await channel.bulkDelete(messages, true).catch(() => {});
+    
+                // Log deletion
+                const deletedMessage = new EmbedBuilder()
+                .setTitle(`Bulk delete by: ${interaction.user.username}`)
+                .setDescription(`Deleted ${bulkDelete.size} messages in <#${channel.id}>`);
+    
+                webhookClient.send({
+                    username: (`${interaction.user.username} (${interaction.user.id})`),
+                    avatarURL: interaction.user.avatarURL(),
+                    embeds: [ deletedMessage ]
+                }).catch(e => {
+                    console.warn(`Error in purge: ${e}`)
+                    return;
+                }); 
+    
+                return interaction.reply({ content: `Deleted ${amount} messages.`, flags: MessageFlags.Ephemeral });
+            } catch (error) {
+                console.warn(`Error in purge command: ${error}`);
+                return interaction.reply({ content: 'An error occurred while trying to delete messages.', flags: MessageFlags.Ephemeral });
+            }
         }
     },
     modOnly: true,
