@@ -63,17 +63,17 @@ module.exports = async (client) => {
 
         let nextTrainMessageSK = 'No trains are scheduled for today.';
         if (nextTrainSK) {
-            const departureTime = new Date(nextTrain.departure);
-            const defaultDepartureTime = new Date(nextTrain.defaultDeparture);
+            const departureTime = new Date(nextTrainSK.departure);
+            const defaultDepartureTime = new Date(nextTrainSK.defaultDeparture);
 
-            const operatorString = operators[nextTrain.operator] || nextTrain.operator;
-            const routeString = nextTrain.routeNumber || operatorString
+            const operatorString = operators[nextTrainSK.operator] || nextTrainSK.operator;
+            const routeString = nextTrainSK.routeNumber || operatorString
 
             let departureTimeString = `<t:${Math.floor(departureTime.getTime() / 1000)}:t>`;
             if (departureTime.getTime() !== defaultDepartureTime.getTime())
                 departureTimeString = `~~<t:${Math.floor(defaultDepartureTime.getTime() / 1000)}:t>~~ <t:${Math.floor(departureTime.getTime() / 1000)}:t>`;
 
-            nextTrainMessageSK = `*${routeString} train to ${nextTrain.fullRoute[nextTrain.fullRoute.length - 1].name} departs at ${departureTimeString}.*\n*Train Number:* ${nextTrain.trainNumber}\n*Operator:* ${operatorString}`;
+            nextTrainMessageSK = `*${routeString} train to ${nextTrainSK.fullRoute[nextTrainSK.fullRoute.length - 1].name} departs at ${departureTimeString}.*\n*Train Number:* ${nextTrainSK.trainNumber}\n*Operator:* ${operatorString}`;
         };
 
         const KLHTrains = await fetch(`${process.env.TIOS_API_URL}/locations/KLH/departures`).then(res => res.json()).catch(e => {
