@@ -1,6 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const { CronJob } = require('cron');
-const fetch = require('node-fetch'); // Ensure you include this if not globally available
 
 const operators = {
     NEX: 'Northern Express',
