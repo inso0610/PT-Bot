@@ -82,7 +82,7 @@ module.exports = async (client) => {
             : `<t:${departureUnix}:t>`;
 
         if (next.isCancelledAtStation) {
-            timeString = `~~${timeString}~~ **Cancelled**`;
+            timeString = `~~<t:${defaultUnix}:t>~~ **Cancelled**`;
         }
 
         const operator = operators[next.operator] || next.operator;
