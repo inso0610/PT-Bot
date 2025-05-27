@@ -95,7 +95,7 @@ module.exports = async (client) => {
             .setTitle('Play Skogviken Kommune!')
             .setDescription('Create your story in a dynamic Arctic town with endless possibilities. Shape the world around you and be part of an evolving community.')
             .setTimestamp()
-            .setFooter({ text: 'Skogviken Kommune' });
+            .setFooter({ text: 'Skogviken Kommune • Updates every 10 minutes' });
 
         for (const [code, name] of Object.entries(STATION_CODES)) {
             const message = await fetchNextTrainMessage(code);
@@ -115,6 +115,5 @@ module.exports = async (client) => {
 
     // Run every 10 minutes
     new CronJob('0 */10 * * * *', updateMessage, null, true, 'Europe/Oslo');
+    updateMessage()
 };
-
-updateMessage()
