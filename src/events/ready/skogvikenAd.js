@@ -81,7 +81,7 @@ module.exports = async (client) => {
             ? `~~<t:${defaultUnix}:t>~~ <t:${departureUnix}:t>`
             : `<t:${departureUnix}:t>`;
 
-        if (train.isCancelledAtStation) {
+        if (next.isCancelledAtStation) {
             timeString = `~~${timeString}~~ **Cancelled**`;
         }
 
