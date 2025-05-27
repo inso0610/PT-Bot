@@ -64,7 +64,6 @@ module.exports = async (client) => {
             return (
                 dep > now &&
                 !train.hasPassed &&
-                !train.isCancelledAtStation &&
                 train.stopType === 'passenger' &&
                 train.fullRoute[train.fullRoute.length - 1]?.code !== stationCode
             );
@@ -78,9 +77,13 @@ module.exports = async (client) => {
         const departureUnix = Math.floor(departureTime.getTime() / 1000);
         const defaultUnix = Math.floor(defaultDepartureTime.getTime() / 1000);
 
-        const timeString = departureTime.getTime() !== defaultDepartureTime.getTime()
+        let timeString = departureTime.getTime() !== defaultDepartureTime.getTime()
             ? `~~<t:${defaultUnix}:t>~~ <t:${departureUnix}:t>`
             : `<t:${departureUnix}:t>`;
+
+        if (train.isCancelledAtStation) {
+            timeString = `~~${timeString}~~ **Cancelled**`;
+        }
 
         const operator = operators[next.operator] || next.operator;
         const route = next.routeNumber || operator;
