@@ -31,7 +31,7 @@ module.exports = {
             .setRequired(true)),
 
     run: async ({ interaction, client, handler }) => {
-        const reciever = interaction.options.getUser('reciever');
+        const reciever = interaction.options.getUser('receiver');
         const team = interaction.options.getString('sender-team');
         const text = interaction.options.getString('text');
         const showSender = interaction.options.getBoolean('show-sender');
