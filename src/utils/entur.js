@@ -36,20 +36,20 @@ const getStationData = async function (id, getChild = true, childToGet = 'RAIL_S
 
     console.log(mainJson);
 
-    if (!mainJson.root || Object.keys(mainJson.root).length === 0) {
+    if (!mainJson || Object.keys(mainJson).length === 0) {
         console.error('No root data found in the response');
         return null;
     }
 
-    const keyValues = mainJson.root.keyList?.keyValue;
+    const keyValues = mainJson.keyList?.keyValue;
 
     if (!keyValues) {
         console.warn('No keyList found in the root data');
-        return mainJson.root;
+        return mainJson;
     }
 
     if (!getChild) {
-        return mainJson.root;
+        return mainJson;
     }
 
     let isParent = false;
@@ -58,35 +58,35 @@ const getStationData = async function (id, getChild = true, childToGet = 'RAIL_S
         isParent = keyValues.some(key => key.key === 'IS_PARENT_STOP_PLACE' && key.value === 'true');
     } else {
         console.warn('keyValue is not an array, aborting');
-        return mainJson.root;
+        return mainJson;
     }
 
     if (!isParent) {
-        return mainJson.root;
+        return mainJson;
     }
 
     const childrenResponse = await fetch(url + '/children', { method: 'GET', headers: header });
 
     if (!childrenResponse.ok) {
         console.error(`Error fetching children data: ${childrenResponse.statusText}`);
-        return mainJson.root;
+        return mainJson;
     }
 
     const childrenJson = await childrenResponse.json();
 
-    if (!childrenJson.root || Object.keys(childrenJson.root).length === 0) {
+    if (!childrenJson || Object.keys(childrenJson).length === 0) {
         console.error('No children data found in the response');
-        return mainJson.root;
+        return mainJson;
     }
 
-    for (const child of childrenJson.root) {
+    for (const child of childrenJson) {
         if (child.stopPlaceType === childToGet) {
             return child;
         }
     }
 
     console.warn(`No child of type ${childToGet} found`);
-    return mainJson.root;
+    return mainJson;
 }
 
 module.exports = {
