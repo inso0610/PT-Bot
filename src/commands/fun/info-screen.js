@@ -17,7 +17,7 @@ module.exports = {
             option.setName('station')
                 .setDescription('What station do you want to look at?')
                 .setRequired(true)
-                .autocomplete(true))
+                .setAutocomplete(true))
         .addStringOption(option =>
             option.setName('track')
                 .setDescription('Do you want to see the next departure for a specific track? Type in the track number.')
