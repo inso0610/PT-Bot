@@ -85,7 +85,7 @@ module.exports = {
             : `https://rtd.kv.banenor.no/web_client/std?station=${stationCode}&header=no&content=track&track=${track}`;
 
         // Check for cooldown unless user has role
-        if (!interaction.member.roles.cache.has('1140760173128982588')) {
+        if (!interaction.member.roles.cache.has('1140760173128982588') && !interaction.member.roles.cache.has('1140260309915938866')) {
             const commandName = interaction.commandName;
             const userId = interaction.user.id;
 
