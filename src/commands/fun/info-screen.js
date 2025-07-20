@@ -76,6 +76,8 @@ module.exports = {
                 await interaction.editReply({ content: 'Could not find station code.' });
                 return;
             };
+        } else {
+            let stationCode = stationCode.upperCase();
         };
 
         let link = track === null
