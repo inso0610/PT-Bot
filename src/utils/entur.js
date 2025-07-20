@@ -32,7 +32,7 @@ const getStationData = async function (id, getChild = true, childToGet = 'RAIL_S
 
     const mainJson = await mainResponse.json();
 
-    if (!mainJson.root || mainJson.root.length === 0) {
+    if (!mainJson.root || Object.keys(mainJson.root).length === 0) {
         console.error('No root data found in the response');
         return null;
     }
@@ -70,7 +70,7 @@ const getStationData = async function (id, getChild = true, childToGet = 'RAIL_S
 
     const childrenJson = await childrenResponse.json();
 
-    if (!childrenJson.root || childrenJson.root.length === 0) {
+    if (!childrenJson.root || Object.keys(childrenJson.root).length === 0) {
         console.error('No children data found in the response');
         return mainJson.root;
     }
