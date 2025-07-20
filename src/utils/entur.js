@@ -5,7 +5,7 @@ const header = {
 
 const searchStation = async function (text) {
     if (text.length == 0) {
-        text = ' ';
+        text = 'A';
     }
 
     const url = `https://api.entur.io/geocoder/v1/autocomplete?text=${encodeURIComponent(text)}&lang=en&layers=venue&categories=railStation&size=25`;
