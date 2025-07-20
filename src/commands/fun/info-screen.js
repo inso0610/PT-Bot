@@ -61,18 +61,22 @@ module.exports = {
             return;
         }
 
-        const stationData = await getStationData(stationId, true, 'RAIL_STATION');
+        let stationCode = stationId;
 
-        if (!stationData) {
-            await interaction.editReply({ content: 'Could not find station data.' });
-            return;
-        }
+        if (stationCode.startsWith('NSR:')) {
+            const stationData = await getStationData(stationId, true, 'RAIL_STATION');
 
-        const stationCode = stationData.keyList?.keyValue?.find(kv => kv.key === 'jbvCode')?.value;
-        if (!stationCode) {
-            await interaction.editReply({ content: 'Could not find station code.' });
-            return;
-        }
+            if (!stationData) {
+                await interaction.editReply({ content: 'Could not find station data.' });
+                return;
+            }
+
+            stationCode = stationData.keyList?.keyValue?.find(kv => kv.key === 'jbvCode')?.value;
+            if (!stationCode) {
+                await interaction.editReply({ content: 'Could not find station code.' });
+                return;
+            };
+        };
 
         let link = track === null
             ? `https://rtd.banenor.no/web_client/std?station=${stationCode}&layout=${layout}&content=${content}&notice=${notice}`
