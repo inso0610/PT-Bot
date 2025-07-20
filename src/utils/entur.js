@@ -3,7 +3,9 @@ const header = {
     'ET-Client-Name': 'polar_tracks-discord-bot'
 }
 
-const searchStation = async function (text) {
+const searchStation = async function (responseText) {
+    let text = responseText.trim();
+
     if (text.length == 0) {
         text = 'A';
     }
