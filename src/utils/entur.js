@@ -34,7 +34,7 @@ const getStationData = async function (id, getChild = true, childToGet = 'RAIL_S
 
     const mainJson = await mainResponse.json();
 
-    console.log(mainJson);
+    console.log(mainResponse);
 
     if (!mainJson.root || Object.keys(mainJson.root).length === 0) {
         console.error('No root data found in the response');
