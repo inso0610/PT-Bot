@@ -6,6 +6,8 @@ const wait = require('node:timers/promises').setTimeout;
 const images = './src/utils/images';
 const commandTimeout = require('../../utils/commandTimeout');
 
+const { searchStation, getStationData } = require('../../utils/entur');
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('info-screen')
@@ -13,8 +15,9 @@ module.exports = {
         .setContexts(['Guild'])
         .addStringOption(option =>
             option.setName('station')
-                .setDescription('What station do you want to look at? This is based on station codes.')
-                .setRequired(true))
+                .setDescription('What station do you want to look at?')
+                .setRequired(true)
+                .autocomplete(true))
         .addStringOption(option =>
             option.setName('track')
                 .setDescription('Do you want to see the next departure for a specific track? Type in the track number.')
@@ -47,11 +50,29 @@ module.exports = {
     run: async ({ interaction }) => {
         await interaction.deferReply();
 
-        const stationCode = interaction.options.getString('station').toUpperCase();
+        const stationId = interaction.options.getString('station');
         const track = interaction.options.getString('track') ?? null;
         const content = interaction.options.getString('content') ?? 'departure';
         const layout = interaction.options.getString('layout') ?? 'landscape';
         const notice = interaction.options.getString('notice') ?? 'yes';
+
+        if (!stationId) {
+            await interaction.editReply({ content: 'You must specify a station.' });
+            return;
+        }
+
+        const stationData = await getStationData(stationId, true, 'RAIL_STATION');
+
+        if (!stationData) {
+            await interaction.editReply({ content: 'Could not find station data.' });
+            return;
+        }
+
+        const stationCode = stationData.keyList?.keyValue?.find(kv => kv.key === 'jbvCode')?.value;
+        if (!stationCode) {
+            await interaction.editReply({ content: 'Could not find station code.' });
+            return;
+        }
 
         let link = track === null
             ? `https://rtd.banenor.no/web_client/std?station=${stationCode}&layout=${layout}&content=${content}&notice=${notice}`
@@ -135,6 +156,24 @@ module.exports = {
         } finally {
             if (browser) await browser.close();
         }
+    },
+
+    autocomplete: async ({ interaction, client, handler }) => {
+        const focusedValue = interaction.options.getFocused();
+
+        const stations = await searchStation(focusedValue);
+
+        if (!stations || stations.length === 0) {
+            return interaction.respond([]);
+        }
+
+        const choices = stations.map(station => ({
+            name: station.properties.name,
+            value: station.properties.id
+        }));
+
+        interaction.respond(choices.slice(0, 25));
+        return choices;
     },
 
     options: {
