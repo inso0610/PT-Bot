@@ -109,7 +109,6 @@ const getStationData = async function (id, getChild = true, childToGet = 'RAIL_S
 
 module.exports = {
     searchStation,
-    getStationData,
-    getJourney,
-    searchAll
+    searchAll,
+    getStationData
 };
