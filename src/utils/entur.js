@@ -87,7 +87,75 @@ const getStationData = async function (id, getChild = true, childToGet = 'RAIL_S
     return mainJson;
 }
 
+const getJourney = async function (fromId, toId, time = new Date()) {
+    const url = 'https://api.entur.io/journey-planner/v3/graphql';
+
+    const query = `
+        query ($from: String!, $to: String!, $time: DateTime!) {
+            trip(
+                from: { place: $from }
+                to: { place: $to }
+                numTripPatterns: 5
+                dateTime: $time
+            ) {
+                tripPatterns {
+                    startTime
+                    endTime
+                    duration
+                    legs {
+                        mode
+                        line {
+                            publicCode
+                            name
+                        }
+                        fromPlace {
+                            name
+                            departureTime
+                        }
+                        toPlace {
+                            name
+                            arrivalTime
+                        }
+                        realtime
+                        distance
+                    }
+                }
+            }
+        }
+    `;
+
+    const body = JSON.stringify({
+        query,
+        variables: {
+            from: fromId,
+            to: toId,
+            time: time.toISOString()
+        }
+    });
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: header,
+        body
+    });
+
+    if (!response.ok) {
+        console.error(`JourneyPlanner API error: ${response.statusText}`);
+        return null;
+    }
+
+    const json = await response.json();
+
+    if (!json.data || !json.data.trip) {
+        console.warn('No journey data returned');
+        return null;
+    }
+
+    return json.data.trip.tripPatterns;
+};
+
 module.exports = {
     searchStation,
-    getStationData
+    getStationData,
+    getJourney
 };
