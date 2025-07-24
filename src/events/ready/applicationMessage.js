@@ -18,7 +18,7 @@ module.exports = async (client) => {
     
     let message;
 
-    message = await channel.messages.fetch('1310001298036363365').catch( e => {  // Replace with your actual message ID
+    message = await channel.messages.fetch('1397592110848278599').catch( e => {  // Replace with your actual message ID
         console.warn(e);
     });
 
