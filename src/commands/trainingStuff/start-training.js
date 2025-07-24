@@ -18,7 +18,7 @@ module.exports = {
             .setDescription('What is the private server link?')
             .setRequired(true)
             .addChoices(
-                { name: 'PT1', value: 'https://www.roblox.com/share?code=afa97df6a1bb224282c726e3685a4bd6&type=Server' },
+                { name: 'PT1', value: 'https://www.roblox.com/share?code=645ee7f3f7090143918a1957fa619916&type=Server' },
                 { name: 'PT2', value: 'https://www.roblox.com/share?code=fcb4fa1da60fd54ebe150cb48c08eb37&type=Server' },
                 { name: 'Custom', value: 'Custom' },
             ))
@@ -38,7 +38,7 @@ module.exports = {
             
             const idCMD = interaction.options.getString('id');
             let link = interaction.options.getString('server-link');
-            const cLinkCMD = interaction.options.getString('custom-link') ?? 'https://www.roblox.com/share?code=afa97df6a1bb224282c726e3685a4bd6&type=Server'
+            const cLinkCMD = interaction.options.getString('custom-link') ?? 'https://www.roblox.com/share?code=645ee7f3f7090143918a1957fa619916&type=Server'
             const spawn = interaction.options.getString('spawn');
 
             if (link === 'Custom') {
