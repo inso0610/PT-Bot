@@ -160,10 +160,7 @@ const getJourney = async (fromId, toId) => {
 
     const response = await fetch(url, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'ET-Client-Name': 'yourappname-dev',
-        },
+        headers: header,
         body: JSON.stringify(body),
     });
 
