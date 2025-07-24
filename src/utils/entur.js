@@ -166,12 +166,12 @@ const getJourney = async function (fromId, toId, time = new Date()) {
 
     const json = await response.json();
 
-    if (!json.data || !json.data.trip) {
+    if (!json.trip) {
         console.warn('No journey data returned');
         return null;
     }
 
-    return json.data.trip.tripPatterns;
+    return json.trip.tripPatterns;
 };
 
 module.exports = {
