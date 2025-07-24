@@ -107,69 +107,6 @@ const getStationData = async function (id, getChild = true, childToGet = 'RAIL_S
     return mainJson;
 }
 
-const getJourney = async (fromId, toId) => {
-    const url = 'https://api.entur.io/journey-planner/v3/graphql';
-
-    const body = {
-        query: `
-            query Journey($from: String!, $to: String!) {
-                trip(
-                    from: { place: $from }
-                    to: { place: $to }
-                    numTripPatterns: 5
-                    modes: [air, bus, cableway, car, funicular, rail, tram, metro, trolleybus, water]
-                ) {
-                    tripPatterns {
-                        aimedStartTime
-                        expectedStartTime
-                        aimedEndTime
-                        expectedEndTime
-                        duration
-                        waitingTime
-                        walkTime
-                        streetDistance
-                        legs {
-                            mode
-                            distance
-                            duration
-                            line {
-                                publicCode
-                                name
-                                transportMode
-                            }
-                            fromPlace {
-                                name
-                                latitude
-                                longitude
-                            }
-                            toPlace {
-                                name
-                                latitude
-                                longitude
-                            }
-                        }
-                    }
-                }
-            }
-        `,
-        variables: {
-            from: fromId,
-            to: toId
-        }
-    };
-
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: header,
-        body: JSON.stringify(body),
-    });
-
-    const data = await response.json();
-
-    return data?.data?.trip?.tripPatterns || [];
-};
-
-
 module.exports = {
     searchStation,
     getStationData,
