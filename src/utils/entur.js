@@ -107,72 +107,71 @@ const getStationData = async function (id, getChild = true, childToGet = 'RAIL_S
     return mainJson;
 }
 
-const getJourney = async function (fromId, toId, time = new Date()) {
+const getJourney = async (fromId, toId) => {
     const url = 'https://api.entur.io/journey-planner/v3/graphql';
 
-    const query = `
-        query ($from: String!, $to: String!, $time: DateTime!) {
-            trip(
-                from: { place: $from }
-                to: { place: $to }
-                numTripPatterns: 5
-                dateTime: $time
-            ) {
-                tripPatterns {
-                    startTime
-                    endTime
-                    duration
-                    legs {
-                        mode
-                        line {
-                            publicCode
-                            name
+    const body = {
+        query: `
+            query Journey($from: String!, $to: String!) {
+                trip(
+                    from: { place: $from }
+                    to: { place: $to }
+                    numTripPatterns: 5
+                    modes: [air, bus, cableway, car, funicular, rail, tram, metro, trolleybus, water]
+                ) {
+                    tripPatterns {
+                        aimedStartTime
+                        expectedStartTime
+                        aimedEndTime
+                        expectedEndTime
+                        duration
+                        waitingTime
+                        walkTime
+                        streetDistance
+                        legs {
+                            mode
+                            distance
+                            duration
+                            line {
+                                publicCode
+                                name
+                                transportMode
+                            }
+                            fromPlace {
+                                name
+                                latitude
+                                longitude
+                            }
+                            toPlace {
+                                name
+                                latitude
+                                longitude
+                            }
                         }
-                        fromPlace {
-                            name
-                            departureTime
-                        }
-                        toPlace {
-                            name
-                            arrivalTime
-                        }
-                        realtime
-                        distance
                     }
                 }
             }
-        }
-    `;
-
-    const body = JSON.stringify({
-        query,
+        `,
         variables: {
             from: fromId,
-            to: toId,
-            time: time.toISOString()
+            to: toId
         }
-    });
+    };
 
     const response = await fetch(url, {
         method: 'POST',
-        headers: header,
-        body
+        headers: {
+            'Content-Type': 'application/json',
+            'ET-Client-Name': 'yourappname-dev',
+        },
+        body: JSON.stringify(body),
     });
 
-    if (!response.ok) {
-        console.error(`JourneyPlanner API error: ${response.statusText}`);
-        return null;
-    }
+    const data = await response.json();
 
-    const json = await response.json();
-
-    if (!json.trip) {
-        console.warn('No journey data returned');
-        return null;
-    }
-
-    return json.trip.tripPatterns;
+    return data?.data?.trip?.tripPatterns || [];
 };
+
 
 module.exports = {
     searchStation,

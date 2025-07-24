@@ -1,11 +1,11 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { searchAll, getJourney } = require('../../utils/entur');
+const { formatDuration, formatTime } = require('../../utils/formatters');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('plan-journey')
-        .setDescription('Plan a journey between two places using Entur')
-        .setContexts(['Guild'])
+        .setDescription('Plan a journey between two locations using Entur')
         .addStringOption(option =>
             option.setName('from')
                 .setDescription('Where are you starting from?')
@@ -23,49 +23,42 @@ module.exports = {
 
         await interaction.deferReply();
 
-        const journeys = await getJourney(fromId, toId);
+        const trips = await getJourney(fromId, toId);
 
-        if (!journeys || journeys.length === 0) {
-            return interaction.editReply("🚫 Could not find any journey between the selected places.");
+        if (!trips || trips.length === 0) {
+            return interaction.editReply('No journey options found.');
         }
 
-        const embeds = journeys.slice(0, 5).map((trip, i) => {
-            const embed = new EmbedBuilder()
-                .setColor(0x2E9AFE)
-                .setTitle(`Journey Option ${i + 1}`)
-                .setDescription(`**🕐 Departure:** <t:${Math.floor(trip.startTime / 1000)}:t>\n**🏁 Arrival:** <t:${Math.floor(trip.endTime / 1000)}:t>\n**⏱️ Duration:** ${Math.floor(trip.duration / 60)} minutes`)
-                .setFooter({ text: 'Data provided by Entur' });
+        const embed = new EmbedBuilder()
+            .setTitle('Journey Options')
+            .setDescription(`Top 5 results from <${fromId}> to <${toId}>:`)
+            .setColor(0x0099FF)
+            .setFooter({ text: 'Powered by Entur' });
 
-            for (const leg of trip.legs) {
-                const line = leg.line?.publicCode || leg.line?.name || 'unknown line';
-                const mode = leg.mode.toUpperCase();
-                const fromTime = `<t:${Math.floor(new Date(leg.fromPlace.departureTime).getTime() / 1000)}:t>`;
-                const toTime = `<t:${Math.floor(new Date(leg.toPlace.arrivalTime).getTime() / 1000)}:t>`;
+        trips.slice(0, 5).forEach((trip, index) => {
+            const startTime = formatTime(trip.aimedStartTime);
+            const endTime = formatTime(trip.aimedEndTime);
+            const duration = formatDuration(trip.duration);
+            const walk = formatDuration(trip.walkTime);
+            const wait = formatDuration(trip.waitingTime);
 
-                embed.addFields({
-                    name: `🚍 ${mode} ${line}`,
-                    value: `**From:** ${leg.fromPlace.name} ${fromTime}\n**To:** ${leg.toPlace.name} ${toTime}`,
-                    inline: false
-                });
-            }
-
-            return embed;
+            embed.addFields({
+                name: `Option ${index + 1}`,
+                value: `**Start:** ${startTime}  →  **End:** ${endTime}\n` +
+                       `**Duration:** ${duration} | **Walk:** ${walk} | **Wait:** ${wait}`
+            });
         });
 
-        return interaction.editReply({ embeds });
+        interaction.editReply({ embeds: [embed] });
     },
 
     autocomplete: async ({ interaction }) => {
         const focusedValue = interaction.options.getFocused();
         const stations = await searchAll(focusedValue);
 
-        if (!stations || stations.length === 0) {
-            return interaction.respond([]);
-        }
-
-        const choices = stations.map(station => ({
+        const choices = (stations ?? []).map(station => ({
             name: station.properties.name,
-            value: station.properties.id
+            value: station.properties.id,
         }));
 
         return interaction.respond(choices.slice(0, 25));
