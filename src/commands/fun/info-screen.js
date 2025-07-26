@@ -77,7 +77,7 @@ module.exports = {
                 return;
             };
         } else {
-            stationCode = stationCode.upperCase();
+            stationCode = stationCode.toUpperCase()
         };
 
         let link = track === null
