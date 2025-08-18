@@ -6,25 +6,23 @@ const wait = require('node:timers/promises').setTimeout;
 const images = './src/utils/images';
 const commandTimeout = require('../../utils/commandTimeout');
 
-const { searchStation, getStationData } = require('../../utils/entur');
-
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('info-screen')
-        .setDescription('Get a station information screen or Real Time Display.')
+        .setName('freight-info')
+        .setDescription('Get freight information for a specific station.')
         .setContexts(['Guild'])
         .addStringOption(option =>
             option.setName('station')
                 .setDescription('What station do you want to look at?')
                 .setRequired(true)
-                .setAutocomplete(true))
-        .addStringOption(option =>
-            option.setName('track')
-                .setDescription('Do you want to see the next departure for a specific track? Type in the track number.')
-                .setRequired(false))
+                .addChoices(
+                    { name: 'Alnabru', value: 'ALB' },
+                    { name: 'Bergen', value: 'BRG' },
+                    { name: 'Trondheim', value: 'TND' }
+                ))
         .addStringOption(option =>
             option.setName('content')
-                .setDescription('Do you want to see arrivals or departures? (Does not do anything with track is specified)')
+                .setDescription('Do you want to see arrivals or departures?')
                 .setRequired(false)
                 .addChoices(
                     { name: 'Departures', value: 'departure' },
@@ -32,7 +30,7 @@ module.exports = {
                 ))
         .addStringOption(option =>
             option.setName('layout')
-                .setDescription('Should the screen be in landscape or portrait mode? (Does not do anything with track is specified)')
+                .setDescription('Should the screen be in landscape or portrait mode?')
                 .setRequired(false)
                 .addChoices(
                     { name: 'Landscape', value: 'landscape' },
@@ -40,7 +38,7 @@ module.exports = {
                 ))
         .addStringOption(option =>
             option.setName('notice')
-                .setDescription('Should station notices show up? (Does not do anything with track specified)')
+                .setDescription('Should station notices show up?')
                 .setRequired(false)
                 .addChoices(
                     { name: 'Yes', value: 'yes' },
@@ -50,8 +48,7 @@ module.exports = {
     run: async ({ interaction }) => {
         await interaction.deferReply();
 
-        const stationId = interaction.options.getString('station');
-        const track = interaction.options.getString('track') ?? null;
+        const stationCode = interaction.options.getString('station');
         const content = interaction.options.getString('content') ?? 'departure';
         const layout = interaction.options.getString('layout') ?? 'landscape';
         const notice = interaction.options.getString('notice') ?? 'yes';
@@ -61,28 +58,7 @@ module.exports = {
             return;
         }
 
-        let stationCode = stationId;
-
-        if (stationCode.startsWith('NSR:')) {
-            const stationData = await getStationData(stationId, true, 'RAIL_STATION');
-
-            if (!stationData) {
-                await interaction.editReply({ content: 'Could not find station data.' });
-                return;
-            }
-
-            stationCode = stationData.keyList?.keyValue?.find(kv => kv.key === 'jbvCode')?.value;
-            if (!stationCode) {
-                await interaction.editReply({ content: 'Could not find station code.' });
-                return;
-            };
-        } else {
-            stationCode = stationCode.toUpperCase()
-        };
-
-        let link = track === null
-            ? `https://rtd.banenor.no/web_client/std?station=${stationCode}&layout=${layout}&content=${content}&notice=${notice}`
-            : `https://rtd.kv.banenor.no/web_client/std?station=${stationCode}&header=no&content=track&track=${track}`;
+        const link = `https://rtd.banenor.no/web_client/std?station=${stationCode}&freight=yes&content=${content}&layout=${layout}&notice=${notice}`;
 
         // Check for cooldown unless user has role
         if (!interaction.member.roles.cache.has('1140760173128982588') && !interaction.member.roles.cache.has('1140260309915938866')) {
@@ -162,24 +138,6 @@ module.exports = {
         } finally {
             if (browser) await browser.close();
         }
-    },
-
-    autocomplete: async ({ interaction, client, handler }) => {
-        const focusedValue = interaction.options.getFocused();
-
-        const stations = await searchStation(focusedValue);
-
-        if (!stations || stations.length === 0) {
-            return interaction.respond([]);
-        }
-
-        const choices = stations.map(station => ({
-            name: station.properties.name,
-            value: station.properties.id
-        }));
-
-        interaction.respond(choices.slice(0, 25));
-        return choices;
     },
 
     options: {
