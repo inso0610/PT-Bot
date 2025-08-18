@@ -53,7 +53,7 @@ module.exports = {
         const layout = interaction.options.getString('layout') ?? 'landscape';
         const notice = interaction.options.getString('notice') ?? 'yes';
 
-        if (!stationId) {
+        if (!stationCode) {
             await interaction.editReply({ content: 'You must specify a station.' });
             return;
         }
