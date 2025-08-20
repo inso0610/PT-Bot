@@ -20,7 +20,8 @@ module.exports = {
                     { name: 'Bergen', value: 'BRG' },
                     { name: 'Trondheim', value: 'TND' },
                     { name: 'Narvik', value: 'NK' },
-                    { name: 'Orstad (Stavanger)', value: 'ORS' }
+                    { name: 'Orstad (Stavanger)', value: 'ORS' },
+                    { name: 'Åndalsnes', value: 'ÅND' }
                 ))
         .addStringOption(option =>
             option.setName('content')
