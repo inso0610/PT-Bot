@@ -21,7 +21,11 @@ module.exports = {
                     { name: 'Trondheim', value: 'TND' },
                     { name: 'Narvik', value: 'NK' },
                     { name: 'Orstad (Stavanger)', value: 'ORS' },
-                    { name: 'Åndalsnes', value: 'ÅND' }
+                    { name: 'Åndalsnes', value: 'ÅND' },
+                    { name: 'Sundland (Drammen)', value: 'SUD' },
+                    { name: 'Heimdal', value: 'HMD' },
+                    { name: 'Langemyr (Kristiansand)', value: 'LMY' },
+                    { name: 'Fauske', value: 'FAU' }
                 ))
         .addStringOption(option =>
             option.setName('content')
