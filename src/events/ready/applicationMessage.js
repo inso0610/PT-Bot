@@ -118,8 +118,8 @@ module.exports = async (client) => {
                 value: `${statusIcons[application.status]} (${application.status})`,
                 inline: false
             })))
-            //.setFooter({ text: 'This message updates every 10 minutes. Last update' })
-            //.setTimestamp(Date.now())
+            .setFooter({ text: 'This message updates when changes are registered. Last update' })
+            .setTimestamp();
 
         if (update) {
             message.edit({
