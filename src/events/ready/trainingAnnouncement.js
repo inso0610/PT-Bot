@@ -34,7 +34,7 @@ module.exports = async (client) => {
     let cachedData = {};
 
     async function updateMessage() {
-        let update = false;
+        let update = true;
         const d = new Date();
         d.setSeconds(0, 0); // nearest full minute
         const dTimestamp = d.getTime();
