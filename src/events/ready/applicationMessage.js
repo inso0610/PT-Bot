@@ -27,6 +27,8 @@ module.exports = async (client) => {
         channel.send('<@&1304849124528754729> Had to make a new application message!');
     };
 
+    let lastStates = {};
+
     async function updateMessage() {
         /*const d = new Date();
 
@@ -46,6 +48,16 @@ module.exports = async (client) => {
 
         const operationsApplications = await applications.find({ department: 'Operations' }).exec();
 
+        operationsApplications.forEach(application => {
+            if (lastStates[application.role] && lastStates[application.role] !== application.status) {
+                update = true;
+                lastStates[application.role] = application.status;
+            } else if (!lastStates[application.role]) {
+                update = true;
+                lastStates[application.role] = application.status;
+            }
+        });
+
         const operationsEmbed = new EmbedBuilder()
             .setTitle('Operations')
             .addFields(...operationsApplications.map(application => ({
@@ -56,6 +68,16 @@ module.exports = async (client) => {
             //.setFooter({ text: `This message updates every minute. Last update: ${hour}:${minute} UTC` });
 
         const communityApplications = await applications.find({ department: 'Community' }).exec();
+
+        communityApplications.forEach(application => {
+            if (lastStates[application.role] && lastStates[application.role] !== application.status) {
+                update = true;
+                lastStates[application.role] = application.status;
+            } else if (!lastStates[application.role]) {
+                update = true;
+                lastStates[application.role] = application.status;
+            }
+        });
         
         const communityEmbed = new EmbedBuilder()
             .setTitle('Community')
@@ -78,6 +100,16 @@ module.exports = async (client) => {
             //.setFooter({ text: `This message updates every minute. Last update: ${hour}:${minute} UTC` });
 
         const developmentApplications = await applications.find({ department: 'Development' }).exec();
+
+        developmentApplications.forEach(application => {
+            if (lastStates[application.role] && lastStates[application.role] !== application.status) {
+                update = true;
+                lastStates[application.role] = application.status;
+            } else if (!lastStates[application.role]) {
+                update = true;
+                lastStates[application.role] = application.status;
+            }
+        });
         
         const developmentEmbed = new EmbedBuilder()
             .setTitle('Development')
@@ -86,13 +118,15 @@ module.exports = async (client) => {
                 value: `${statusIcons[application.status]} (${application.status})`,
                 inline: false
             })))
-            .setFooter({ text: 'This message updates every 10 minutes. Last update' })
-            .setTimestamp(Date.now())
+            //.setFooter({ text: 'This message updates every 10 minutes. Last update' })
+            //.setTimestamp(Date.now())
 
-        message.edit({
-            content: '# Applications',
-            embeds: [operationsEmbed, communityEmbed, brandingEmbed, developmentEmbed]
-        });
+        if (update) {
+            message.edit({
+                content: '# Applications',
+                embeds: [operationsEmbed, communityEmbed, brandingEmbed, developmentEmbed]
+            });
+        }
     };
 
     // run every minute
