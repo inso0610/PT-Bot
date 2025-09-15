@@ -27,7 +27,7 @@ module.exports = async (client) => {
         channel.send('<@&1304849124528754729> Had to make a new application message!');
     };
 
-    let lastStates = {};
+    const lastStates = {};
 
     async function updateMessage() {
         /*const d = new Date();
@@ -45,6 +45,8 @@ module.exports = async (client) => {
             const old = minute;
             minute = `0${old}`
         };*/
+
+        let update = false;
 
         const operationsApplications = await applications.find({ department: 'Operations' }).exec();
 
