@@ -23,7 +23,7 @@ module.exports = async ({ interaction, commandObj }) => {
             return true;
         }
 
-        if (!member.roles.cache.has('1111370796439453777') && !member.roles.cache.has('1142479698635526304') && !member.roles.cache.has('1140260309915938866')) {
+        if (!member.roles.cache.has('1111370796439453777') && !member.roles.cache.has('1142479698635526304') && !member.roles.cache.has('1140260309915938866') && !member.roles.cache.has('1256533116856565802')) {
             interaction.reply({
                 content: 'You do not have access to this command.',
                 flags: MessageFlags.Ephemeral
