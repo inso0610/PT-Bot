@@ -106,7 +106,7 @@ module.exports = {
             .setTitle(`🚉 ${stationData?.name?.value || stationCode}`)
             .setURL(link)
             .setColor(0x0078D7)
-            .setFooter({ text: 'Source: Bane NOR RTD' })
+            .setFooter({ text: 'Source: Bane NOR RTD and National Stop Register (NSR)' })
             .setTimestamp();
 
         const fields = [
@@ -189,6 +189,8 @@ module.exports = {
                 value: 'Not supported when station code is typed directly',
                 inline: false
             });
+
+            embed.setFooter({ text: 'Source: Bane NOR RTD' });
         }
 
         if (cooldownField) fields.push(cooldownField);
