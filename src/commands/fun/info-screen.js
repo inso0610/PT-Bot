@@ -1,10 +1,11 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const wait = require('node:timers/promises').setTimeout;
 
 const images = './src/utils/images';
 const commandTimeout = require('../../utils/commandTimeout');
+
 const { searchStation, getStationData } = require('../../utils/entur');
 
 module.exports = {
@@ -19,11 +20,11 @@ module.exports = {
                 .setAutocomplete(true))
         .addStringOption(option =>
             option.setName('track')
-                .setDescription('Show next departure for a specific track.')
+                .setDescription('Do you want to see the next departure for a specific track? Type in the track number.')
                 .setRequired(false))
         .addStringOption(option =>
             option.setName('content')
-                .setDescription('Show arrivals or departures (ignored if track is specified).')
+                .setDescription('Do you want to see arrivals or departures? (Does not do anything with track is specified)')
                 .setRequired(false)
                 .addChoices(
                     { name: 'Departures', value: 'departure' },
@@ -31,7 +32,7 @@ module.exports = {
                 ))
         .addStringOption(option =>
             option.setName('layout')
-                .setDescription('Landscape or portrait layout (ignored if track is specified).')
+                .setDescription('Should the screen be in landscape or portrait mode? (Does not do anything with track is specified)')
                 .setRequired(false)
                 .addChoices(
                     { name: 'Landscape', value: 'landscape' },
@@ -39,7 +40,7 @@ module.exports = {
                 ))
         .addStringOption(option =>
             option.setName('notice')
-                .setDescription('Show station notices (ignored if track is specified).')
+                .setDescription('Should station notices show up? (Does not do anything with track specified)')
                 .setRequired(false)
                 .addChoices(
                     { name: 'Yes', value: 'yes' },
@@ -49,90 +50,69 @@ module.exports = {
     run: async ({ interaction }) => {
         await interaction.deferReply();
 
-        // === Parse options ===
         const stationId = interaction.options.getString('station');
-        const track = interaction.options.getString('track');
+        const track = interaction.options.getString('track') ?? null;
         const content = interaction.options.getString('content') ?? 'departure';
         const layout = interaction.options.getString('layout') ?? 'landscape';
         const notice = interaction.options.getString('notice') ?? 'yes';
 
         if (!stationId) {
-            return interaction.editReply({ content: 'You must specify a station.' });
+            await interaction.editReply({ content: 'You must specify a station.' });
+            return;
         }
 
-        // === Station lookup ===
         let stationCode = stationId;
-        let stationData = null;
 
         if (stationCode.startsWith('NSR:')) {
-            stationData = await getStationData(stationId, true, 'RAIL_STATION');
+            const stationData = await getStationData(stationId, true, 'RAIL_STATION');
+
             if (!stationData) {
-                return interaction.editReply({ content: 'Could not find station data.' });
+                await interaction.editReply({ content: 'Could not find station data.' });
+                return;
             }
 
-            const jbvCode = stationData.keyList?.keyValue?.find(kv => kv.key === 'jbvCode')?.value;
-            if (!jbvCode) {
-                return interaction.editReply({ content: 'Could not find station code.' });
-            }
-            stationCode = jbvCode;
+            stationCode = stationData.keyList?.keyValue?.find(kv => kv.key === 'jbvCode')?.value;
+            if (!stationCode) {
+                await interaction.editReply({ content: 'Could not find station code.' });
+                return;
+            };
         } else {
-            stationCode = stationCode.toUpperCase();
-        }
+            stationCode = stationCode.toUpperCase()
+        };
 
-        // === Build RTD link ===
-        const link = track
-            ? `https://rtd.kv.banenor.no/web_client/std?station=${stationCode}&header=no&content=track&track=${track}`
-            : `https://rtd.banenor.no/web_client/std?station=${stationCode}&layout=${layout}&content=${content}&notice=${notice}`;
+        let link = track === null
+            ? `https://rtd.banenor.no/web_client/std?station=${stationCode}&layout=${layout}&content=${content}&notice=${notice}`
+            : `https://rtd.kv.banenor.no/web_client/std?station=${stationCode}&header=no&content=track&track=${track}`;
 
-        // === Cooldown handling ===
-        const userId = interaction.user.id;
-        const isBooster = interaction.member.roles.cache.has('1140760173128982588');
-        const isStaff = interaction.member.roles.cache.has('1140260309915938866');
-
-        if (!isBooster && !isStaff) {
+        // Check for cooldown unless user has role
+        if (!interaction.member.roles.cache.has('1140760173128982588') && !interaction.member.roles.cache.has('1140260309915938866')) {
             const commandName = 'infoScreens';
-            const timeout = await commandTimeout.findOne({ discordId: userId, command: commandName });
+            const userId = interaction.user.id;
+
+            const timeout = await commandTimeout.findOne({
+                discordId: userId,
+                command: commandName
+            });
 
             if (timeout) {
-                const expirationTimestamp = Math.floor(timeout.expiration.getTime() / 1000);
-                return interaction.editReply({
-                    content: `${link}\n\nYou must wait until <t:${expirationTimestamp}:t> before using this command again.\n**Server boosters can use this command without cooldown.**`
+                await interaction.editReply({
+                    content: `${link}\n\n\You have to wait until <t:${Math.floor(timeout.expiration.getTime() / 1000)}:t> if you want to get an image from this command. **Server boosters can use this command without cooldown.**`
                 });
+                return;
             }
 
-            const expiration = new Date(Date.now() + 3 * 60 * 60 * 1000); // 3 hours
-            await commandTimeout.create({ discordId: userId, command: commandName, expiration });
+            const expiration = Date.now() + 3 * 60 * 60 * 1000;
+            const newTimeout = await commandTimeout.create({
+                discordId: userId,
+                command: commandName,
+                expiration: expiration
+            });
+
+            await newTimeout.save();
         }
 
-        // === Create embed ===
-        const embed = new EmbedBuilder()
-            .setTitle(`🚉 ${stationData?.name || stationCode}`)
-            .setURL(link)
-            .setColor(0x0078D7)
-            .setFooter({ text: 'Source: Bane NOR RTD' })
-            .setTimestamp();
-
-        if (stationData) {
-            const location = `${stationData.municipality || ''}${stationData.county ? `, ${stationData.county}` : ''}`;
-            if (location.trim()) embed.setDescription(location);
-
-            const jbvCode = stationData.keyList?.keyValue?.find(kv => kv.key === 'jbvCode')?.value;
-            if (jbvCode) embed.addFields({ name: 'Bane NOR Code', value: jbvCode, inline: true });
-        }
-
-        // Dynamic fields depending on whether track is specified
-        if (track) {
-            embed.addFields({ name: 'Track', value: track, inline: true });
-        } else {
-            embed.addFields(
-                { name: 'Content', value: content.charAt(0).toUpperCase() + content.slice(1), inline: true },
-                { name: 'Layout', value: layout.charAt(0).toUpperCase() + layout.slice(1), inline: true },
-                { name: 'Notices', value: notice === 'yes' ? 'Yes' : 'No', inline: true },
-            );
-        }
-
-        // === Puppeteer section ===
         let browser;
+
         try {
             browser = await puppeteer.launch({
                 args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -141,13 +121,21 @@ module.exports = {
 
             const page = await browser.newPage();
 
-            const viewport =
-                layout === 'portrait' && !track
-                    ? { width: 1080, height: 1920, deviceScaleFactor: 1 }
-                    : { width: 1920, height: 1080, deviceScaleFactor: 1 };
+            if (layout === 'landscape' || track !== null) {
+                await page.setViewport({
+                    width: 1920,
+                    height: 1080,
+                    deviceScaleFactor: 1
+                });
+            } else if (layout === 'portrait') {
+                await page.setViewport({
+                    width: 1080,
+                    height: 1920,
+                    deviceScaleFactor: 1
+                });
+            }
 
-            await page.setViewport(viewport);
-            await page.emulateTimezone('Europe/Oslo');
+            page.emulateTimezone('Europe/Oslo');
             await page.goto(link);
             await wait(4000);
 
@@ -155,37 +143,33 @@ module.exports = {
             await page.screenshot({ path: imagePath });
 
             if (fs.existsSync(imagePath)) {
-                console.log('Screenshot saved');
+                console.log("Screenshot saved");
+
                 await interaction.editReply({
                     content: link,
-                    embeds: [embed],
                     files: [{ attachment: imagePath }]
                 });
+
                 fs.unlinkSync(imagePath);
             } else {
-                console.log('Screenshot not saved');
-                await interaction.editReply({
-                    content: link,
-                    embeds: [embed]
-                });
+                console.log("Screenshot not saved");
+                await interaction.editReply({ content: link });
             }
 
         } catch (error) {
             console.warn(error);
-            await interaction.editReply({
-                content: link,
-                embeds: [embed]
-            });
+            await interaction.editReply({ content: link });
         } finally {
             if (browser) await browser.close();
         }
     },
 
-    autocomplete: async ({ interaction }) => {
+    autocomplete: async ({ interaction, client, handler }) => {
         const focusedValue = interaction.options.getFocused();
+
         const stations = await searchStation(focusedValue);
 
-        if (!stations?.length) {
+        if (!stations || stations.length === 0) {
             return interaction.respond([]);
         }
 
@@ -194,7 +178,7 @@ module.exports = {
             value: station.properties.id
         }));
 
-        await interaction.respond(choices.slice(0, 25));
+        interaction.respond(choices.slice(0, 25));
         return choices;
     },
 
