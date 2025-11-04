@@ -1,4 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
+require('dotenv').config();
+
 const model = require('../../utils/trainings.js')
 
 const tickets = require('../../utils/tickets.js');
@@ -14,7 +16,7 @@ const guides = {
 }
 
 function getRobloxId(id) {
-    const functionResult = fetch(`https://registry.rover.link/api/guilds/1089282844657987587/discord-to-roblox/${id.toString()}`, { method: "GET", headers: { "Authorization": "Bearer rvr2g089xijilnr8qr2tmpnud2v8k379vo089k2qbxwzyh0t252y9h4arqf1d2qkbhz2" } })
+    const functionResult = fetch(`https://registry.rover.link/api/guilds/1089282844657987587/discord-to-roblox/${id.toString()}`, { method: "GET", headers: { "Authorization": process.env.ROVER_TOKEN } })
         .then((response) => response.json())
         .then((data) => {
             try {
