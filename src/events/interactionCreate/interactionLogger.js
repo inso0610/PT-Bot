@@ -37,7 +37,7 @@ module.exports = async (interaction, client) => {
 
         if (notificationCommands.includes(command)) {
             channel.send({
-                content: '<@935889950547771512> <@312986921804759051>',
+                content: '<@312986921804759051>',
                 embeds: [embed]
             });
         } else {

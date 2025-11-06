@@ -34,7 +34,7 @@ new CommandKit({
     eventsPath: `${__dirname}/events`,
     validationsPath: `${__dirname}/validations`,
     //devGuildIds: [''],
-    devUserIds: ['935889950547771512'],
+    devUserIds: ['935889950547771512', '339379137947107328'],
     //devRoleIds: ['DEV_ROLE_ID_1', 'DEV_ROLE_ID_2'],
     skipBuiltInValidations: false,
     bulkRegister: true,

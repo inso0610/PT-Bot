@@ -36,7 +36,7 @@ module.exports = (client) => {
 
     const channel = client.channels.cache.get('1333159918278021190');
 
-    channel.send('<@935889950547771512> Bot restarted!');
+    channel.send('<@339379137947107328> Bot restarted!');
 
     setInterval(() => {
         let random = Math.floor(Math.random() * status.length);
